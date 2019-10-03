@@ -1,0 +1,77 @@
+{   
+    "buttons": {
+        "btnAddGuest": "Add Guest",
+        "btnSearch": "Search",
+        "btnPayment": "Payment"
+    },
+    "changePassword": {
+        "label": {
+            "currentPassword": "Current Password",
+            "newPassword": "New Password",
+            "confirmPassword": "Confirm Password"
+        }
+    },
+    "guestManagrment": {
+        "titlePage": "Guest Management",
+        "label": {
+            "name": "Guest Name",
+            "phone": "Guest Phone",
+            "email": "Guest Email",
+            "code": "Guest Code",
+            "level": "Member Level"
+        }
+    },
+    "guestDetail": {
+        "titlePage": "Guest Detail",
+        "label": {
+            "name": "Guest Name:",
+            "code": "Code:",
+            "level": "Level:",
+            "date": "Date:",
+            "availablePoint": "Available Point:",
+            "totalPoint": "Total Point:",
+            "expiredDate": "Expired Date:",
+            "expiredPoint": "Expired Point:"
+        },
+        "tabs": {
+            "paymentHis": {
+                "title": "Payment History",
+                "table": {
+                    "name": "Story Name",
+                    "info": "Story Info",
+                    "date": "Date",
+                    "total": "Total"
+                }
+            },
+            "availablePromo": "Available Promotion",
+            "usedPromo": "Used Promotion",
+            "expiredPromo": "Expired Promotion",
+            "tablePromo": {
+                "code": "Voucher No",
+                "detail": "Detail",
+                "type": "Type",
+                "date": "Expired Date"
+            }
+        }
+    },
+    "promoManagrment": {
+        "label": {
+            "code": "Promotion Code",
+            "name": "Promotion Name",
+            "expiredDate": "Expired Date",
+            "detail": "Detail",
+            "type": "Promotion Type",
+            "apply": "Apply at",
+            "promoBy": "Promotion by",
+            "promoOn": "Promotion on",
+            "limit": "Limit",
+            "info": "Promotion Summary",
+            "detailAndCondition": "Promotion detail and condition",
+            "brand": "Brand",
+            "store": "Store",
+            "event": "Event",
+            "tradeBy": "Trade By",
+            "POSMapping": "POS Mapping"
+        }
+    }
+}
