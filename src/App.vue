@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <template v-if="!!this.$store.state.token">
+    <template>
       <AppHeader fixed>
         <SidebarToggler
           class="d-lg-none"
@@ -13,10 +13,9 @@
           :default-open="true"
         />
         <b-link class="navbar-brand">
-          FnB
+          RS
         </b-link>
         <b-navbar-nav class="ml-auto">
-          <p> {{ this.$store.state.user.fullName }} <br> {{ this.$store.state.user.roleName }} </p>
           <HeaderDropdownAccnt />
         </b-navbar-nav>
       </AppHeader>
@@ -24,10 +23,12 @@
         <AppSidebar fixed>
           <SidebarHeader />
           <SidebarForm />
-          <template v-if="this.$store.state.user.roleCode == 'STAFF'">
-            <SidebarNav :nav-items="nav" />
+          <!-- <template v-if="this.$store.state.user.roleCode == 'STAFF'"> -->
+          <template>
+            <!-- <SidebarNav :nav-items="nav" /> -->
           </template>
-          <template v-if="this.$store.state.user.roleCode == 'ADMIN'">
+          <!-- <template v-if="this.$store.state.user.roleCode == 'ADMIN'"> -->
+          <template>
             <SidebarNav :nav-items="navAdmin" />
           </template>
           <SidebarFooter />
@@ -41,20 +42,15 @@
           <DefaultAside />
         </AppAside>
       </div>
-      <TheFooter>
+      <!-- <TheFooter> -->
         <!--footer-->
-        <div>
-          <span class="ml-1"> Omotenashi </span>
-        </div>
+        <!-- <div>
+          <span class="ml-1"> RS </span> -->
+        <!-- </div>
         <div class="ml-auto">
-          <qrcode-vue :value="value" :size="size" level="H" class="pull-right mt-1"></qrcode-vue>
-        </div>
-      </TheFooter>
-    </template>
-    <template v-else-if="!this.$store.state.token">
-      <main class="main">
-        <router-view />
-      </main>
+          UI 12/10
+        </div> -->
+      <!-- </TheFooter> -->
     </template>
   </div>
 </template>
@@ -97,9 +93,6 @@ export default {
     }
   },
   computed: {
-    missingName: function () {
-      return this.currentPassword === '';
-    },
     name () {
       return this.$route.name
     },
@@ -108,16 +101,16 @@ export default {
     }
   },
   created () {
-    this.fetchLanguageFromCookie()
+    // this.fetchLanguageFromCookie()
   },
   methods: {
-    fetchLanguageFromCookie () {
-      var language = Cookies.get('language')
-      if (language) {
-        this.language = language
-        this.$i18n.locale = language
-      }
-    }
+    // fetchLanguageFromCookie () {
+    //   var language = Cookies.get('language')
+    //   if (language) {
+    //     this.language = language
+    //     this.$i18n.locale = language
+    //   }
+    // }
   }
 }
 </script>
@@ -129,6 +122,5 @@ export default {
   @import '~font-awesome/scss/font-awesome';
   @import '~bootstrap-vue/dist/bootstrap-vue';
   @import 'assets/scss/style';
-  @import 'assets/scss/crm';
-  @import 'assets/scss/multiselect';
+  @import 'assets/scss/rsw';
 </style>

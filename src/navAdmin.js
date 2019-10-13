@@ -2,71 +2,25 @@ export default {
     items: [
       // admin
       {
-        name: 'Dashboard',
-        url: '/',
+        name: 'Menu',
+        url: '/menu/list',
         icon: 'fa fa-home'
       },
       {
-        name: 'Account',
-        url: '/',
-        icon: 'fa fa-user',
-        children: [
-          {
-            name: 'Account',
-            url: '/account-index',
-            icon: 'icon-account'
-          },
-          {
-            name: 'Account Management',
-            url: '/account-management',
-            icon: 'icon-puzzle'
-          }
-        ]
+        name: 'Staff',
+        url: '/staff/list',
+        icon: 'fa fa-home'
       },
       {
-        name: 'Role',
-        url: '/',
-        icon: 'fa fa-pie-chart',
-        children: [
-          {
-            name: 'Role',
-            url: '/role-index',
-            icon: 'icon-account'
-          },
-          {
-            name: 'Role Management',
-            url: '/role-management',
-            icon: 'icon-puzzle'
-          }
-        ]
+        name: 'Promo',
+        url: '/promo/list',
+        icon: 'fa fa-home'
       },
       {
-        name: 'Store',
-        url: '/',
-        icon: 'fa fa-archive',
-        children: [
-          {
-            name: 'Brand',
-            url: '/brand',
-            icon: 'icon-account'
-          },
-          {
-            name: 'Store',
-            url: '/store-index',
-            icon: 'icon-puzzle'
-          },
-          {
-            name: 'Store Management',
-            url: '/store-management',
-            icon: 'icon-puzzle'
-          },
-          {
-            name: 'Location',
-            url: '/location',
-            icon: 'icon-puzzle'
-          }
-        ]
-      },
+        name: 'Setting',
+        url: '/setting/list',
+        icon: 'fa fa-home'
+      }
     ]
   }
   

@@ -12,113 +12,77 @@
           >
             <b-card-body class="p-4">
               <b-form @submit="doRegister">
-                <h1>Register</h1>
-                <p class="text-muted">
-                  Create your account
-                </p>
-                <b-input-group class="mb-3">
-                  <b-input-group-prepend>
-                    <b-input-group-text><i class="fa fa-user" /></b-input-group-text>
-                  </b-input-group-prepend>
-                  <b-form-input
-                    id="input-live"
-                    v-model="inputs.username"
-                    :state="usernameState"
+                <h3>Đăng Ký</h3>
+                <div class="form-group">
+                  <label>Tên</label>
+                  <input
+                    id="name"
+                    v-model="inputs.name"
                     type="text"
-                    class="form-control"
-                    placeholder="Username"
-                    autocomplete="username"
-                  />
-                  <b-form-invalid-feedback id="input-live-feedback">
-                    Enter at least 3 letters
-                  </b-form-invalid-feedback>
-                </b-input-group>
+                    class="form-control">
+                </div>
 
-                <b-input-group class="mb-3">
-                  <b-input-group-prepend>
-                    <b-input-group-text>@</b-input-group-text>
-                  </b-input-group-prepend>
-                  <b-form-input
-                    id="input-email"
-                    v-model="inputs.email"
-                    :state="inputs.email.length > 0"
-                    required
+                <div class="form-group">
+                  <label>Số Điện Thoại</label>
+                  <input
+                    id="phone"
+                    v-model="inputs.phone"
                     type="text"
-                    class="form-control"
-                    placeholder="Email"
-                    autocomplete="email"
-                  />
-                  <b-form-invalid-feedback id="input-email-feedback">
-                    Required
-                  </b-form-invalid-feedback>
-                </b-input-group>
+                    class="form-control">
+                </div>
 
-                <b-input-group class="mb-3">
-                  <b-input-group-prepend>
-                    <b-input-group-text><i class="fa fa-key" /></b-input-group-text>
-                  </b-input-group-prepend>
-                  <b-form-input
+                <div class="form-group">
+                  <label>Số Điện Thoại</label>
+                  <b-form-select :options="options" class="mb-3"></b-form-select>
+                </div>
+
+                <div class="form-group">
+                  <label>Ngày Tháng Năm SInh</label>
+                  <input
+                    id="birthday"
+                    v-model="inputs.birthday"
+                    type="text"
+                    class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Tỉnh/ Thành Phố</label>
+                  <input
+                    id="citi"
+                    v-model="inputs.citi"
+                    type="text"
+                    class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Quận/ Huyện</label>
+                  <input
+                    id="district"
+                    v-model="inputs.district"
+                    type="text"
+                    class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Mật Khẩu</label>
+                  <input
+                    id="password"
                     v-model="inputs.password"
-                    :state="inputs.password.length > 0 && repeat_password.length > 0 && inputs.password === repeat_password"
-                    aria-describedby="password-help-block"
                     type="password"
-                    class="form-control"
-                    placeholder="Password"
-                    autocomplete="new-password"
-                  />
-                  <b-form-text id="password-help-block">
-                    Your password must be 8-20 characters long, contain letters and numbers, and must not
-                    contain spaces, special characters, or emoji.
-                  </b-form-text>
-                </b-input-group>
-
-                <b-input-group class="mb-4">
-                  <b-input-group-prepend>
-                    <b-input-group-text><i class="fa fa-key" /></b-input-group-text>
-                  </b-input-group-prepend>
-                  <b-form-input
-                    v-model="repeat_password"
-                    :state="inputs.password.length > 0 && repeat_password.length > 0 && inputs.password === repeat_password"
+                    class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Nhắc Lại Mật Khẩu</label>
+                  <input
+                    id="confirm-password"
+                    v-model="inputs.cònirmPassword"
                     type="password"
-                    class="form-control"
-                    placeholder="Repeat password"
-                    autocomplete="new-password"
-                  />
-                </b-input-group>
-
-                <b-button
-                  :disabled="!inputs.username.length || !inputs.email.length"
-                  variant="success"
-                  block
-                  @click="doRegister"
-                >
-                  Create Account
-                </b-button>
-                <router-link
-                  :to="{ name: 'Login' }"
-                  class="btn btn-primary btn-block"
-                >
-                  Log In
-                </router-link>
+                    class="form-control">
+                </div>
               </b-form>
             </b-card-body>
             <b-card-footer class="p-4">
-              <b-row>
-                <b-col cols="6">
-                  <b-button
-                    block
-                    class="btn btn-facebook"
-                  >
-                    <span>facebook</span>
-                  </b-button>
-                </b-col>
-                <b-col cols="6">
-                  <b-button
-                    block
-                    class="btn btn-twitter"
-                    type="button"
-                  >
-                    <span>twitter</span>
+              <b-row class="text-center">
+                <b-col>
+                  <b-button variant="primary" class="px-4">
+                    Đăng Ký
                   </b-button>
                 </b-col>
               </b-row>
@@ -138,9 +102,18 @@ export default {
     return {
       inputs: {
         username: '',
-        email: '',
+        phone: '',
+        gender: '',
+        birthday: '',
+        citi: '',
+        district: '',
         password: '',
+        confirmPassword: ''
       },
+      options: [
+        {value: 'nam', text: 'Nam'},
+        {value: 'nu', text: 'Nữ'}
+      ],
       repeat_password: ''
     }
   },

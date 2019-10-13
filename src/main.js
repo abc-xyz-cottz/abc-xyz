@@ -39,16 +39,16 @@ Vue.use(svgicon, {
 
 // Some middleware to help us ensure the user is authenticated.
 router.beforeEach((to, from, next) => {
-  if (!store.state.token && to.path !== '/login') {
-    // this route requires auth, check if logged in
-    // if not, redirect to login page.
-    next({
-      path: '/login',
-      query: { redirect: to.fullPath }
-    })
-  } else {
+  // if (!store.state.token && to.path !== '/login') {
+  //   // this route requires auth, check if logged in
+  //   // if not, redirect to login page.
+  //   next({
+  //     path: '/login',
+  //     query: { redirect: to.fullPath }
+  //   })
+  // } else {
     next()
-  }
+  // }
 });
 
 const messages = {

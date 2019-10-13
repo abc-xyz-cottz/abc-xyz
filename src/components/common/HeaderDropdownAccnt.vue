@@ -36,10 +36,10 @@ export default {
     }
   },
   methods: {
-    logOut () {
-      this.$store.commit('removeToken');
-      this.$router.push({ name: 'Login' })
-    }
+    // logOut () {
+    //   this.$store.commit('removeToken');
+    //   this.$router.push({ name: 'Login' })
+    // }
   }
 }
 </script>

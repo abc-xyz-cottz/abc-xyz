@@ -4,37 +4,30 @@ import Router from 'vue-router'
 import Login from '@/views/authentication/Login'
 import Page404 from '@/views/Page404'
 import Page500 from '@/views/Page500'
-import ChangePassword from '@/components/author/ChangePassword'
-import InfoUser from '@/components/author/InfoUser'
-import Welcome from '@/components/author/Welcome'
-import GuestManagement from '@/views/staff/guest/GuestManagement'
-import GuestDetail from '@/views/staff/guest/GuestDetail'
-import PromotionIndex from '@/views/staff/promotion/PromotionIndex'
-import PromotionManagement from '@/views/staff/promotion/PromotionManagement'
-import Membership from '@/views/staff/management/Membership'
-import Level from '@/views/staff/management/Level'
-import Payment from '@/views/staff/management/Payment'
-import Home from '@/views/admin/Home'
-import AccountManagement from '@/views/admin/account/AccountManagement'
-import AccountIndex from '@/views/admin/account/AccountIndex'
-import RoleManagement from '@/views/admin/role/RoleManagement'
-import RoleIndex from '@/views/admin/role/RoleIndex'
-import StoreManagement from '@/views/admin/store/StoreManagement'
-import Brand from '@/views/admin/store/Brand'
-import StoreIndex from '@/views/admin/store/StoreIndex'
-import Location from '@/views/admin/store/Location'
-import testForm from '@/components/author/testForm'
+import Register from '@/views/authentication/Register'
+import Active from '@/views/authentication/ActiveAccount'
+import ChangePass from '@/views/authentication/ChangePass'
+import ActivePassword from '@/views/authentication/ActivePassword'
+import HomeStaff from '@/views/staff/Home'
+// import HomeAdmin from '@/views/admin/Home'
+import Menu from '@/views/admin/menu/List'
+import MenuAdd from '@/views/admin/menu/Index'
+import Staff from '@/views/admin/staff/List'
+import StaffAdd from '@/views/admin/staff/Index'
+import Promo from '@/views/admin/promo/List'
+import PromoAdd from '@/views/admin/promo/Index'
+import Setting from '@/views/admin/setting/List'
+import Reward from '@/views/customer/Reward'
+import Store from '@/views/supperAdmin/store/List'
+import StoreAdd from '@/views/supperAdmin/store/Index'
+import StoreAdmin from '@/views/supperAdmin/storeAdmin/List'
+import StoreAdminAdd from '@/views/supperAdmin/storeAdmin/Index'
 
 Vue.use(Router)
 
 export default new Router({
   scrollBehavior: () => ({ y: 0 }),
   routes: [
-    {
-      path: '/',
-      name: 'Welcome',
-      component: Welcome
-    },
     {
       path: '/login',
       name: 'Login',
@@ -43,99 +36,94 @@ export default new Router({
     { path: '/404', name: 'Page404', component: Page404 },
     { path: '/500', name: 'Page500', component: Page500 },
     {
-      path: '/changePassword',
-      name: 'Change Password',
-      component: ChangePassword
+      path: '/register',
+      name: 'Register',
+      component: Register
     },
     {
-      path: '/infoUser',
-      name: 'Information User',
-      component: InfoUser
+      path: '/active',
+      name: 'Active',
+      component: Active
     },
     {
-      path: '/guest-management',
-      name: 'GuestManagement',
-      component: GuestManagement
+      path: '/changepass',
+      name: 'ChangePass',
+      component: ChangePass
     },
     {
-      path: '/guest-detail/:tab/:Cid',
-      name: 'GuestDetail',
-      component: GuestDetail
+      path: '/activepass',
+      name: 'ActivePassword',
+      component: ActivePassword
     },
     {
-      path: '/promotion-index',
-      name: 'PromotionIndex',
-      component: PromotionIndex
+      path: '/staff',
+      name: 'HomeStaff',
+      component: HomeStaff
     },
+    // {
+    //   path: '/admin',
+    //   name: 'HomeAdmin',
+    //   component: HomeAdmin
+    // },
     {
-      path: '/promotion-management',
-      name: 'PromotionManagement',
-      component: PromotionManagement
-    },
-    {
-      path: '/membership-management',
-      name: 'Membership',
-      component: Membership
-    },
-    {
-      path: '/level-management',
-      name: 'Level',
-      component: Level
-    },
-    {
-      path: '/payment-management/:payId',
-      name: 'Payment',
-      component: Payment
-    },
-    {
-      path: '/home',
+      path: '/menu/list',
       name: 'Home',
-      component: Home
+      component: Menu
     },
     {
-      path: '/account-management',
-      name: 'AccountManagement',
-      component: AccountManagement
+      path: '/menu/index',
+      name: 'MenuAdd',
+      component: MenuAdd
     },
     {
-      path: '/account-index',
-      name: 'AccountIndex',
-      component: AccountIndex
+      path: '/staff/list',
+      name: 'Staff',
+      component: Staff
     },
     {
-      path: '/role-management',
-      name: 'RoleManagement',
-      component: RoleManagement
+      path: '/staff/index',
+      name: 'StaffAdd',
+      component: StaffAdd
     },
     {
-      path: '/role-index',
-      name: 'RoleIndex',
-      component: RoleIndex
+      path: '/promo/list',
+      name: 'Promo',
+      component: Promo
     },
     {
-      path: '/store-management',
-      name: 'StoreManagement',
-      component: StoreManagement
+      path: '/promo/index',
+      name: 'PromoAdd',
+      component: PromoAdd
     },
     {
-      path: '/brand',
-      name: 'Brand',
-      component: Brand
+      path: '/setting/list',
+      name: 'Setting',
+      component: Setting
     },
     {
-      path: '/store-index',
-      name: 'StoreIndex',
-      component: StoreIndex
+      path: '/customer/reward',
+      name: 'Reward',
+      component: Reward
     },
     {
-      path: '/location',
-      name: 'Location',
-      component: Location
+      path: '/store/list',
+      name: 'Store',
+      component: Store
     },
     {
-      path: '/testForm',
-      name: 'Test',
-      component: testForm
+      path: '/store/index',
+      name: 'StoreAdd',
+      component: StoreAdd
+    },
+    {
+      path: '/supper/store/list',
+      name: 'StoreAdmin',
+      component: StoreAdmin
+    },
+    {
+      path: '/supper/store/index',
+      name: 'StoreAdminAdd',
+      component: StoreAdminAdd
     }
   ]
 })
