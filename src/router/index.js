@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Login from '@/views/authentication/Login'
+import StaffLogin from '@/views/authentication/StaffLogin'
 import Page404 from '@/views/Page404'
 import Page500 from '@/views/Page500'
 import Register from '@/views/authentication/Register'
@@ -32,6 +33,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/staff-login',
+      name: 'StaffLogin',
+      component: StaffLogin
     },
     { path: '/404', name: 'Page404', component: Page404 },
     { path: '/500', name: 'Page500', component: Page500 },
