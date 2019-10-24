@@ -6,11 +6,18 @@
           <b-card-group>
             <b-card
               no-body>
-              <b-card-body>
+              <b-card-body class="pb-2">
+                <b-button 
+                  variant="primary"
+                  class="pull-right px-4"
+                  @click="goToStaffLogin()"
+                >
+                Staff
+                </b-button>
                 <b-form @submit.prevent="logIn">
-                  <h1 class="text-center">
-                    RS
-                  </h1>
+                  <h2>
+                    Đăng Nhập
+                  </h2>
                   <div class="form-group">
                     <label>Số Điện Thoại</label>
                     <input
@@ -28,15 +35,6 @@
                       type="password"
                       class="form-control"
                       placeholder="Nhập mật khẩu">
-                  </div>
-                  <div class="form-group d-inline-flex">
-                    <label class="mr-3">Bạn Là</label>
-                    <b-form-radio v-model="selected" name="radios" value="B" class="mr-3">
-                      Khách Hàng
-                    </b-form-radio>
-                    <b-form-radio v-model="selected" name="radios" value="B" class="mr-3">
-                      Nhân Viên
-                    </b-form-radio>
                   </div>
                   <b-row>
                     <b-col
@@ -58,7 +56,7 @@
                   </b-col>
                 </b-row>
               </b-card-body>
-              <b-card-footer class="p-4">
+              <b-card-footer class="py-2">
               <b-row class="text-center">
                   <b-col>
                     <b-button
@@ -102,7 +100,10 @@ export default {
   // components: {
   //   QrcodeStream
   // },
-  // methods: {
+  methods: {
+    goToStaffLogin () {
+      this.$router.push('/staff-login')
+    }
   //   logIn () {
   //     this.onLogin = true
   //     setTimeout(() => {
@@ -128,6 +129,6 @@ export default {
   //   onDecode (result) {
   //     this.code = result
   //   }
-  // }
+  }
 }
 </script>
