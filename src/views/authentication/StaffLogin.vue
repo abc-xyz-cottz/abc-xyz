@@ -15,7 +15,7 @@
                     <label>Số Điện Thoại</label>
                     <input
                       id="phone"
-                      v-model="inputs.phone"
+                      v-model="inputs.phone_number"
                       type="text"
                       class="form-control"
                       placeholder="Nhập số điện thoại">
@@ -52,12 +52,15 @@
   </div>
 </template>
 <script>
+import Mapper from '@/mapper/staff'
+import Staff from '@/api/staff'
+
 export default {
   name: 'Login',
   data () {
     return {
       inputs: {
-        phone: '',
+        phone_number: '',
         password: ''
       },
       code: '',
@@ -66,6 +69,40 @@ export default {
     }
   },
   methods: {
+     logIn () {
+       this.onLogin = true
+       //setTimeout(() => {
+         Staff.logIn(this.inputs).then(res => {
+
+            // Store token
+            this.$store.commit('updateToken', res.data.data.token)
+
+            // Store staff info
+             const usr = Mapper.mapStaffModelToDto(res.data.data.staff_info)
+             this.$store.commit('updateUser', usr);
+
+
+             // TODO: role_name = "STAFF" -> go to staff page
+             // TODO: role_name = "ADMIN" -> go to admin page
+             // TODO: role_name = "SUPPER_ADMIN" -> go to staff page
+
+
+             //if (this.$store.state.user.roleCode == "STAFF") {
+               //this.$router.push({ name: 'Welcome' })
+             //}
+             //if (this.$store.state.user.roleCode == "ADMIN") {
+              // this.$router.push({ name: 'Home' })
+             //}
+
+         }).catch(err => {
+           console.log(err);
+           this.onLogin = false
+         })
+       //}, 5000)
+     },
+     onDecode (result) {
+       this.code = result
+     }
   }
 }
 </script>

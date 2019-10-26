@@ -9,7 +9,7 @@ const CSRF_HEADER_NAME = 'X-CSRFToken';
 const session = axios.create({
   xsrfCookieName: CSRF_COOKIE_NAME,
   xsrfHeaderName: CSRF_HEADER_NAME,
-  timeout: 5000
+  timeout: 50000
 });
 
 let token = Cookies.get(TOKEN_NAME);
