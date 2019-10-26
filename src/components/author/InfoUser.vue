@@ -1,127 +1,138 @@
 <template>
-  <div class="container-fluid">
-    <b-row class="row justify-content-center">
-      <b-col md="8">
+  <div class="app flex-row align-items-center">
+    <div class="container">
+      <!-- <b-row class="row justify-content-center">
+        <b-col md="6"> -->
         <b-card-group>
           <b-card no-body>
             <b-card-body>
-              <b-row class="m-1">
-                <b-col md="12" class="p-0">
-                  <b-alert 
-                    variant="success" 
-                    success 
-                    fade 
-                    :show="showSuccessAlert" 
-                    @dismissed="showSuccessAlert=false">
-                    Update Compeleted!
-                  </b-alert>
-                  <b-alert 
-                    variant="danger" 
-                    dismissible 
-                    fade 
-                    :show="showDismissibleAlert" 
-                    @dismissed="showDismissibleAlert=false">
-                    Update Failed!
-                  </b-alert>
-                </b-col>
-              </b-row>
-              <b-row class="info-welcome m-1">
-                <b-col md="8">
-                  <div class="user-img"><i class="fa fa-user fa-3x" /></div>
-                  <div class="row h-100">
-                    <div class="align-self-center">
-                      <p> {{ staff.username }}
-                        <br>{{ staff.roleName }}</p>
-                    </div>
-                  </div>
-                </b-col>
-              </b-row>
-              <div class="update-info">
-                <b-form method="put" @submit.prevent="update" @submit="validateForm">
-                  <div class="form-group">
-                    <label for="fullName">
-                      {{ $t("infoUser.fullName") }}
-                      <span class="start-require"></span>
-                    </label>
-                    <input id="fullName" 
-                      v-model="staff.fullName" 
-                      type="text" 
-                      class="form-control" 
-                      placeholder="input your full name ..." 
-                      :class="{ 'is-invalid': attemptSubmit && missingFullName }">
-                    <div class="invalid-feedback">
-                      {{ $t("commons.invalidFeedback") }}
-                    </div>
-                  </div>
-                  <b-row>
-                    <b-col cols="12" class="text-center mt-3">
-                      <button class="btn btn-primary px-4">
-                        {{ onUpdate ? "Update.." : "Update" }}
-                      </button>
-                      <b-button variant="primary" class="px-4" href="/#/changePassword">
-                        Change Password
-                      </b-button>
-                    </b-col>
-                  </b-row>
-                </b-form>
-              </div>
+              <b-form @submit="doRegister">
+                <h4>Thông Tin Cá Nhân</h4>
+                <div class="form-group">
+                  <label>Tên</label>
+                  <input
+                    id="name"
+                    v-model="inputs.name"
+                    type="text"
+                    class="form-control">
+                    
+                </div>
+                <div class="form-group">
+                  <label>Số Điện Thoại</label>
+                  <input
+                    id="phone"
+                    v-model="inputs.phone"
+                    type="text"
+                    class="form-control">
+                </div>
+
+                <div class="form-group">
+                  <label>Số Điện Thoại</label>
+                  <b-form-select :options="options" class="mb-3"></b-form-select>
+                </div>
+
+                <div class="form-group">
+                  <label>Ngày Tháng Năm Sinh</label>
+                  <input
+                    id="birthday"
+                    v-model="inputs.birthday"
+                    type="text"
+                    class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Tỉnh/ Thành Phố</label>
+                  <input
+                    id="citi"
+                    v-model="inputs.citi"
+                    type="text"
+                    class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Quận/ Huyện</label>
+                  <input
+                    id="district"
+                    v-model="inputs.district"
+                    type="text"
+                    class="form-control">
+                </div>
+              </b-form>
             </b-card-body>
           </b-card>
         </b-card-group>
-      </b-col>
-    </b-row>
+      <!-- </b-col>
+    </b-row> -->
+  </div>
   </div>
 </template>
+
 <script>
-import StaffAPI from '@/api/staff'
-import Mapper from '@/common/mapper'
+import AuthenticationAPI from '@/api/authentication'
 export default {
-  name: 'InfoUser',
+  name: 'Register',
   data () {
     return {
-      staff: {
-        fullName: ''
+      inputs: {
+        username: '',
+        phone: '',
+        gender: '',
+        birthday: '',
+        citi: '',
+        district: '',
+        password: '',
+        confirmPassword: ''
       },
-      onUpdate: false,
-      attemptSubmit: false,
-      showSuccessAlert: false,
-      showDismissibleAlert: false
+      options: [
+        {value: 'nam', text: 'Nam'},
+        {value: 'nu', text: 'Nữ'}
+      ],
+      repeat_password: ''
     }
   },
-  mounted () {
-    this.getStaffInfo ();
-  },
   computed: {
-    missingFullName () {
-      return this.staff.fullName === ''
+    usernameState () {
+      return this.inputs.username.length > 3 ? true : false
     }
   },
   methods: {
-    getStaffInfo () {
-      StaffAPI.getStaffInfo(this.$store.state.user.id, {}).then(res => {
-        this.staff = Mapper.mapUserModelToDto(res.data.data)
+    validateForm () {
+      let vm = this
+      return new Promise(function(resolve, reject) {
+        if (vm.repeat_password !== vm.inputs.password) {
+          vm.$bvModal.msgBoxOk('Password is not matched', {
+            title: 'Alert',
+            size: 'sm',
+            buttonSize: 'sm',
+            okVariant: 'danger',
+            headerClass: 'p-2 border-bottom-0',
+            footerClass: 'p-2 border-top-0',
+            centered: true
+          }).then(value => {}).catch(err => {})
+          reject(null)
+        } else {
+          resolve(vm.inputs)
+        }
       })
     },
-    validateForm (event) {
-      this.attemptSubmit = true
-      if (this.missingFullName) event.preventDefault()
-    },
-    update () {
-      if (this.attemptSubmit == true) {
-        this.onUpdate = true
-        setTimeout(() => {
-          StaffAPI.updateStaffInfo({
-            "id": this.$store.state.user.id,
-            "full_name": this.staff.fullName
-          }).then(res => {
-            this.showSuccessAlert = true
-            this.onUpdate = false
-          }).catch(err => {
-            this.showDismissibleAlert = true
-            this.onUpdate = false
-          })
-        }, 500)
-      }
+    async doRegister (evt) {
+      evt.preventDefault()
+      let vm = this
+      let validated_data = await this.validateForm()
+      if (!validated_data) { return }
+      AuthenticationAPI.register(validated_data).then(res => {
+        vm.$bvModal.msgBoxOk('Successfully registered user. You can log in now', {
+          title: 'Success',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'success',
+          headerClass: 'p-2 border-bottom-0',
+          footerClass: 'p-2 border-top-0',
+          centered: true
+        }).then(value => {
+          vm.$router.push({ name: 'Login' })
+        }).catch(err => {})
+      }).catch(err => {
+        console.log(err.response);
+      })
     }
   }
 }

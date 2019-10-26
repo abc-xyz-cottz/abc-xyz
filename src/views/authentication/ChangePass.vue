@@ -52,3 +52,17 @@
     </div>
   </div>
 </template>
+<script>
+export default {
+  data () {
+    return {
+
+    }
+  },
+  methods: {
+    update () {
+      this.$router.push('/activepass')
+    }
+  }
+}
+</script>

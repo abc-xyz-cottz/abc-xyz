@@ -17,8 +17,18 @@ export default {
         icon: 'fa fa-home'
       },
       {
+        name: 'Table',
+        url: '/table/list',
+        icon: 'fa fa-home'
+      },
+      {
         name: 'Setting',
         url: '/setting/list',
+        icon: 'fa fa-home'
+      },
+      {
+        name: 'QACode',
+        url: '/QACode/list',
         icon: 'fa fa-home'
       }
     ]

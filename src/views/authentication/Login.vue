@@ -39,22 +39,18 @@
                   <b-row>
                     <b-col
                       cols="12"
-                      class="text-center mb-2">
+                      class="mb-2 align-self-center">
                       <b-button
                         variant="primary"
                         class="px-4"
                         @click.prevent="logIn">
                         {{ onLogin ? 'Đăng Nhập...' : 'Đăng Nhập' }}
                       </b-button>
+                      <a href="#/register" class="pull-right pt-2"> &nbsp; Đăng Ký Tài Khoản</a>
+                      <a href="#/changepass" class="pull-right pt-2">Quên Mật Khẩu &nbsp; / </a>
                     </b-col>
                   </b-row>
                 </b-form>
-                <b-row>
-                  <b-col>
-                    <a href="#" class="pull-left">Đăng Ký Tài Khoản</a>
-                    <a href="#" class="pull-right">Quên Mật Khẩu</a>
-                  </b-col>
-                </b-row>
               </b-card-body>
               <b-card-footer class="py-2">
               <b-row class="text-center">
@@ -97,12 +93,15 @@ export default {
       onShowQRCode: false,
     }
   },
-  // components: {
-  //   QrcodeStream
-  // },
+  components: {
+    QrcodeStream
+  },
   methods: {
     goToStaffLogin () {
       this.$router.push('/staff-login')
+    },
+    onDecode (result) {
+      this.code = result
     }
   //   logIn () {
   //     this.onLogin = true
@@ -126,9 +125,6 @@ export default {
   //       })
   //     }, 500)
   //   },
-  //   onDecode (result) {
-  //     this.code = result
-  //   }
   }
 }
 </script>

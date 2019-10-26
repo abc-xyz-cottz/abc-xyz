@@ -10,7 +10,9 @@ import Active from '@/views/authentication/ActiveAccount'
 import ChangePass from '@/views/authentication/ChangePass'
 import ActivePassword from '@/views/authentication/ActivePassword'
 import HomeStaff from '@/views/staff/Home'
-// import HomeAdmin from '@/views/admin/Home'
+import CustomerHome from '@/views/customer/Home'
+import Order from '@/views/customer/Order'
+import Require from '@/views/customer/Require'
 import Menu from '@/views/admin/menu/List'
 import MenuAdd from '@/views/admin/menu/Index'
 import Staff from '@/views/admin/staff/List'
@@ -23,6 +25,8 @@ import Store from '@/views/supperAdmin/store/List'
 import StoreAdd from '@/views/supperAdmin/store/Index'
 import StoreAdmin from '@/views/supperAdmin/storeAdmin/List'
 import StoreAdminAdd from '@/views/supperAdmin/storeAdmin/Index'
+import InfoUser from '@/components/author/InfoUser'
+import Welcome from '@/views/customer/Welcome'
 
 Vue.use(Router)
 
@@ -36,29 +40,29 @@ export default new Router({
     },
     {
       path: '/staff-login',
-      name: 'StaffLogin',
+      name: 'Login',
       component: StaffLogin
     },
     { path: '/404', name: 'Page404', component: Page404 },
     { path: '/500', name: 'Page500', component: Page500 },
     {
       path: '/register',
-      name: 'Register',
+      name: 'Login',
       component: Register
     },
     {
       path: '/active',
-      name: 'Active',
+      name: 'Login',
       component: Active
     },
     {
       path: '/changepass',
-      name: 'ChangePass',
+      name: 'Login',
       component: ChangePass
     },
     {
       path: '/activepass',
-      name: 'ActivePassword',
+      name: 'Login',
       component: ActivePassword
     },
     {
@@ -66,69 +70,89 @@ export default new Router({
       name: 'HomeStaff',
       component: HomeStaff
     },
-    // {
-    //   path: '/admin',
-    //   name: 'HomeAdmin',
-    //   component: HomeAdmin
-    // },
+    {
+      path: '/infoUser',
+      name: 'InfoUser',
+      component: InfoUser
+    },
+    {
+      path: '/',
+      name: 'CustomerHome',
+      component: CustomerHome
+    },
+    {
+      path: '/welcome',
+      name: 'CustomerHome',
+      component: Welcome
+    },
+    {
+      path: '/order',
+      name: 'CustomerHome',
+      component: Order
+    },
+    {
+      path: '/require',
+      name: 'CustomerHome',
+      component: Require
+    },
     {
       path: '/menu/list',
-      name: 'Home',
+      name: 'Admin',
       component: Menu
     },
     {
       path: '/menu/index',
-      name: 'MenuAdd',
+      name: 'Admin',
       component: MenuAdd
     },
     {
       path: '/staff/list',
-      name: 'Staff',
+      name: 'Admin',
       component: Staff
     },
     {
       path: '/staff/index',
-      name: 'StaffAdd',
+      name: 'Admin',
       component: StaffAdd
     },
     {
       path: '/promo/list',
-      name: 'Promo',
+      name: 'Admin',
       component: Promo
     },
     {
       path: '/promo/index',
-      name: 'PromoAdd',
+      name: 'Admin',
       component: PromoAdd
     },
     {
       path: '/setting/list',
-      name: 'Setting',
+      name: 'Admin',
       component: Setting
     },
     {
       path: '/customer/reward',
-      name: 'Reward',
+      name: 'Admin',
       component: Reward
     },
     {
       path: '/store/list',
-      name: 'Store',
+      name: 'SuperAdmin',
       component: Store
     },
     {
       path: '/store/index',
-      name: 'StoreAdd',
+      name: 'SuperAdmin',
       component: StoreAdd
     },
     {
       path: '/supper/store/list',
-      name: 'StoreAdmin',
+      name: 'SuperAdmin',
       component: StoreAdmin
     },
     {
       path: '/supper/store/index',
-      name: 'StoreAdminAdd',
+      name: 'SuperAdmin',
       component: StoreAdminAdd
     }
   ]

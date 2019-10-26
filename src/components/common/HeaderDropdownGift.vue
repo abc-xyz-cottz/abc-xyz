@@ -4,16 +4,15 @@
     no-caret
   >
     <template slot="header">
-      <span>
-        <i class="fa fa-user fa-2x" />
+      <span class="white mr-3">
+        <i class="fa fa-gift fa-2x"/>
       </span>
     </template>
     <template slot="dropdown">
-      <b-dropdown-item href="/#/infoUser">Thông tin cá nhân
+      <b-dropdown-item href="/#/point"> Điểm
       </b-dropdown-item>
-      <b-dropdown-item href="/#/changepass">Đổi Mật Khẩu
+      <b-dropdown-item href="/#/promo"> Khuyến Mãi
       </b-dropdown-item>
-      <b-dropdown-item @click.prevent="logOut">Thoát</b-dropdown-item>
     </template>
   </AppHeaderDropdown>
 </template>
@@ -33,10 +32,6 @@ export default {
     }
   },
   methods: {
-    // logOut () {
-    //   this.$store.commit('removeToken');
-    //   this.$router.push({ name: 'Login' })
-    // }
   }
 }
 </script>
