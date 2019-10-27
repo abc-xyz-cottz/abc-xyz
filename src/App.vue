@@ -2,7 +2,7 @@
   <div class="app">
     <template v-if="this.$route.name != 'Login'">
 
-      <AppHeader fixed>
+      <!-- <AppHeader fixed>
         <div class="container">
           <a href="#/staff-login" class="pull-left white">Nhân Viên</a>
           <b-navbar-nav class="ml-auto">
@@ -10,9 +10,9 @@
             <a href="#/register" class="pull-right white"> &nbsp; Đăng Ký Tài Khoản</a>
           </b-navbar-nav>
         </div>
-      </AppHeader>
+      </AppHeader> -->
       <!-- đăng nhập xong sẽ dùng đoạn code bên dưới -->
-      <!-- <AppHeader fixed>
+      <AppHeader fixed>
         <b-link class="navbar-brand">
           RS
         </b-link>
@@ -23,7 +23,7 @@
           </span>
           <HeaderDropdownAccnt />
         </b-navbar-nav>
-      </AppHeader> -->
+      </AppHeader>
 
       <div class="app-body">
         <template v-if="this.$route.name == 'Admin'">

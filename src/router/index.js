@@ -21,6 +21,8 @@ import Promo from '@/views/admin/promo/List'
 import PromoAdd from '@/views/admin/promo/Index'
 import Setting from '@/views/admin/setting/List'
 import Reward from '@/views/customer/Reward'
+import Point from '@/views/customer/Point'
+import PromoCus from '@/views/customer/Promo'
 import Store from '@/views/supperAdmin/store/List'
 import StoreAdd from '@/views/supperAdmin/store/Index'
 import StoreAdmin from '@/views/supperAdmin/storeAdmin/List'
@@ -94,6 +96,16 @@ export default new Router({
       path: '/require',
       name: 'CustomerHome',
       component: Require
+    },
+    {
+      path: '/point',
+      name: 'CustomerHome',
+      component: Point
+    },
+    {
+      path: '/promo',
+      name: 'CustomerHome',
+      component: PromoCus
     },
     {
       path: '/menu/list',
