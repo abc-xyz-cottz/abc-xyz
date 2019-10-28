@@ -13,15 +13,39 @@
       </AppHeader> -->
       <!-- đăng nhập xong sẽ dùng đoạn code bên dưới -->
       <AppHeader fixed>
+        <SidebarToggler
+          class="d-none"
+          :default-open="true"
+        />
         <b-link class="navbar-brand">
           RS
         </b-link>
         <b-navbar-nav class="ml-auto">
-          <HeaderDropdownGift />
+          <!-- hiện cho template customer -->
+          <!-- <HeaderDropdownGift />
           <span class="white">
             <i class="fa fa-bell fa-2x"></i>
+          </span> 
+          <HeaderDropdownAccnt />-->
+          <!-- end -->
+          <!-- hiện cho template staff -->
+          <span class="white">
+            Tên Staff
           </span>
-          <HeaderDropdownAccnt />
+          <!-- end -->
+          
+          <AppHeaderDropdown right no-caret >
+            <template slot="header">
+              <span>
+                <i class="fa fa-user fa-2x" />
+              </span>
+            </template>
+            <template slot="dropdown">
+              <b-dropdown-item href="/#/changepass">Đổi Mật Khẩu
+              </b-dropdown-item>
+              <b-dropdown-item>Thoát</b-dropdown-item>
+            </template>
+          </AppHeaderDropdown>
         </b-navbar-nav>
       </AppHeader>
 
@@ -66,6 +90,7 @@
 </template>
 
 <script>
+import { HeaderDropdown as AppHeaderDropdown } from '@coreui/vue'
 import Cookies from 'js-cookie'
 import nav from '@/navigations'
 import navAdmin from '@/navAdmin'
@@ -92,7 +117,8 @@ export default {
     HeaderDropdownAccnt,
     HeaderDropdownGift,
     DefaultAside,
-    QrcodeVue
+    QrcodeVue,
+    AppHeaderDropdown
   },
   data () {
     return {
