@@ -8,12 +8,46 @@
               <h6 class="mt-2">Staff</h6>
             </b-col>
             <b-col md='6'>
-              <b-button variant="primary" class="pull-right">
+              <b-button variant="primary" class="pull-right px-4" @click="gotoAdd()">
                 Thêm
               </b-button>
             </b-col>
           </b-row>
           <hr>
+          <b-form @submit.prevent="search">
+              <b-row class="form-row">
+                <b-col md="4">
+                  <label> Tên </label>
+                  <input
+                  id="name"
+                  type="text"
+                  class="form-control">
+                </b-col>
+                <b-col md="4">
+                  <label> Số Điện Thoại </label>
+                  <input
+                  id="phone"
+                  type="text"
+                  class="form-control">
+                </b-col>
+                <b-col md="4">
+                  <label> Quyền </label>
+                  <b-form-select
+                  id="permision"
+                  :options="options"
+                  type="text"
+                  class="form-control"></b-form-select>
+                </b-col>
+              </b-row>
+              <hr>
+            <b-row class="pull-right mb-3">
+              <b-col>
+                <b-button variant="primary" class="px-4">
+                  Tìm Kiếm
+                </b-button>
+              </b-col>
+            </b-row>
+          </b-form>
           <b-table 
           hover
           bordered
@@ -22,10 +56,10 @@
           :items="items">
           <template v-slot:cell(actions)="dataId">
             <b-list-group horizontal>
-              <b-list-group-item v-b-tooltip.hover title="Edit" @click="edit(dataId)">
+              <b-list-group-item v-b-tooltip.hover title="Edit" @click="edit(dataId.value)">
                 <i class="fa fa-edit" />
               </b-list-group-item>
-              <b-list-group-item v-b-tooltip.hover title="Delete" @click="deleted(dataId)">
+              <b-list-group-item v-b-tooltip.hover title="Delete" @click="deleted(dataId.value)">
                 <i class="fa fa-trash" />
               </b-list-group-item>
             </b-list-group>
@@ -47,6 +81,10 @@
 export default {
   data () {
     return {
+      options:[
+        {text: 'Staff', value: '1'},
+        {text: 'Admin', value: '2'}
+      ],
       perPage: '10',
       currentPage: '1',
       fields: [
@@ -92,6 +130,9 @@ export default {
       alert("delete")
     },
     edit (id) {
+      this.$router.push('/staff/index/' + id)
+    },
+    gotoAdd () {
       this.$router.push('/staff/index/')
     }
   }

@@ -11,6 +11,14 @@ p{
 .white{
     color: #ffffff;
 }
+hr{
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;
+}
+.error-sybol::after{
+    content: "*";
+    color: red;
+}
 .form-group {
     // margin-bottom: 0 !important;
     label, select{
