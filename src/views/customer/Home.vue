@@ -30,7 +30,7 @@
                 Quét QR code
               </b-button>
               <qrcode-stream v-if="onShowQRCode" @decode="onDecode" class="showQACode" />
-              <p class="">(Bạn có thể gọi món hoặc gửi yêu cầu tới nhân viên nhà hàng thông qua quét QR code mà không cần tài khoản)
+              <p class="">(Bạn có thể gọi món hoặc gửi yêu cầu tới nhân viên nhà hàng thông qua quét QR code)
               </p>
             </b-col>
           </b-row>

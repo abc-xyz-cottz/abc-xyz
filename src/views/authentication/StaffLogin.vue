@@ -39,7 +39,13 @@
                         @click.prevent="logIn">
                         {{ onLogin ? 'Đăng Nhập...' : 'Đăng Nhập' }}
                       </b-button>
-                      <a href="#/changepass" class="pull-right mt-2">Quên Mật Khẩu</a>
+                    </b-col>
+                  </b-row>
+                  <b-row>
+                    <b-col
+                      cols="12"
+                      class="mb-2">
+                      <a href="#/changepass" class="pull-left mt-2">Quên Mật Khẩu</a>
                     </b-col>
                   </b-row>
                 </b-form>

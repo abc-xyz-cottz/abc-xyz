@@ -7,13 +7,6 @@
             <b-card
               no-body>
               <b-card-body class="pb-2">
-                <b-button 
-                  variant="primary"
-                  class="pull-right px-4"
-                  @click="goToStaffLogin()"
-                >
-                Staff
-                </b-button>
                 <b-form @submit.prevent="logIn">
                   <h2>
                     Đăng Nhập
@@ -46,27 +39,24 @@
                         @click.prevent="logIn">
                         {{ onLogin ? 'Đăng Nhập...' : 'Đăng Nhập' }}
                       </b-button>
-                      <a href="#/register" class="pull-right pt-2"> &nbsp; Đăng Ký Tài Khoản</a>
-                      <a href="#/changepass" class="pull-right pt-2">Quên Mật Khẩu &nbsp; / </a>
+                    </b-col>
+                  </b-row>
+                  <b-row>
+                    <b-col
+                      cols="12"
+                      class="mb-2 align-self-center">
+                      <a href="#/register" class="pull-left pt-2">Đăng Ký Tài Khoản</a>
+                    </b-col>
+                  </b-row>
+                  <b-row>
+                    <b-col
+                      cols="12"
+                      class="mb-2 align-self-center">
+                      <a href="#/changepass" class="pull-left pt-2">Quên Mật Khẩu</a>
                     </b-col>
                   </b-row>
                 </b-form>
               </b-card-body>
-              <b-card-footer class="py-2">
-              <b-row class="text-center">
-                  <b-col>
-                    <b-button
-                      class="mt-2"
-                      @focus="onShowQRCode = true"
-                      @blur="onShowQRCode = false">
-                      Quét QR code
-                    </b-button>
-                    <qrcode-stream v-if="onShowQRCode" @decode="onDecode" class="showQACode" />
-                    <p class="">(Bạn có thể gọi món hoặc gửi yêu cầu tới nhân viên nhà hàng thông qua quét QR code mà không cần tài khoản)
-                    </p>
-                  </b-col>
-                </b-row>
-            </b-card-footer>
             </b-card>
           </b-card-group>
         </b-col>
