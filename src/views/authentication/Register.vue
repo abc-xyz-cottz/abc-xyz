@@ -30,7 +30,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label>Số Điện Thoại</label>
+                    <label>Giới Tính</label>
                     <b-form-select :options="options" class="mb-3"></b-form-select>
                   </div>
 
@@ -44,19 +44,21 @@
                   </div>
                   <div class="form-group">
                     <label>Tỉnh/ Thành Phố</label>
-                    <input
+                    <b-form-select
                       id="citi"
+                      :options="optionsCiti"
                       v-model="inputs.citi"
                       type="text"
-                      class="form-control">
+                      class="form-control"></b-form-select>
                   </div>
                   <div class="form-group">
                     <label>Quận/ Huyện</label>
-                    <input
+                    <b-form-select
                       id="district"
+                      :options="optionsDistrict"
                       v-model="inputs.district"
                       type="text"
-                      class="form-control">
+                      class="form-control"></b-form-select>
                   </div>
                   <div class="form-group">
                     <label>Mật Khẩu</label>
@@ -109,6 +111,14 @@ export default {
       options: [
         {value: 'nam', text: 'Nam'},
         {value: 'nu', text: 'Nữ'}
+      ],
+      optionsCiti: [
+        {value: 'nam', text: 'HCM'},
+        {value: 'nu', text: 'HN'}
+      ],
+      optionsDistrict: [
+        {value: '1', text: 'Quận 1'},
+        {value: '2', text: 'Quận 3'}
       ],
       repeat_password: ''
     }

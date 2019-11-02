@@ -11,7 +11,7 @@
             controls
             indicators
             background="#ababab"
-            img-height="380"
+            img-height="250"
             style="text-shadow: 1px 1px 2px #333;"
             @sliding-start="onSlideStart"
             @sliding-end="onSlideEnd"
@@ -45,18 +45,20 @@
             <b-row>
               <b-col md="6">
                 <b-form-group label-cols="4" label="Tỉnh/ Thành Phố" class="mb-2">
-                  <input 
+                  <b-form-select 
                     id="citi"
+                    :options="optionsCiti"
                     type="text"
-                    class="form-control">
+                    class="form-control"></b-form-select>
                 </b-form-group>
               </b-col>
               <b-col md="6">
                 <b-form-group label-cols="4" label="Nhà Hàng" class="mb-2">
-                  <input 
+                  <b-form-select 
                     id="restaurant"
+                    :options="optionsRes"
                     type="text"
-                    class="form-control">
+                    class="form-control"></b-form-select>
                 </b-form-group>
               </b-col>
             </b-row>
@@ -102,6 +104,14 @@ import { QrcodeStream } from 'vue-qrcode-reader'
 export default {
     data() {
       return {
+        optionsCiti: [
+          {value: '1', text: 'HCM'},
+          {value: '2', text: 'HN'}
+        ],
+        optionsRes: [
+          {value: '1', text: 'Nha hang 1'},
+          {value: '2', text: 'Nha Hang 2'}
+        ],
         slide: 0,
         sliding: null,
         onLogin: false,
