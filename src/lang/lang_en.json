@@ -73,5 +73,8 @@
             "tradeBy": "Trade By",
             "POSMapping": "POS Mapping"
         }
+    },
+    "commons": {
+        "requiredField": "This is a required field"
     }
 }
