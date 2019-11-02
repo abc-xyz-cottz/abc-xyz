@@ -12,7 +12,7 @@
               <b-form @submit.prevent="update">
                   <h3>Đăng Ký</h3>
                   <div class="form-group">
-                    <label>Tên</label>
+                    <label>Tên</label><span class="error-sybol"></span>
                     <input
                       id="name"
                       v-model="inputs.name"
@@ -21,7 +21,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label>Số Điện Thoại</label>
+                    <label>Số Điện Thoại</label><span class="error-sybol"></span>
                     <input
                       id="phone"
                       v-model="inputs.phone"
@@ -30,12 +30,12 @@
                   </div>
 
                   <div class="form-group">
-                    <label>Giới Tính</label>
+                    <label>Giới Tính</label><span class="error-sybol"></span>
                     <b-form-select :options="options" class="mb-3"></b-form-select>
                   </div>
 
                   <div class="form-group">
-                    <label>Ngày Tháng Năm Sinh</label>
+                    <label>Ngày Tháng Năm Sinh</label><span class="error-sybol"></span>
                     <input
                       id="birthday"
                       v-model="inputs.birthday"
@@ -43,7 +43,7 @@
                       class="form-control">
                   </div>
                   <div class="form-group">
-                    <label>Tỉnh/ Thành Phố</label>
+                    <label>Tỉnh/ Thành Phố</label><span class="error-sybol"></span>
                     <b-form-select
                       id="citi"
                       :options="optionsCiti"
@@ -52,7 +52,7 @@
                       class="form-control"></b-form-select>
                   </div>
                   <div class="form-group">
-                    <label>Quận/ Huyện</label>
+                    <label>Quận/ Huyện</label><span class="error-sybol"></span>
                     <b-form-select
                       id="district"
                       :options="optionsDistrict"
@@ -61,7 +61,7 @@
                       class="form-control"></b-form-select>
                   </div>
                   <div class="form-group">
-                    <label>Mật Khẩu</label>
+                    <label>Mật Khẩu</label><span class="error-sybol"></span>
                     <input
                       id="password"
                       v-model="inputs.password"
@@ -69,7 +69,7 @@
                       class="form-control">
                   </div>
                   <div class="form-group">
-                    <label>Nhắc Lại Mật Khẩu</label>
+                    <label>Nhắc Lại Mật Khẩu</label><span class="error-sybol"></span>
                     <input
                       id="confirm-password"
                       v-model="inputs.cònirmPassword"

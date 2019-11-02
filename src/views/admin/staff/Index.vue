@@ -7,7 +7,7 @@
             <b-form @submit="save">
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
-                  <label> Tên </label>
+                  <label> Tên </label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="9">
                   <input
@@ -18,7 +18,7 @@
               </b-row>
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
-                  <label> Số Điện Thoại </label>
+                  <label> Số Điện Thoại </label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="9">
                   <input
@@ -29,22 +29,34 @@
               </b-row>
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
-                  <label> Quyền </label>
+                  <label> Quyền </label><span class="error-sybol"></span>
+                </b-col>
+                <b-col md="9">
+                  <b-form-select
+                  :options="options"
+                  id="permission"
+                  type="text"
+                  class="form-control"></b-form-select>
+                </b-col>
+              </b-row>
+              <b-row class="form-row">
+                <b-col md="3" class="mt-2">
+                  <label> Mật Khẩu </label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="9">
                   <input
-                  id="permission"
+                  id="password"
                   type="text"
                   class="form-control">
                 </b-col>
               </b-row>
               <b-row class="text-center mt-3">
-              <b-col>
-                <b-button variant="primary" class="px-4">
-                  Lưu
-                </b-button>
-              </b-col>
-            </b-row>
+                <b-col>
+                  <b-button variant="primary" class="px-4">
+                    Lưu
+                  </b-button>
+                </b-col>
+              </b-row>
             </b-form>
           </b-card-body>
         </b-card>
@@ -56,7 +68,10 @@
 export default {
   data () {
     return {
-
+      options: [
+        {value: '1', text: 'Admin'},
+        {value: '2', text: 'Staff'}
+      ]
     }
   },
   methods: {

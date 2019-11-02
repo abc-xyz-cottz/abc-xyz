@@ -1,67 +1,61 @@
 <template>
-  <div class="app flex-row align-items-center">
-    <div class="container">
-      <!-- <b-row class="row justify-content-center">
-        <b-col md="6"> -->
-        <b-card-group>
-          <b-card no-body>
-            <b-card-body>
-              <b-form @submit="doRegister">
-                <h4>Thông Tin Cá Nhân</h4>
-                <div class="form-group">
-                  <label>Tên</label>
-                  <input
-                    id="name"
-                    v-model="inputs.name"
-                    type="text"
-                    class="form-control">
-                    
-                </div>
-                <div class="form-group">
-                  <label>Số Điện Thoại</label>
-                  <input
-                    id="phone"
-                    v-model="inputs.phone"
-                    type="text"
-                    class="form-control">
-                </div>
+  <div class="container">
+    <b-card-group>
+      <b-card no-body>
+        <b-card-body>
+          <b-form @submit="doRegister">
+            <h4>Thông Tin Cá Nhân</h4>
+            <div class="form-group">
+              <label>Tên</label>
+              <input
+                id="name"
+                v-model="inputs.name"
+                type="text"
+                class="form-control">
+                
+            </div>
+            <div class="form-group">
+              <label>Số Điện Thoại</label>
+              <input
+                id="phone"
+                v-model="inputs.phone"
+                type="text"
+                class="form-control">
+            </div>
 
-                <div class="form-group">
-                  <label>Số Điện Thoại</label>
-                  <b-form-select :options="options" class="mb-3"></b-form-select>
-                </div>
+            <div class="form-group">
+              <label>Số Điện Thoại</label>
+              <b-form-select :options="options" class="mb-3"></b-form-select>
+            </div>
 
-                <div class="form-group">
-                  <label>Ngày Tháng Năm Sinh</label>
-                  <input
-                    id="birthday"
-                    v-model="inputs.birthday"
-                    type="text"
-                    class="form-control">
-                </div>
-                <div class="form-group">
-                  <label>Tỉnh/ Thành Phố</label>
-                  <input
-                    id="citi"
-                    v-model="inputs.citi"
-                    type="text"
-                    class="form-control">
-                </div>
-                <div class="form-group">
-                  <label>Quận/ Huyện</label>
-                  <input
-                    id="district"
-                    v-model="inputs.district"
-                    type="text"
-                    class="form-control">
-                </div>
-              </b-form>
-            </b-card-body>
-          </b-card>
-        </b-card-group>
-      <!-- </b-col>
-    </b-row> -->
-  </div>
+            <div class="form-group">
+              <label>Ngày Tháng Năm Sinh</label>
+              <input
+                id="birthday"
+                v-model="inputs.birthday"
+                type="text"
+                class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Tỉnh/ Thành Phố</label>
+              <input
+                id="citi"
+                v-model="inputs.citi"
+                type="text"
+                class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Quận/ Huyện</label>
+              <input
+                id="district"
+                v-model="inputs.district"
+                type="text"
+                class="form-control">
+            </div>
+          </b-form>
+        </b-card-body>
+      </b-card>
+    </b-card-group>
   </div>
 </template>
 

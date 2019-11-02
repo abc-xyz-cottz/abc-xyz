@@ -23,6 +23,7 @@ import Setting from '@/views/admin/setting/List'
 import Reward from '@/views/customer/Reward'
 import Point from '@/views/customer/Point'
 import PromoCus from '@/views/customer/Promo'
+import PromoDetail from '@/views/customer/PromoDetail'
 import Store from '@/views/supperAdmin/store/List'
 import StoreAdd from '@/views/supperAdmin/store/Index'
 import StoreAdmin from '@/views/supperAdmin/storeAdmin/List'
@@ -131,6 +132,11 @@ export default new Router({
       path: '/promo/list',
       name: 'Admin',
       component: Promo
+    },
+    {
+      path: '/promo-detail/:Tab/:Pid',
+      name: 'Admin',
+      component: PromoDetail
     },
     {
       path: '/promo/index',

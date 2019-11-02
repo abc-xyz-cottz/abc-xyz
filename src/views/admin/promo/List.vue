@@ -8,7 +8,7 @@
               <h6 class="mt-2">Promo</h6>
             </b-col>
             <b-col md='6'>
-              <b-button variant="primary" class="pull-right">
+              <b-button variant="primary" class="pull-right px-4" @click="goToAdd()">
                 Thêm
               </b-button>
             </b-col>
@@ -22,10 +22,10 @@
           :items="items">
           <template v-slot:cell(actions)="dataId">
             <b-list-group horizontal>
-              <b-list-group-item v-b-tooltip.hover title="Edit" @click="edit(dataId)">
+              <b-list-group-item v-b-tooltip.hover title="Edit" @click="edit(dataId.value)">
                 <i class="fa fa-edit" />
               </b-list-group-item>
-              <b-list-group-item v-b-tooltip.hover title="Delete" @click="deleted(dataId)">
+              <b-list-group-item v-b-tooltip.hover title="Delete" @click="deleted(dataId.value)">
                 <i class="fa fa-trash" />
               </b-list-group-item>
             </b-list-group>
@@ -89,9 +89,17 @@ export default {
   },
   methods: {
     deleted (id) {
-      alert("delete")
+      this.$bvModal.msgBoxConfirm('Bạn có muốn xóa không?', {
+        title: false,
+        buttonSize: 'sm',
+        centered: true, size: 'sm',
+        footerClass: 'p-2'
+      })
     },
     edit (id) {
+      this.$router.push('/promo/index/' + id)
+    },
+    goToAdd () {
       this.$router.push('/promo/index/')
     }
   }

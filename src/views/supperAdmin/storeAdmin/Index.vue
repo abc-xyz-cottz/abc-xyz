@@ -7,7 +7,7 @@
             <b-form @submit="save">
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
-                  <label> Tên </label>
+                  <label> Tên </label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="9">
                   <input
@@ -18,7 +18,7 @@
               </b-row>
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
-                  <label> Số Điện Thoại </label>
+                  <label> Số Điện Thoại </label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="9">
                   <input
@@ -29,21 +29,29 @@
               </b-row>
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
-                  <label> Password </label>
+                  <label> Quyền </label><span class="error-sybol"></span>
+                </b-col>
+                <b-col md="9">
+                  <b-form-select :options="options"></b-form-select>
+                </b-col>
+              </b-row>
+              <b-row class="form-row">
+                <b-col md="3" class="mt-2">
+                  <label> Cửa Hàng </label><span class="error-sybol"></span>
+                </b-col>
+                <b-col md="9">
+                  <b-form-select :options="optionsStore"></b-form-select>
+                </b-col>
+              </b-row>
+              <b-row class="form-row">
+                <b-col md="3" class="mt-2">
+                  <label> Mật Khẩu </label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="9">
                   <input
                   id="pasword"
                   type="text"
                   class="form-control">
-                </b-col>
-              </b-row>
-              <b-row class="form-row">
-                <b-col md="3" class="mt-2">
-                  <label> Cửa Hàng </label>
-                </b-col>
-                <b-col md="9">
-                  <b-form-select :options="options"></b-form-select>
                 </b-col>
               </b-row>
               <b-row class="text-center mt-3">
@@ -65,6 +73,10 @@ export default {
   data () {
     return {
         options: [
+            {value: 'a', text: 'Staff'},
+            {value: 'b', text: 'Admin'}
+        ],
+        optionsStore: [
             {value: 'a', text: 'Store1'},
             {value: 'b', text: 'Store2'}
         ]

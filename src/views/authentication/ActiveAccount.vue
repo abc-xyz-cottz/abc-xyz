@@ -12,7 +12,7 @@
                   Kích Hoạt Tài Khoản
                   </h1>
                   <div class="form-group">
-                    <label>Code</label>
+                    <label>Code</label><span class="error-sybol"></span>
                     <input
                       id="code"
                       type="text"

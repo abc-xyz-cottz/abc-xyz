@@ -12,7 +12,7 @@
                     Đăng Nhập
                   </h2>
                   <div class="form-group">
-                    <label>Số Điện Thoại</label>
+                    <label>Số Điện Thoại</label><span class="error-sybol"></span>
                     <input
                       id="phone"
                       v-model="inputs.phone"
@@ -21,7 +21,7 @@
                       placeholder="Nhập số điện thoại">
                   </div>
                   <div class="form-group">
-                    <label>Mật Khẩu</label>
+                    <label>Mật Khẩu</label><span class="error-sybol"></span>
                     <input
                       id="password"
                       v-model="inputs.password"
