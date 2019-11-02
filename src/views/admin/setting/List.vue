@@ -8,36 +8,28 @@
               <h6 class="mt-2">Staff</h6>
             </b-col>
             <b-col md='6'>
-              <b-button variant="primary" class="pull-right">
-                Thêm
+              <b-button variant="primary" class="pull-right px-4" @click="save()">
+                Lưu
               </b-button>
             </b-col>
           </b-row>
           <hr>
-          <b-table 
-          hover
-          bordered
-          stacked="md"
-          :fields="fields" 
-          :items="items">
-          <template v-slot:cell(actions)="dataId">
-            <b-list-group horizontal>
-              <b-list-group-item v-b-tooltip.hover title="Edit" @click="edit(dataId)">
-                <i class="fa fa-edit" />
-              </b-list-group-item>
-              <b-list-group-item v-b-tooltip.hover title="Delete" @click="deleted(dataId)">
-                <i class="fa fa-trash" />
-              </b-list-group-item>
-            </b-list-group>
-          </template>
-          </b-table>
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="rows"
-            :per-page="perPage"
-            aria-controls="my-table"
-            size="sm"
-          ></b-pagination>
+          <b-form @submit.prevent="save">
+            <b-row class="form-row">
+                <b-col md="3" class="mt-2">
+                  <label> Số điểm sẽ hết hạn sau</label><span class="error-sybol"></span>
+                </b-col>
+                <b-col md="6">
+                  <input
+                  id="pasword"
+                  type="text"
+                  class="form-control">
+                </b-col>
+                <b-col md="3" class="mt-2">
+                  <label> Ngày </label>
+                </b-col>
+              </b-row>
+          </b-form>
         </b-card>
       </b-col>
     </b-row>
@@ -76,11 +68,8 @@ export default {
     }
   },
   methods: {
-    deleted (id) {
-      alert("delete")
-    },
-    edit (id) {
-      this.$router.push('/setting/index/')
+    save () {
+
     }
   }
 }

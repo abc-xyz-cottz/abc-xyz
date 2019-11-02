@@ -127,7 +127,12 @@ export default {
   },
   methods: {
     deleted (id) {
-      alert("delete")
+      this.$bvModal.msgBoxConfirm('Bạn có muốn xóa không?', {
+        title: false,
+        buttonSize: 'sm',
+        centered: true, size: 'sm',
+        footerClass: 'p-2'
+      })
     },
     edit (id) {
       this.$router.push('/staff/index/' + id)

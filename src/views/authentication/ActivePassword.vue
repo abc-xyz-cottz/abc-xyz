@@ -12,7 +12,7 @@
                   Kích Hoạt Mật Khẩu Mới
                   </h3>
                   <div class="form-group">
-                    <label>Code</label>
+                    <label>Code</label><span class="error-sybol"></span>
                     <input
                       id="code"
                       type="text"

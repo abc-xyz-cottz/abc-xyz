@@ -14,24 +14,21 @@
                   <div class="form-group">
                     <label>
                       Số Điện Thoại
-                      <span class="start-require"></span>
-                    </label>
+                    </label><span class="error-sybol"></span>
                     <input id="phone"  
                       type="text" class="form-control">
                   </div>
                   <div class="form-group">
                     <label>
                       Mật Khẩu Mới
-                      <span class="start-require"></span>
-                    </label>
+                    </label><span class="error-sybol"></span>
                     <input id="newPassword"
                       type="text" class="form-control">
                   </div>
                   <div class="form-group">
                     <label>
                       Nhắc lại mật khẩu mới
-                      <span class="start-require"></span>
-                    </label>
+                    </label><span class="error-sybol"></span>
                     <input id="confirmPassword"
                       type="text" 
                       class="form-control">

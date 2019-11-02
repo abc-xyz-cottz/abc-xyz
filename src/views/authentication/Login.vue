@@ -19,7 +19,7 @@
                     Đăng Nhập
                   </h2>
                   <div class="form-group">
-                    <label>Số Điện Thoại</label>
+                    <label>Số Điện Thoại</label><span class="error-sybol"></span>
                     <input
                       id="phone"
                       v-model="inputs.phone"
@@ -28,7 +28,7 @@
                       placeholder="Nhập số điện thoại">
                   </div>
                   <div class="form-group">
-                    <label>Mật Khẩu</label>
+                    <label>Mật Khẩu</label><span class="error-sybol"></span>
                     <input
                       id="password"
                       v-model="inputs.password"
@@ -52,21 +52,6 @@
                   </b-row>
                 </b-form>
               </b-card-body>
-              <b-card-footer class="py-2">
-              <b-row class="text-center">
-                  <b-col>
-                    <b-button
-                      class="mt-2"
-                      @focus="onShowQRCode = true"
-                      @blur="onShowQRCode = false">
-                      Quét QR code
-                    </b-button>
-                    <qrcode-stream v-if="onShowQRCode" @decode="onDecode" class="showQACode" />
-                    <p class="">(Bạn có thể gọi món hoặc gửi yêu cầu tới nhân viên nhà hàng thông qua quét QR code mà không cần tài khoản)
-                    </p>
-                  </b-col>
-                </b-row>
-            </b-card-footer>
             </b-card>
           </b-card-group>
         </b-col>

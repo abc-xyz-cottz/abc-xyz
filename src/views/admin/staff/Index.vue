@@ -32,10 +32,11 @@
                   <label> Quyền </label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="9">
-                  <input
+                  <b-form-select
+                  :options="options"
                   id="permission"
                   type="text"
-                  class="form-control">
+                  class="form-control"></b-form-select>
                 </b-col>
               </b-row>
               <b-row class="form-row">
@@ -67,7 +68,10 @@
 export default {
   data () {
     return {
-
+      options: [
+        {value: '1', text: 'Admin'},
+        {value: '2', text: 'Staff'}
+      ]
     }
   },
   methods: {

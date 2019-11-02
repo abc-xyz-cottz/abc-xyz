@@ -3,7 +3,6 @@
     <b-card no-body>
       <b-card-body>
         <h3 class="boder-bottom">Chi tiết khuyến mãi</h3>
-        <div class="pull-left">
           <b-row>
             <b-col>
               <label>Tên: {{ name }}</label>
@@ -16,11 +15,14 @@
           </b-row>
           <b-row>
             <b-col>
-              <label>Ngày Mua: {{ datebuy }}</label>
+              <label>Ngày Mua: {{ dateBuy }}</label>
             </b-col>
           </b-row>
-        </div>
-        <qrcode-vue :value="value" :size="size" level="H" class="pull-right mt-1"></qrcode-vue>
+        <b-row>
+          <b-col>
+            <qrcode-vue :value="value" :size="size" level="H" class="mt-1"></qrcode-vue>
+          </b-col>
+        </b-row>
       </b-card-body>
     </b-card>
   </div>

@@ -32,10 +32,11 @@
                   <label> Trạng Thái </label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="9">
-                  <input
+                  <b-form-select
+                  :options="options"      
                   id="status"
                   type="text"
-                  class="form-control">
+                  class="form-control"></b-form-select>
                 </b-col>
               </b-row>
               <b-row class="form-row">
@@ -67,7 +68,10 @@
 export default {
   data () {
     return {
-
+      options: [
+        {value: '1', text: 'q1'},
+        {value: '1', text: 'q2'}
+      ]
     }
   },
   methods: {

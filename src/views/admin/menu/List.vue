@@ -32,10 +32,11 @@
                 </b-col>
                 <b-col md="4">
                   <label> Trạng Thái </label>
-                  <input
+                  <b-form-select
+                  :options="options"
                   id="status"
                   type="text"
-                  class="form-control">
+                  class="form-control"></b-form-select>
                 </b-col>
               </b-row>
               <hr>
@@ -112,6 +113,10 @@ export default {
       items: [
         {stt: '1',image: 'hình1', name: 'cocacola', price: '30000', status: 'Mở', action: ''},
         {stt: '1',image: 'hình2', name: '7 up', price: '20000', status: 'Đóng', action: ''}
+      ],
+      options: [
+        {value: '1', text: 'q1'},
+        {value: '1', text: 'q2'}
       ]
     }
   },
