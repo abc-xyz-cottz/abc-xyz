@@ -4,7 +4,7 @@ import { RootAPI } from './index'
 
 export default {
   logIn (req) {
-    return session.post(RootAPI + 'auth/staff/login', req)
+    return session.post(RootAPI + 'staff/login', req)
   },
 
   // getUserInfo () {

@@ -9,7 +9,7 @@
             no-body
             class="mx-4">
             <b-card-body class="p-4">
-              <b-form @submit="update">
+              <b-form @submit.prevent="update">
                   <h3>Đăng Ký</h3>
                   <div class="form-group">
                     <label>Tên</label><span class="error-sybol"></span>
@@ -22,7 +22,6 @@
                       {{ lang_en.commons.requiredField }}
                     </b-form-invalid-feedback>
                   </div>
-
 
                   <div class="form-group">
                     <label>Số Điện Thoại</label><span class="error-sybol"></span>
@@ -46,11 +45,13 @@
 
                   <div class="form-group">
                     <label>Ngày Tháng Năm Sinh</label><span class="error-sybol"></span>
-                    <input
-                      id="birthday"
-                      v-model="inputs.birthday"
-                      type="text"
-                      class="form-control">
+                     <div class='input-group date'>
+                    <date-picker v-model="inputs.birthday" :config="optionsDate">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                    </date-picker>
+                     </div>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorBirthday">
                       {{ lang_en.commons.requiredField }}
                     </b-form-invalid-feedback>
@@ -103,7 +104,7 @@
                   </div>
                   <b-row>
                     <b-col cols="12" class="text-center">
-                      <button class="btn btn-primary px-4" @click.prevent="clickRegister">
+                      <button class="btn btn-primary px-4">
                         Đăng Ký
                       </button>
                     </b-col>
@@ -120,6 +121,9 @@
 <script>
 import AuthenticationAPI from '@/api/authentication'
 import lang_en from "@/lang/lang_en.json";
+import 'bootstrap/dist/css/bootstrap.css';
+import datePicker from 'vue-bootstrap-datetimepicker';
+import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
 export default {
   name: 'Register',
   data () {
@@ -139,8 +143,8 @@ export default {
         {value: 'nu', text: 'Nữ'}
       ],
       optionsCity: [
-        {value: 'nam', text: 'HCM'},
-        {value: 'nu', text: 'HN'}
+        {value: 'HCM', text: 'Hồ Chí Minh'},
+        {value: 'HN', text: 'Hà Nội'}
       ],
       optionsDistrict: [
         {value: '1', text: 'Quận 1'},
@@ -149,7 +153,15 @@ export default {
       repeat_password: '',
       lang_en: lang_en,
       click: false,
+      optionsDate: {
+        format: 'DD/MM/YYYY',
+        useCurrent: false,
+        viewMode: 'years'
+      }
     }
+  },
+  components: {
+    datePicker
   },
   computed: {
     errorName: function () {
@@ -178,25 +190,31 @@ export default {
     }
   },
   methods: {
-    checkInfo(info) {
+    checkInfo (info) {
       return (this.click && (info == null || info.length <= 0))
     },
-    checkValidate() {
+
+    checkValidate () {
       return !(this.errorName || this.errorPhone || this.errorGender || this.errorBirthday
         || this.errorCity || this.errorDistrict || this.errorPassword || this.errorConfirmPassword)
     },
-    update () {
-      // result = this.checkValidate()
-      // console.log(this.checkValidate())
-      // this.$router.push('/active')
+
+    checkPassword () {
+      return (this.inputs.password == this.inputs.confirmPassword)
     },
-    clickRegister() {
+    update () {
       this.click = true
       let result = this.checkValidate()
       if(result) {
-        this.$router.push('/active')
+        result = this.checkPassword()
+        if(result) {
+          this.$router.push('/active')
+        }
+        else {
+          console.log('password not match')
+        }
       }
-    }
+    },
   }
 }
 </script>

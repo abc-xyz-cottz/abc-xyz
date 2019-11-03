@@ -2,25 +2,25 @@
   <div class="app">
     <template v-if="this.$route.name != 'Login'">
 
-      <!--<AppHeader fixed>-->
-        <!--<div class="container">-->
-          <!--<a href="#/staff-login" class="pull-left white">Nhân Viên</a>-->
-          <!--<b-navbar-nav class="ml-auto">-->
-            <!--<a href="#/login" class="pull-right white">Đăng Nhập &nbsp; /</a>-->
-            <!--<a href="#/register" class="pull-right white"> &nbsp; Đăng Ký Tài Khoản</a>-->
-          <!--</b-navbar-nav>-->
-        <!--</div>-->
-      <!--</AppHeader>-->
-      <!-- đăng nhập xong sẽ dùng đoạn code bên dưới -->
       <AppHeader fixed>
-        <SidebarToggler
-          class="d-none"
-          :default-open="true"
-        />
-        <b-link class="navbar-brand">
-          RS
-        </b-link>
-        <b-navbar-nav class="ml-auto">
+        <div class="container">
+          <a href="#/staff-login" class="pull-left white">Nhân Viên</a>
+          <b-navbar-nav class="ml-auto">
+            <a href="#/login" class="pull-right white">Đăng Nhập &nbsp; /</a>
+            <a href="#/register" class="pull-right white"> &nbsp; Đăng Ký Tài Khoản</a>
+          </b-navbar-nav>
+        </div>
+      </AppHeader>
+      <!-- đăng nhập xong sẽ dùng đoạn code bên dưới -->
+      <!-- <AppHeader fixed> -->
+        <!-- <SidebarToggler -->
+          <!-- class="d-none" -->
+          <!-- :default-open="true" -->
+        <!-- /> -->
+        <!-- <b-link class="navbar-brand"> -->
+          <!-- RS -->
+        <!-- </b-link> -->
+        <!-- <b-navbar-nav class="ml-auto"> -->
           <!-- hiện cho template customer -->
           <!-- <HeaderDropdownGift />
           <span class="white">
@@ -29,25 +29,25 @@
           <HeaderDropdownAccnt />-->
           <!-- end -->
           <!-- hiện cho template staff -->
-          <span class="white">
-            Tên Staff
-          </span>
+          <!-- <span class="white"> -->
+            <!-- Tên Staff -->
+          <!-- </span> -->
           <!-- end -->
           
-          <AppHeaderDropdown right no-caret >
-            <template slot="header">
-              <span>
-                <i class="fa fa-user fa-2x" />
-              </span>
-            </template>
-            <template slot="dropdown">
-              <b-dropdown-item href="/#/changepass">Đổi Mật Khẩu
-              </b-dropdown-item>
-              <b-dropdown-item>Thoát</b-dropdown-item>
-            </template>
-          </AppHeaderDropdown>
-        </b-navbar-nav>
-      </AppHeader>
+          <!-- <AppHeaderDropdown right no-caret > -->
+            <!-- <template slot="header"> -->
+              <!-- <span> -->
+                <!-- <i class="fa fa-user fa-2x" /> -->
+              <!-- </span> -->
+            <!-- </template> -->
+            <!-- <template slot="dropdown"> -->
+              <!-- <b-dropdown-item href="/#/changepass">Đổi Mật Khẩu -->
+              <!-- </b-dropdown-item> -->
+              <!-- <b-dropdown-item>Thoát</b-dropdown-item> -->
+            <!-- </template> -->
+          <!-- </AppHeaderDropdown> -->
+        <!-- </b-navbar-nav> -->
+      <!-- </AppHeader> -->
 
       <div class="app-body">
         <template v-if="this.$route.name == 'Admin'">
