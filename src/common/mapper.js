@@ -2,13 +2,11 @@ export default {
   mapUserModelToDto (usr) {
     return {
       id: usr.pk,
-      username: usr.fields.user_name,
-      fullName: usr.fields.full_name,
-      roleCode: usr.fields.role_code,
-      roleName: usr.fields.role_name,
+      userName: usr.fields.name,
       phoneNumber: usr.fields.phone_number,
-      lastAccess: usr.fields.last_access,
-      password: usr.fields.password
+      roleId: usr.fields.role_id,
+      roleName: usr.fields.role_name,
+      storeId: usr.fields.store_id
     }
   },
   mapStaffModelToDto (staffs) {

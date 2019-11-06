@@ -125,18 +125,19 @@ export default {
         this.onLogin = true
         setTimeout(() => {
           AuthenticationAPI.logIn(this.inputs).then(res => {
-            this.$store.commit('updateToken', res.data.data);
+            this.$store.commit('updateToken', res.data.data)
             this.onLogin = false
-            AuthenticationAPI.getUserInfo().then(res => {
-              const usr = Mapper.mapUserModelToDto(res.data.data);
-              this.$store.commit('updateUser', usr);
-              if (this.$store.state.user.roleCode == "STAFF") {
-                this.$router.push({ name: 'Welcome' })
-              }
-              if (this.$store.state.user.roleCode == "ADMIN") {
-                this.$router.push({ name: 'Home' })
-              }
-            })
+
+            // Store user info
+            const usr = Mapper.mapUserModelToDto(res.data.data.staff_info)
+            this.$store.commit('updateUser', usr)
+
+            if (this.$store.state.user.roleName == "STAFF") {
+              this.$router.push({ name: 'Staff' })
+            }
+            else if (this.$store.state.user.roleName == "ADMIN") {
+              this.$router.push({ name: 'Admin' })
+            }
           }).catch(err => {
             console.log(err);
             this.onLogin = false

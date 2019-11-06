@@ -2,7 +2,7 @@
   <div class="app">
     <template v-if="this.$route.name != 'Login'">
 
-      <AppHeader fixed>
+      <AppHeader fixed v-if="this.$store.commit.user == null">
         <div class="container">
           <a href="#/staff-login" class="pull-left white">Nhân Viên</a>
           <b-navbar-nav class="ml-auto">
@@ -12,21 +12,21 @@
         </div>
       </AppHeader>
       <!-- đăng nhập xong sẽ dùng đoạn code bên dưới -->
-      <!-- <AppHeader fixed> -->
-        <!-- <SidebarToggler -->
-          <!-- class="d-none" -->
-          <!-- :default-open="true" -->
-        <!-- /> -->
-        <!-- <b-link class="navbar-brand"> -->
-          <!-- RS -->
-        <!-- </b-link> -->
-        <!-- <b-navbar-nav class="ml-auto"> -->
+      <AppHeader fixed v-if="this.$store.commit.user != null">
+        <SidebarToggler
+          class="d-none"
+          :default-open="true"
+        />
+        <b-link href="#/" class="navbar-brand" >
+          RS
+        </b-link>
+        <!-- <b-navbar-nav> -->
           <!-- hiện cho template customer -->
-          <!-- <HeaderDropdownGift />
-          <span class="white">
-            <i class="fa fa-bell fa-2x"></i>
-          </span> 
-          <HeaderDropdownAccnt />-->
+          <!-- <HeaderDropdownGift /> -->
+          <!-- <span class="white"> -->
+            <!-- <i class="fa fa-bell fa-2x"></i> -->
+          <!-- </span>  -->
+          <!-- <HeaderDropdownAccnt /> -->
           <!-- end -->
           <!-- hiện cho template staff -->
           <!-- <span class="white"> -->
@@ -47,7 +47,7 @@
             <!-- </template> -->
           <!-- </AppHeaderDropdown> -->
         <!-- </b-navbar-nav> -->
-      <!-- </AppHeader> -->
+      </AppHeader>
 
       <div class="app-body">
         <template v-if="this.$route.name == 'Admin'">
@@ -61,6 +61,7 @@
             <SidebarMinimizer />
           </AppSidebar>
         </template>
+
         <template v-if="this.$route.name == 'SuperAdmin'">
           <AppSidebar fixed>
             <SidebarHeader />
@@ -72,6 +73,7 @@
             <SidebarMinimizer />
           </AppSidebar>
         </template>
+
         <main class="main">
           <router-view />
         </main>
@@ -81,6 +83,7 @@
         </AppAside>
       </div>
     </template>
+
     <template v-if="this.$route.name == 'Login'">
       <main class="main">
         <router-view />
@@ -127,11 +130,15 @@ export default {
       navAdmin: navAdmin.items,
       fullName: '',
       value: 'https://www.facebook.com/tanarmy77',
-      size: 40
+      size: 40,
     }
   },
   mounted (){
     // alert(this.$route.name)
+    console.log(this.$store.commit.user)
+  },
+  activated () {
+    mounted
   },
   computed: {
     name () {
