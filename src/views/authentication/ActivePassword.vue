@@ -7,7 +7,7 @@
             <b-card
               no-body>
               <b-card-body>
-                <b-form @submit.prevent="logIn">
+                <b-form>
                   <h3 class="text-center">
                   Kích Hoạt Mật Khẩu Mới
                   </h3>
@@ -17,9 +17,13 @@
                       id="code"
                       type="text"
                       class="form-control"
+                      v-model="inputs.code"
                       placeholder="Nhập số code">
+                    <b-form-invalid-feedback  class="invalid-feedback" :state="!errorCode">
+                      {{ lang_en.commons.requiredField }}
+                    </b-form-invalid-feedback>
                   </div>
-                  <b-button variant="primary" class="pull-right"> Xác Nhận</b-button>
+                  <b-button @click="confirm" variant="primary" class="pull-right"> Xác Nhận</b-button>
                 </b-form>
               </b-card-body>
             </b-card>
@@ -30,7 +34,51 @@
   </div>
 </template>
 <script>
+import lang_en from "@/lang/lang_en.json"
+import AuthenticationAPI from '@/api/authentication'
 export default {
-  
+  name: 'ActivePassword',
+  data () {
+    return {
+      inputs: {
+         phone_number: null,
+         code: null,
+      },
+      click: false,
+      lang_en: lang_en,
+      onConfirm: null
+    }
+  },
+  computed: {
+    errorCode: function () {
+      return this.checkInfo(this.inputs.code)
+    }
+  },
+  methods: {
+    checkInfo (info) {
+      return (this.click && (info == null || info.length <= 0))
+    },
+    checkValidate () {
+      return !(this.errorCode)
+    },
+    confirm () {
+      this.click = true
+      let result = this.checkValidate()
+      if(result) {
+        // get phone number
+        this.inputs.phone_number = this.$store.state.user.phoneNumber
+        setTimeout(() => {
+          AuthenticationAPI.activePass(this.inputs).then(res => {
+            if(res && res.data && res.data.data) {
+              this.onConfirm = false
+            }
+          }).catch(err => {
+            console.log(err);
+            this.onConfirm = false
+          })
+        }, 500)
+      }
+    }
+  }
 }
 </script>

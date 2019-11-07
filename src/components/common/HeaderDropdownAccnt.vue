@@ -11,7 +11,7 @@
     <template slot="dropdown">
       <b-dropdown-item href="/#/infoUser">Thông tin cá nhân
       </b-dropdown-item>
-      <b-dropdown-item href="/#/changepass">Đổi Mật Khẩu
+      <b-dropdown-item @click.prevent="goToChangePass">Đổi Mật Khẩu
       </b-dropdown-item>
       <b-dropdown-item @click.prevent="logOut">Thoát</b-dropdown-item>
     </template>
@@ -36,6 +36,9 @@ export default {
     logOut () {
       this.$store.commit('removeToken');
       this.$router.push({ name: 'Login' })
+    },
+    goToChangePass () {
+      this.$router.push({ name: 'ChangePass' })
     }
   }
 }

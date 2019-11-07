@@ -73,7 +73,7 @@
 import AuthenticationAPI from '@/api/authentication'
 import Mapper from '@/common/mapper'
 import { QrcodeStream } from 'vue-qrcode-reader'
-import lang_vn from "@/lang/lang_vn.json";
+import lang_vn from "@/lang/lang_vn.json"
 export default {
   name: 'Login',
   data () {
@@ -125,19 +125,24 @@ export default {
         this.onLogin = true
         setTimeout(() => {
           AuthenticationAPI.logIn(this.inputs).then(res => {
-            this.$store.commit('updateToken', res.data.data)
-            this.onLogin = false
+            if(res && res.data && res.data.data) {
+              this.$store.commit('updateToken', res.data.data.token)
+              // console.log(res.data.data.token)
+              // console.log(this.$store.state)
+              this.onLogin = false
 
-            // Store user info
-            const usr = Mapper.mapUserModelToDto(res.data.data.staff_info)
-            this.$store.commit('updateUser', usr)
+              // Store user info
+              const usr = Mapper.mapUserModelToDto(res.data.data.staff_info)
+              this.$store.commit('updateUser', usr)
 
-            if (this.$store.state.user.roleName == "STAFF") {
-              this.$router.push({ name: 'Staff' })
+              if (this.$store.state.user.roleName == "STAFF") {
+                this.$router.push({ name: 'HomeStaff' })
+              }
+              else if (this.$store.state.user.roleName == "ADMIN") {
+                this.$router.push({ name: 'Admin' })
+              }
             }
-            else if (this.$store.state.user.roleName == "ADMIN") {
-              this.$router.push({ name: 'Admin' })
-            }
+
           }).catch(err => {
             console.log(err);
             this.onLogin = false

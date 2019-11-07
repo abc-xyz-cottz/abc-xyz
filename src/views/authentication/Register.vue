@@ -120,10 +120,10 @@
 
 <script>
 import AuthenticationAPI from '@/api/authentication'
-import lang_en from "@/lang/lang_en.json";
-import 'bootstrap/dist/css/bootstrap.css';
-import datePicker from 'vue-bootstrap-datetimepicker';
-import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
+import lang_en from "@/lang/lang_en.json"
+import 'bootstrap/dist/css/bootstrap.css'
+import datePicker from 'vue-bootstrap-datetimepicker'
+import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css'
 export default {
   name: 'Register',
   data () {

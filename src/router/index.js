@@ -60,7 +60,7 @@ export default new Router({
     },
     {
       path: '/changepass',
-      name: 'Login',
+      name: 'ChangePass',
       component: ChangePass
     },
     {

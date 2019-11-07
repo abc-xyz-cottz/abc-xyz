@@ -16,5 +16,19 @@ export default {
    */
   getUserInfo (param) {
     return session.get(RootAPI + 'staff/' + param)
+  },
+
+  /**
+   * Staff update password
+   */
+  staffUpdatePass (req) {
+    return session.get(RootAPI + 'staff/update-pass', req)
+  },
+
+  /**
+   * Confirm code to update password
+   */
+  activePass (req) {
+    return session.get(RootAPI + 'staff/active-pass', req)
   }
 };

@@ -2,7 +2,7 @@
   <div class="app">
     <template v-if="this.$route.name != 'Login'">
 
-      <AppHeader fixed v-if="this.$store.commit.user == null">
+      <AppHeader fixed v-if="this.$store.state.user == null">
         <div class="container">
           <a href="#/staff-login" class="pull-left white">Nhân Viên</a>
           <b-navbar-nav class="ml-auto">
@@ -12,15 +12,15 @@
         </div>
       </AppHeader>
       <!-- đăng nhập xong sẽ dùng đoạn code bên dưới -->
-      <AppHeader fixed v-if="this.$store.commit.user != null">
+      <AppHeader fixed v-if="this.$store.state.user">
         <SidebarToggler
           class="d-none"
           :default-open="true"
         />
-        <b-link href="#/" class="navbar-brand" >
+        <b-link class="navbar-brand" >
           RS
         </b-link>
-        <!-- <b-navbar-nav> -->
+        <b-navbar-nav>
           <!-- hiện cho template customer -->
           <!-- <HeaderDropdownGift /> -->
           <!-- <span class="white"> -->
@@ -29,9 +29,12 @@
           <!-- <HeaderDropdownAccnt /> -->
           <!-- end -->
           <!-- hiện cho template staff -->
-          <!-- <span class="white"> -->
-            <!-- Tên Staff -->
-          <!-- </span> -->
+          <template v-if="this.$store.state.user.roleName == 'STAFF'">
+          <span class="white">
+            {{ this.$store.state.user.userName }}
+          </span>
+          <HeaderDropdownAccnt />
+          </template>
           <!-- end -->
           
           <!-- <AppHeaderDropdown right no-caret > -->
@@ -46,7 +49,7 @@
               <!-- <b-dropdown-item>Thoát</b-dropdown-item> -->
             <!-- </template> -->
           <!-- </AppHeaderDropdown> -->
-        <!-- </b-navbar-nav> -->
+        </b-navbar-nav>
       </AppHeader>
 
       <div class="app-body">
@@ -135,7 +138,7 @@ export default {
   },
   mounted (){
     // alert(this.$route.name)
-    console.log(this.$store.commit.user)
+    // console.log(this.$store.state)
   },
   activated () {
     mounted
