@@ -1,4 +1,4 @@
 export const Constant = {
-  TOKEN_NAME: 'Fnb-CRM-Token',
-  APP_USR: 'Fnb-CRM-Usr',
+  TOKEN_NAME: 'Cusres-Token',
+  APP_USR: 'Cusres-Usr',
 }

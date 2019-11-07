@@ -6,5 +6,7 @@ const APP_USR = Constant.APP_USR;
 
 export default {
   user: Cookies.get(APP_USR) ? JSON.parse(Cookies.get(APP_USR)) : null,
-  token: Cookies.get(TOKEN_NAME) ? JSON.parse(Cookies.get(TOKEN_NAME)) : null,
+  token: Cookies.get(TOKEN_NAME) ? Cookies.get(TOKEN_NAME) : null,
+
+  // token: Cookies.get(TOKEN_NAME) ? JSON.parse(Cookies.get(TOKEN_NAME)) : null,
 }
