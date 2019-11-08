@@ -5,7 +5,8 @@ export default {
       userName: usr.fields.name,
       phoneNumber: usr.fields.phone_number,
       cityId: usr.fields.city_id,
-      userType: "customer"
+      userType: "customer",
+      role: ""
     }
   },
 }

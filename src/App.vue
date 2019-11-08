@@ -28,35 +28,22 @@
            <span class="white" v-if="this.$store.state.user.userType == 'customer'">
              <i class="fa fa-bell fa-2x"></i>
            </span>
-           <HeaderDropdownAccnt v-if="this.$store.state.user.userType == 'customer'"/>
+           <HeaderDropdownCusAcc v-if="this.$store.state.user.userType == 'customer'"/>
           <!-- end -->
 
           <!-- hiện cho template staff -->
-          <template v-if="this.$store.state.user.userType == 'staff'">
-            <span class="white">
+          <template>
+            <span class="white"  v-if="this.$store.state.user.userType == 'staff'">
               {{ this.$store.state.user.userName }}
             </span>
-            <HeaderDropdownAccnt />
+            <HeaderDropdownStaffAcc  v-if="this.$store.state.user.userType == 'staff'"/>
           </template>
           <!-- end -->
-
-           <AppHeaderDropdown right no-caret v-if="this.$store.state.user.userType == 'staff'">
-             <template slot="header">
-               <span>
-                 <i class="fa fa-user fa-2x" />
-               </span>
-             </template>
-             <template slot="dropdown">
-               <b-dropdown-item href="/#/changepass">Đổi Mật Khẩu
-               </b-dropdown-item>
-               <b-dropdown-item>Thoát</b-dropdown-item>
-             </template>
-           </AppHeaderDropdown>
         </b-navbar-nav>
       </AppHeader>
 
       <div class="app-body">
-        <template v-if="this.$route.name == 'Admin'">
+        <template v-if="this.$store.state.user && this.$store.state.user.role == 'ADMIN'">
           <AppSidebar fixed>
             <SidebarHeader />
             <SidebarForm />
@@ -68,7 +55,7 @@
           </AppSidebar>
         </template>
 
-        <template v-if="this.$route.name == 'SuperAdmin'">
+        <template v-if="this.$store.state.user && this.$store.state.user.role == 'SUPER_ADMIN'">
           <AppSidebar fixed>
             <SidebarHeader />
             <SidebarForm />
@@ -104,7 +91,8 @@ import Cookies from 'js-cookie'
 import nav from '@/navigations'
 import navAdmin from '@/navAdmin'
 import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFooter, SidebarForm, SidebarHeader, SidebarMinimizer, SidebarNav, Aside as AppAside, AsideToggler, Footer as TheFooter, Breadcrumb } from '@coreui/vue'
-import HeaderDropdownAccnt from '@/components/common/HeaderDropdownAccnt'
+import HeaderDropdownCusAcc from '@/components/common/HeaderDropdownCusAcc'
+import HeaderDropdownStaffAcc from '@/components/common/HeaderDropdownStaffAcc'
 import HeaderDropdownGift from '@/components/common/HeaderDropdownGift'
 import DefaultAside from '@/components/common/DefaultAside'
 import QrcodeVue from 'qrcode.vue'
@@ -123,7 +111,8 @@ export default {
     SidebarHeader,
     SidebarNav,
     SidebarMinimizer,
-    HeaderDropdownAccnt,
+    HeaderDropdownCusAcc,
+    HeaderDropdownStaffAcc,
     HeaderDropdownGift,
     DefaultAside,
     QrcodeVue,

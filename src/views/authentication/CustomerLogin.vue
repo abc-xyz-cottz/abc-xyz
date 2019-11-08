@@ -72,7 +72,6 @@
 <script>
 import CustomerApi from '@/api/customer'
 import CustomerMapper from '@/mapper/customer'
-import { QrcodeStream } from 'vue-qrcode-reader'
 import lang_vn from "@/lang/lang_vn.json"
 export default {
   name: 'Login',
@@ -91,7 +90,6 @@ export default {
     }
   },
   components: {
-    QrcodeStream
   },
   computed: {
     errorPhone: function () {
@@ -110,14 +108,6 @@ export default {
       return !(this.errorPhone || this.errorPassword)
     },
 
-    goToStaffLogin () {
-      this.$router.push('/staff-login')
-    },
-
-    onDecode (result) {
-      this.code = result
-    },
-
     logIn () {
       this.click = true
       let result = this.checkValidate()
@@ -126,9 +116,8 @@ export default {
         setTimeout(() => {
           CustomerApi.customerLogin(this.inputs).then(res => {
             if(res && res.data && res.data.data) {
+              // Store token
               this.$store.commit('updateToken', res.data.data.token)
-              // console.log(res.data.data.token)
-              // console.log(this.$store.state)
               this.onLogin = false
 
               // Store user info
@@ -136,7 +125,7 @@ export default {
               this.$store.commit('updateUser', usr)
 
               // Go to home page
-              this.$router.push({ name: 'CustomerHome' })
+              this.$router.push("/")
             }
 
           }).catch(err => {

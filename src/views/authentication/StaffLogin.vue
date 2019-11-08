@@ -58,7 +58,7 @@
   </div>
 </template>
 <script>
-import Mapper from '@/mapper/staff'
+import StaffMapper from '@/mapper/staff'
 import Staff from '@/api/staff'
 
 export default {
@@ -84,10 +84,19 @@ export default {
             this.$store.commit('updateToken', res.data.data.token)
 
             // Store staff info
-             const usr = Mapper.mapStaffModelToDto(res.data.data.staff_info)
+             const usr = StaffMapper.mapStaffModelToDto(res.data.data.staff_info)
              this.$store.commit('updateUser', usr);
 
-
+              let role = res.data.data.staff_info.fields.role_name
+              if(role == "STAFF") {
+                this.$router.push("/staff")
+              }
+              if(role == "ADMIN") {
+                this.$router.push("/menu/list")
+              }
+              if(role == "SUPPER_ADMIN") {
+                this.$router.push("/store/list")
+              }
              // TODO: role_name = "STAFF" -> go to staff page
              // TODO: role_name = "ADMIN" -> go to admin page
              // TODO: role_name = "SUPPER_ADMIN" -> go to staff page

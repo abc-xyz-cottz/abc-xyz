@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div class="container">
     <b-card-group>
       <b-card
@@ -100,7 +100,6 @@
   </div>
 </template>
 <script>
-import { QrcodeStream } from 'vue-qrcode-reader'
 export default {
     data() {
       return {
@@ -153,7 +152,6 @@ export default {
       }
     },
     components: {
-      QrcodeStream
     },
     computed: {
       rows() {
@@ -161,16 +159,16 @@ export default {
       }
     },
     methods: {
-      onSlideStart(slide) {
+      onSlideStart() {
         this.sliding = true
       },
-      onSlideEnd(slide) {
+      onSlideEnd() {
         this.sliding = false
       },
       onDecode (result) {
         this.code = result
       },
-      toBuy (id) {
+      toBuy () {
         // this.$bvModal.msgBoxOk('Giao dịch thành công!', {
         //   title: false,
         //   buttonSize: 'sm',

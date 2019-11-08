@@ -51,12 +51,12 @@ export default new Router({
     { path: '/500', name: 'Page500', component: Page500 },
     {
       path: '/register',
-      name: 'Login',
+      name: 'Register',
       component: Register
     },
     {
       path: '/active',
-      name: 'Login',
+      name: 'Active',
       component: Active
     },
     {
@@ -66,7 +66,7 @@ export default new Router({
     },
     {
       path: '/activepass',
-      name: 'Login',
+      name: 'ActivePassword',
       component: ActivePassword
     },
     {
@@ -86,92 +86,92 @@ export default new Router({
     },
     {
       path: '/welcome',
-      name: 'CustomerHome',
+      name: 'Welcome',
       component: Welcome
     },
     {
       path: '/order',
-      name: 'CustomerHome',
+      name: 'Order',
       component: Order
     },
     {
       path: '/require',
-      name: 'CustomerHome',
+      name: 'Require',
       component: Require
     },
     {
       path: '/point',
-      name: 'CustomerHome',
+      name: 'Point',
       component: Point
     },
     {
       path: '/promo',
-      name: 'CustomerHome',
+      name: 'PromoCus',
       component: PromoCus
     },
     {
       path: '/menu/list',
-      name: 'Admin',
+      name: 'Menu',
       component: Menu
     },
     {
       path: '/menu/index',
-      name: 'Admin',
+      name: 'MenuAdd',
       component: MenuAdd
     },
     {
       path: '/staff/list',
-      name: 'Admin',
+      name: 'Staff',
       component: Staff
     },
     {
       path: '/staff/index',
-      name: 'Admin',
+      name: 'StaffAdd',
       component: StaffAdd
     },
     {
       path: '/promo/list',
-      name: 'Admin',
+      name: 'Promo',
       component: Promo
     },
     {
       path: '/promo-detail/:Tab/:Pid',
-      name: 'Admin',
+      name: 'PromoDetail',
       component: PromoDetail
     },
     {
       path: '/promo/index',
-      name: 'Admin',
+      name: 'PromoAdd',
       component: PromoAdd
     },
     {
       path: '/setting/list',
-      name: 'Admin',
+      name: 'Setting',
       component: Setting
     },
     {
       path: '/customer/reward',
-      name: 'Admin',
+      name: 'Reward',
       component: Reward
     },
     {
       path: '/store/list',
-      name: 'SuperAdmin',
+      name: 'Store',
       component: Store
     },
     {
       path: '/store/index',
-      name: 'SuperAdmin',
+      name: 'StoreAdd',
       component: StoreAdd
     },
     {
       path: '/supper/store/list',
-      name: 'SuperAdmin',
+      name: 'StoreAdmin',
       component: StoreAdmin
     },
     {
       path: '/supper/store/index',
-      name: 'SuperAdmin',
+      name: 'StoreAdminAdd',
       component: StoreAdminAdd
     }
   ]

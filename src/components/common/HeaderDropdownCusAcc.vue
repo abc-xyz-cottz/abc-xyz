@@ -35,7 +35,7 @@ export default {
   methods: {
     logOut () {
       this.$store.commit('removeToken');
-      this.$router.push({ name: 'Login' })
+      this.$router.push("/")
     },
     goToChangePass () {
       this.$router.push({ name: 'ChangePass' })

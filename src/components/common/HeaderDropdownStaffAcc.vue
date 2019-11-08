@@ -4,15 +4,14 @@
     no-caret
   >
     <template slot="header">
-      <span class="white mr-3">
-        <i class="fa fa-gift fa-2x"/>
+      <span>
+        <i class="fa fa-user fa-2x" />
       </span>
     </template>
     <template slot="dropdown">
-      <b-dropdown-item href="/#/point"> Điểm
+      <b-dropdown-item @click.prevent="goToChangePass">Đổi Mật Khẩu
       </b-dropdown-item>
-      <b-dropdown-item href="/#/promo"> Khuyến Mãi
-      </b-dropdown-item>
+      <b-dropdown-item @click.prevent="logOut">Thoát</b-dropdown-item>
     </template>
   </AppHeaderDropdown>
 </template>
@@ -22,7 +21,7 @@ import { HeaderDropdown as AppHeaderDropdown } from '@coreui/vue'
 import Cookies from 'js-cookie'
 var jwtDecode = require('jwt-decode')
 export default {
-  name: 'DefaultHeaderDropdownGift',
+  name: 'DefaultHeaderDropdownAccnt',
   components: {
     AppHeaderDropdown
   },
@@ -32,6 +31,13 @@ export default {
     }
   },
   methods: {
+    logOut () {
+      this.$store.commit('removeToken');
+      this.$router.push("/")
+    },
+    goToChangePass () {
+      this.$router.push({ name: 'ChangePass' })
+    }
   }
 }
 </script>
