@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Login from '@/views/authentication/Login'
+import CustomerLogin from '@/views/authentication/CustomerLogin'
 import StaffLogin from '@/views/authentication/StaffLogin'
 import Page404 from '@/views/Page404'
 import Page500 from '@/views/Page500'
@@ -34,16 +34,17 @@ import Welcome from '@/views/customer/Welcome'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   scrollBehavior: () => ({ y: 0 }),
   routes: [
     {
-      path: '/login',
-      name: 'Login',
-      component: Login
+      path: '/customer-login',
+      name: 'CustomerLogin',
+      component: CustomerLogin
     },
     {
       path: '/staff-login',
-      name: 'Login',
+      name: 'StaffLogin',
       component: StaffLogin
     },
     { path: '/404', name: 'Page404', component: Page404 },

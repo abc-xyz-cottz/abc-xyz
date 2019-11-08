@@ -3,6 +3,13 @@ import { RootAPI } from './index'
 
 export default {
   /**
+   * Customer login
+   */
+  customerLogin(req) {
+    return session.post(RootAPI + 'customer/login', req)
+  },
+
+  /**
    * get info customer by id
    */
   getCustomerInfo (id) {

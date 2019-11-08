@@ -49,14 +49,14 @@
                     <b-col
                       cols="12"
                       class="mb-2 align-self-center">
-                      <a href="#/register" class="pull-left pt-2">Đăng Ký Tài Khoản</a>
+                      <a href="/register" class="pull-left pt-2">Đăng Ký Tài Khoản</a>
                     </b-col>
                   </b-row>
                   <b-row>
                     <b-col
                       cols="12"
                       class="mb-2 align-self-center">
-                      <a href="#/changepass" class="pull-left pt-2">Quên Mật Khẩu</a>
+                      <a href="/changepass" class="pull-left pt-2">Quên Mật Khẩu</a>
                     </b-col>
                   </b-row>
                 </b-form>
@@ -70,8 +70,8 @@
 </template>
 
 <script>
-import AuthenticationAPI from '@/api/authentication'
-import Mapper from '@/common/mapper'
+import CustomerApi from '@/api/customer'
+import CustomerMapper from '@/mapper/customer'
 import { QrcodeStream } from 'vue-qrcode-reader'
 import lang_vn from "@/lang/lang_vn.json"
 export default {
@@ -124,7 +124,7 @@ export default {
       if(result) {
         this.onLogin = true
         setTimeout(() => {
-          AuthenticationAPI.logIn(this.inputs).then(res => {
+          CustomerApi.customerLogin(this.inputs).then(res => {
             if(res && res.data && res.data.data) {
               this.$store.commit('updateToken', res.data.data.token)
               // console.log(res.data.data.token)
@@ -132,15 +132,11 @@ export default {
               this.onLogin = false
 
               // Store user info
-              const usr = Mapper.mapUserModelToDto(res.data.data.staff_info)
+              const usr = CustomerMapper.mapCustomerModelToDto(res.data.data.customer_info)
               this.$store.commit('updateUser', usr)
 
-              if (this.$store.state.user.roleName == "STAFF") {
-                this.$router.push({ name: 'HomeStaff' })
-              }
-              else if (this.$store.state.user.roleName == "ADMIN") {
-                this.$router.push({ name: 'Admin' })
-              }
+              // Go to home page
+              this.$router.push({ name: 'CustomerHome' })
             }
 
           }).catch(err => {

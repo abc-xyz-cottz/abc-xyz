@@ -4,14 +4,15 @@
 
       <AppHeader fixed v-if="this.$store.state.user == null">
         <div class="container">
-          <a href="#/staff-login" class="pull-left white">Nhân Viên</a>
+          <a href="/staff-login" class="pull-left white">Nhân Viên</a>
           <b-navbar-nav class="ml-auto">
-            <a href="#/login" class="pull-right white">Đăng Nhập &nbsp; /</a>
-            <a href="#/register" class="pull-right white"> &nbsp; Đăng Ký Tài Khoản</a>
+            <a href="/customer-login" class="pull-right white">Đăng Nhập &nbsp; /</a>
+            <a href="/register" class="pull-right white"> &nbsp; Đăng Ký Tài Khoản</a>
           </b-navbar-nav>
         </div>
       </AppHeader>
-      <!-- đăng nhập xong sẽ dùng đoạn code bên dưới -->
+
+       <!-- đăng nhập xong sẽ dùng đoạn code bên dưới -->
       <AppHeader fixed v-if="this.$store.state.user">
         <SidebarToggler
           class="d-none"
@@ -21,34 +22,36 @@
           RS
         </b-link>
         <b-navbar-nav>
+
           <!-- hiện cho template customer -->
-          <!-- <HeaderDropdownGift /> -->
-          <!-- <span class="white"> -->
-            <!-- <i class="fa fa-bell fa-2x"></i> -->
-          <!-- </span>  -->
-          <!-- <HeaderDropdownAccnt /> -->
+           <HeaderDropdownGift v-if="this.$store.state.user.userType == 'customer'"/>
+           <span class="white" v-if="this.$store.state.user.userType == 'customer'">
+             <i class="fa fa-bell fa-2x"></i>
+           </span>
+           <HeaderDropdownAccnt v-if="this.$store.state.user.userType == 'customer'"/>
           <!-- end -->
+
           <!-- hiện cho template staff -->
-          <template v-if="this.$store.state.user.roleName == 'STAFF'">
-          <span class="white">
-            {{ this.$store.state.user.userName }}
-          </span>
-          <HeaderDropdownAccnt />
+          <template v-if="this.$store.state.user.userType == 'staff'">
+            <span class="white">
+              {{ this.$store.state.user.userName }}
+            </span>
+            <HeaderDropdownAccnt />
           </template>
           <!-- end -->
-          
-          <!-- <AppHeaderDropdown right no-caret > -->
-            <!-- <template slot="header"> -->
-              <!-- <span> -->
-                <!-- <i class="fa fa-user fa-2x" /> -->
-              <!-- </span> -->
-            <!-- </template> -->
-            <!-- <template slot="dropdown"> -->
-              <!-- <b-dropdown-item href="/#/changepass">Đổi Mật Khẩu -->
-              <!-- </b-dropdown-item> -->
-              <!-- <b-dropdown-item>Thoát</b-dropdown-item> -->
-            <!-- </template> -->
-          <!-- </AppHeaderDropdown> -->
+
+           <AppHeaderDropdown right no-caret v-if="this.$store.state.user.userType == 'staff'">
+             <template slot="header">
+               <span>
+                 <i class="fa fa-user fa-2x" />
+               </span>
+             </template>
+             <template slot="dropdown">
+               <b-dropdown-item href="/#/changepass">Đổi Mật Khẩu
+               </b-dropdown-item>
+               <b-dropdown-item>Thoát</b-dropdown-item>
+             </template>
+           </AppHeaderDropdown>
         </b-navbar-nav>
       </AppHeader>
 
