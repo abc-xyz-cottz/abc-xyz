@@ -22,7 +22,7 @@ export default {
    * Staff update password
    */
   staffUpdatePass (req) {
-    return session.get(RootAPI + 'staff/update-pass', req)
+    return session.post(RootAPI + 'staff/update-pass', req)
   },
 
   /**

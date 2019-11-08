@@ -103,8 +103,9 @@ export default {
       if(result) {
         this.onUpdate = true
         setTimeout(() => {
-          console.log(this.$store.state)
+          console.log(this.inputs)
           AuthenticationAPI.staffUpdatePass(this.inputs).then(res => {
+
             if(res && res.data && res.data.data) {
               console.lod(res.data.data)
               this.onLogin = false
