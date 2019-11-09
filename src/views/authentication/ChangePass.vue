@@ -7,19 +7,19 @@
             <b-card
               no-body>
               <b-card-body>
-                <b-form method="put" @submit.prevent="update">
+                <b-form method="put">
                   <h1 class="text-center">
                     Đổi Mật Khẩu
                   </h1>
                   <div class="form-group">
                     <label>
-                      Số Điện Thoại
+                      Mật Khẩu Hiện Tại
                     </label><span class="error-sybol"></span>
-                    <input id="phone"  
-                      type="text" 
+                    <input id="oldPassword"  
+                      type="password" 
                       class="form-control"
-                      v-model="inputs.phone_number">
-                    <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
+                      v-model="inputs.old_pass">
+                    <b-form-invalid-feedback  class="invalid-feedback" :state="!errorOldPassword">
                       {{ lang_en.commons.requiredField }}
                     </b-form-invalid-feedback>
                   </div>
@@ -43,15 +43,21 @@
                       type="password" 
                       class="form-control"
                       v-model="confirmPass">
-                    <b-form-invalid-feedback  class="invalid-feedback" :state="!errorConfirmPassword">
-                      {{ lang_en.commons.requiredField }}
+                    <b-form-invalid-feedback class="invalid-feedback" :state="!errorConfirmPassword">
+                      {{ lang_en.commons.requiredField}}
+                    </b-form-invalid-feedback>
+                    <b-form-invalid-feedback class="invalid-feedback" :state="!errorMatch">
+                      {{ lang_en.changePassword.passNotMatch }}
                     </b-form-invalid-feedback>
                   </div>
                   <b-row>
                     <b-col cols="12" class="text-center">
-                      <button class="btn btn-primary px-4">
+                      <b-button
+                        @click="update" 
+                        :disabled="onUpdate"
+                        :variant="onUpdate ? '' : 'primary'" >
                         {{ onUpdate ? "Cập Nhật Mật Khẩu..." : "Cập Nhật Mật Khẩu" }}
-                      </button>
+                      </b-button>
                     </b-col>
                   </b-row>
                 </b-form>
@@ -72,50 +78,70 @@ export default {
       inputs: {
         phone_number: null,
         new_pass: null,
+        old_pass: null,
       },
       confirmPass : null,
       click: false,
       lang_en: lang_en,
-      onUpdate: null
+      onUpdate: null,
+      errorMatch: null,
     }
   },
   computed: {
-    errorPhone: function () {
-      return this.checkInfo(this.inputs.phone_number)
-    },
-    errorNewPassword: function () {
+    errorNewPassword () {
       return this.checkInfo(this.inputs.new_pass)
     },
-    errorConfirmPassword: function () {
+    errorConfirmPassword () {
       return this.checkInfo(this.confirmPass)
     },
+    errorOldPassword () {
+      return this.checkInfo(this.inputs.old_pass)
+    }
+  },
+  watch: {
+    confirmPass () {
+      this.errorMatch = false
+    }
   },
   methods: {
+    checkConfirmPass () {
+      return this.errorConfirmPassword || (this.inputs.new_pass == this.confirmPass)
+    },
     checkInfo (info) {
       return (this.click && (info == null || info.length <= 0))
     },
     checkValidate () {
-      return !(this.errorPhone || this.errorNewPassword || this.errorConfirmPassword)
+      return !(this.errorNewPassword || this.errorConfirmPassword || this.errorMatch)
     },
     update () {
       this.click = true
       let result = this.checkValidate()
-      if(result) {
+      this.errorMatch = !this.checkConfirmPass()
+      if(result && !this.errorMatch) {
         this.onUpdate = true
         setTimeout(() => {
-          console.log(this.inputs)
+          //get phone number
+          this.inputs.phone_number = (this.$store.state.user.phoneNumber)
           AuthenticationAPI.staffUpdatePass(this.inputs).then(res => {
-
-            if(res && res.data && res.data.data) {
-              console.lod(res.data.data)
-              this.onLogin = false
+            if(res && res.data && res.data.status == 200) {
+              // Redirect to active pass page
+              this.$router.push('/activepass')
             }
           }).catch(err => {
-            console.log(err);
-            this.onLogin = false
+            let message = ""
+            if(err.response.data.status == 422) {
+              message = err.response.data.mess
+            } else {
+              message = lang_en.commons.systemError
+            }
+            this.$bvModal.msgBoxOk(message, {
+              title: lang_en.commons.updateFailed,
+              centered: true, 
+              size: 'sm',
+            })
           })
+          this.onUpdate = false
         }, 500)
-        // this.$router.push('/activepass')
       }
     }
   }

@@ -7,6 +7,10 @@ export default {
     return session.post(RootAPI + 'staff/login', req)
   },
 
+  register (req) {
+    return session.post(RootAPI + 'customer/register', req)
+  },
+
   // getUserInfo () {
   //   return session.post(RootAPI + 'staff/info')
   // }
@@ -29,6 +33,13 @@ export default {
    * Confirm code to update password
    */
   activePass (req) {
-    return session.get(RootAPI + 'staff/active-pass', req)
+    return session.post(RootAPI + 'staff/active-pass', req)
+  },
+
+  /**
+   * Confirm code to active account
+   */
+  activeAccount (req) {
+    return session.post(RootAPI + 'customer/active', req)
   }
 };

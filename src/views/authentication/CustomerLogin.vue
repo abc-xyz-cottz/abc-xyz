@@ -56,7 +56,7 @@
                     <b-col
                       cols="12"
                       class="mb-2 align-self-center">
-                      <a href="/changepass" class="pull-left pt-2">Quên Mật Khẩu</a>
+                      <a href="/forgetpass" class="pull-left pt-2">Quên Mật Khẩu</a>
                     </b-col>
                   </b-row>
                 </b-form>
@@ -73,6 +73,7 @@
 import CustomerApi from '@/api/customer'
 import CustomerMapper from '@/mapper/customer'
 import lang_vn from "@/lang/lang_vn.json"
+import lang_en from "@/lang/lang_en.json"
 export default {
   name: 'Login',
   data () {
@@ -87,6 +88,7 @@ export default {
       onShowQRCode: false,
       login: lang_vn.login,
       click: false,
+      lang_en: lang_en
     }
   },
   components: {
@@ -130,8 +132,19 @@ export default {
 
           }).catch(err => {
             console.log(err);
-            this.onLogin = false
+            let message = ""
+            if(err.response.data.status == 403) {
+              message = err.response.data.mess
+            } else {
+              message = lang_en.commons.systemError
+            }
+            this.$bvModal.msgBoxOk(message, {
+              title: lang_en.login.loginFailed,
+              centered: true, 
+              size: 'sm',
+            })
           })
+          this.onLogin = false
         }, 500)
       }
     },
