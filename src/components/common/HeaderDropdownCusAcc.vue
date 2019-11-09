@@ -9,7 +9,7 @@
       </span>
     </template>
     <template slot="dropdown">
-      <b-dropdown-item href="/#/infoUser">Thông tin cá nhân
+      <b-dropdown-item href="/infoUser">Thông tin cá nhân
       </b-dropdown-item>
       <b-dropdown-item @click.prevent="goToChangePass">Đổi Mật Khẩu
       </b-dropdown-item>
@@ -38,7 +38,7 @@ export default {
       this.$router.push("/")
     },
     goToChangePass () {
-      this.$router.push({ name: 'ChangePass' })
+      this.$router.push("/changepass")
     }
   }
 }

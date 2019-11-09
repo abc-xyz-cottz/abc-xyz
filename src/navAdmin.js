@@ -2,6 +2,11 @@ export default {
     items: [
       // admin
       {
+        name: 'Topping',
+        url: '/topping/list',
+        icon: 'fa fa-home'
+      },
+      {
         name: 'Menu',
         url: '/menu/list',
         icon: 'fa fa-home'
@@ -23,14 +28,13 @@ export default {
       },
       {
         name: 'Setting',
-        url: '/setting/list',
+        url: '/setting',
         icon: 'fa fa-home'
       },
       {
         name: 'QACode',
-        url: '/QACode/list',
+        url: '/print-qr-code',
         icon: 'fa fa-home'
       }
     ]
   }
-  

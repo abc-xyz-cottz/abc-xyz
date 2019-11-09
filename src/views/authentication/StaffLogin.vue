@@ -89,25 +89,14 @@ export default {
 
               let role = res.data.data.staff_info.fields.role_name
               if(role == "STAFF") {
-                this.$router.push("/staff")
+                this.$router.push("/home-staff")
               }
               if(role == "ADMIN") {
-                this.$router.push("/menu/list")
+                this.$router.push("/home-admin")
               }
               if(role == "SUPPER_ADMIN") {
-                this.$router.push("/store/list")
+                this.$router.push("/home-sp-admin")
               }
-             // TODO: role_name = "STAFF" -> go to staff page
-             // TODO: role_name = "ADMIN" -> go to admin page
-             // TODO: role_name = "SUPPER_ADMIN" -> go to staff page
-
-
-             //if (this.$store.state.user.roleCode == "STAFF") {
-               //this.$router.push({ name: 'Welcome' })
-             //}
-             //if (this.$store.state.user.roleCode == "ADMIN") {
-              // this.$router.push({ name: 'Home' })
-             //}
 
          }).catch(err => {
            console.log(err);

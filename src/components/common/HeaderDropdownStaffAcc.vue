@@ -33,7 +33,8 @@ export default {
   methods: {
     logOut () {
       this.$store.commit('removeToken');
-      this.$router.push("/")
+      // this.$router.push("/")
+      window.location.replace("/")
     },
     goToChangePass () {
       this.$router.push({ name: 'ChangePass' })

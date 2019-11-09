@@ -9,9 +9,9 @@
       </span>
     </template>
     <template slot="dropdown">
-      <b-dropdown-item href="/#/point"> Điểm
+      <b-dropdown-item href="/point"> Điểm
       </b-dropdown-item>
-      <b-dropdown-item href="/#/promo"> Khuyến Mãi
+      <b-dropdown-item href="/promo"> Khuyến Mãi
       </b-dropdown-item>
     </template>
   </AppHeaderDropdown>

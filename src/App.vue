@@ -4,6 +4,9 @@
 
       <AppHeader fixed v-if="this.$store.state.user == null">
         <div class="container">
+          <b-link class="navbar-brand" to="/">
+            CusRes
+          </b-link>
           <a href="/staff-login" class="pull-left white">Nhân Viên</a>
           <b-navbar-nav class="ml-auto">
             <a href="/customer-login" class="pull-right white">Đăng Nhập &nbsp; /</a>
@@ -18,16 +21,16 @@
           class="d-none"
           :default-open="true"
         />
-        <b-link class="navbar-brand" >
-          RS
+        <b-link class="navbar-brand" to="/">
+          CusRes
         </b-link>
-        <b-navbar-nav>
 
+        <b-navbar-nav>
           <!-- hiện cho template customer -->
            <HeaderDropdownGift v-if="this.$store.state.user.userType == 'customer'"/>
-           <span class="white" v-if="this.$store.state.user.userType == 'customer'">
-             <i class="fa fa-bell fa-2x"></i>
-           </span>
+             <span class="white" v-if="this.$store.state.user.userType == 'customer'">
+               <i class="fa fa-bell fa-2x"></i>
+             </span>
            <HeaderDropdownCusAcc v-if="this.$store.state.user.userType == 'customer'"/>
           <!-- end -->
 
@@ -42,7 +45,7 @@
         </b-navbar-nav>
       </AppHeader>
 
-      <div class="app-body">
+      <div class="app-body" >
         <template v-if="this.$store.state.user && this.$store.state.user.role == 'ADMIN'">
           <AppSidebar fixed>
             <SidebarHeader />
@@ -55,12 +58,12 @@
           </AppSidebar>
         </template>
 
-        <template v-if="this.$store.state.user && this.$store.state.user.role == 'SUPER_ADMIN'">
+        <template v-if="this.$store.state.user && this.$store.state.user.role == 'SUPPER_ADMIN'">
           <AppSidebar fixed>
             <SidebarHeader />
             <SidebarForm />
               <template>
-                <SidebarNav :nav-items="nav" />
+                <SidebarNav :nav-items="navSpAdmin" />
               </template>
             <SidebarFooter />
             <SidebarMinimizer />
@@ -70,10 +73,10 @@
         <main class="main">
           <router-view />
         </main>
-        <AppAside fixed>
-          <!--aside-->
-          <DefaultAside />
-        </AppAside>
+        <!--<AppAside fixed>-->
+          <!--&lt;!&ndash;aside&ndash;&gt;-->
+          <!--<DefaultAside />-->
+        <!--</AppAside>-->
       </div>
     </template>
 
@@ -87,8 +90,7 @@
 
 <script>
 import { HeaderDropdown as AppHeaderDropdown } from '@coreui/vue'
-import Cookies from 'js-cookie'
-import nav from '@/navigations'
+import navSpAdmin from '@/navSpAdmin'
 import navAdmin from '@/navAdmin'
 import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFooter, SidebarForm, SidebarHeader, SidebarMinimizer, SidebarNav, Aside as AppAside, AsideToggler, Footer as TheFooter, Breadcrumb } from '@coreui/vue'
 import HeaderDropdownCusAcc from '@/components/common/HeaderDropdownCusAcc'
@@ -121,7 +123,7 @@ export default {
   data () {
     return {
       language: 'en',
-      nav: nav.items,
+      navSpAdmin: navSpAdmin.items,
       navAdmin: navAdmin.items,
       fullName: '',
       value: 'https://www.facebook.com/tanarmy77',
@@ -129,11 +131,9 @@ export default {
     }
   },
   mounted (){
-    // alert(this.$route.name)
-    // console.log(this.$store.state)
   },
   activated () {
-    mounted
+    this.mounted()
   },
   computed: {
     name () {
@@ -144,16 +144,8 @@ export default {
     }
   },
   created () {
-    // this.fetchLanguageFromCookie()
   },
   methods: {
-    // fetchLanguageFromCookie () {
-    //   var language = Cookies.get('language')
-    //   if (language) {
-    //     this.language = language
-    //     this.$i18n.locale = language
-    //   }
-    // }
   }
 }
 </script>

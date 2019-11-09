@@ -6,8 +6,8 @@ export default {
       icon: 'fa fa-feed'
     },
     {
-      name: 'Quản Lý Store Admin',
-      url: '/supper/store/list',
+      name: 'Quản Lý Admin Store',
+      url: '/admin-store/list',
       icon: 'fa fa-feed'
     }
   ]
