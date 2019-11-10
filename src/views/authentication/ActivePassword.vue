@@ -23,7 +23,13 @@
                       {{ lang_en.commons.requiredField }}
                     </b-form-invalid-feedback>
                   </div>
-                  <b-button @click="confirm" variant="primary" class="pull-right"> Xác Nhận</b-button>
+                  <b-button 
+                    @click="confirm" 
+                    :variant="onConfirm ? '' : 'primary'" 
+                    class="pull-right"
+                    :disabled="onConfirm">
+                    {{ onConfirm ? "Xác nhận..." : "Xác nhận" }}
+                  </b-button>
                 </b-form>
               </b-card-body>
             </b-card>
@@ -54,6 +60,9 @@ export default {
       return this.checkInfo(this.inputs.code)
     }
   },
+  mounted () {
+    console.log(this.$route)
+  },
   methods: {
     checkInfo (info) {
       return (this.click && (info == null || info.length <= 0))
@@ -67,15 +76,40 @@ export default {
       if(result) {
         // get phone number
         this.inputs.phone_number = this.$store.state.user.phoneNumber
+        this.onConfirm = true
         setTimeout(() => {
           AuthenticationAPI.activePass(this.inputs).then(res => {
-            if(res && res.data && res.data.data) {
-              this.onConfirm = false
+            if(res && res.data) {
+              let message = ""
+              if (res.data.status == 200) {
+                // show popup success
+                message = lang_en.changePassword.passUpdated
+                this.$bvModal.msgBoxOk(message, {
+                  title: lang_en.commons.updateSuccess,
+                  centered: true, 
+                  size: 'sm',
+                }).then(res => {
+                  if(res) {
+                    this.$router.push('/home-staff')
+                  }
+                })
+              }
             }
           }).catch(err => {
-            console.log(err);
-            this.onConfirm = false
+            console.log(err)
+            let message = ""
+            if(err.response.data.status == 422) {
+              message = err.response.data.mess
+            } else {
+              message = lang_en.commons.systemError
+            }
+            this.$bvModal.msgBoxOk(message, {
+              title: lang_en.commons.updateFailed,
+              centered: true, 
+              size: 'sm',
+            })
           })
+          this.onConfirm = false
         }, 500)
       }
     }

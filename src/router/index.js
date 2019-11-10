@@ -5,9 +5,10 @@ import Router from 'vue-router'
 import CustomerLogin from '@/views/authentication/CustomerLogin'
 import StaffLogin from '@/views/authentication/StaffLogin'
 import Register from '@/views/authentication/Register'
-import Active from '@/views/authentication/ActiveAccount'
+import ActiveAccount from '@/views/authentication/ActiveAccount'
 import ChangePass from '@/views/authentication/ChangePass'
 import ActivePassword from '@/views/authentication/ActivePassword'
+import ForgetPass from '@/views/authentication/ForgetPass'
 
 // Customer group
 import InfoUser from '@/components/author/InfoUser'
@@ -73,14 +74,19 @@ export default new Router({
       component: Register
     },
     {
-      path: '/active',
-      name: 'Active',
-      component: Active
+      path: '/activeaccount',
+      name: 'ActiveAccount',
+      component: ActiveAccount
     },
     {
       path: '/changepass',
       name: 'ChangePass',
       component: ChangePass
+    },
+    {
+      path: '/forgetpass',
+      name: 'ForgetPass',
+      component: ForgetPass
     },
     {
       path: '/activepass',

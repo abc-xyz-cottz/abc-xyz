@@ -26,8 +26,8 @@
                   <div class="form-group">
                     <label>Số Điện Thoại</label><span class="error-sybol"></span>
                     <input
-                      id="phone"
-                      v-model="inputs.phone"
+                      id="phone_number"
+                      v-model="inputs.phone_number"
                       type="text"
                       class="form-control">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
@@ -59,9 +59,9 @@
                   <div class="form-group">
                     <label>Tỉnh/ Thành Phố</label><span class="error-sybol"></span>
                     <b-form-select
-                      id="city"
+                      id="city_id"
                       :options="optionsCity"
-                      v-model="inputs.city"
+                      v-model="inputs.city_id"
                       type="text"
                       class="form-control"></b-form-select>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorCity">
@@ -71,9 +71,9 @@
                   <div class="form-group">
                     <label>Quận/ Huyện</label><span class="error-sybol"></span>
                     <b-form-select
-                      id="district"
+                      id="district_id"
                       :options="optionsDistrict"
-                      v-model="inputs.district"
+                      v-model="inputs.district_id"
                       type="text"
                       class="form-control"></b-form-select>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorDistrict">
@@ -90,16 +90,25 @@
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPassword">
                       {{ lang_en.commons.requiredField }}
                     </b-form-invalid-feedback>
+                    <b-form-invalid-feedback  class="invalid-feedback" :state="!errorLengthPassword">
+                      {{ lang_en.commons.minLengthAccount }}
+                    </b-form-invalid-feedback>
                   </div>
                   <div class="form-group">
                     <label>Nhắc Lại Mật Khẩu</label><span class="error-sybol"></span>
                     <input
                       id="confirm-password"
-                      v-model="inputs.confirmPassword"
+                      v-model="confirmPassword"
                       type="password"
                       class="form-control">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorConfirmPassword">
                       {{ lang_en.commons.requiredField }}
+                    </b-form-invalid-feedback>
+                    <b-form-invalid-feedback  class="invalid-feedback" :state="!errorLengthConfirmPassword">
+                      {{ lang_en.commons.minLengthAccount }}
+                    </b-form-invalid-feedback>
+                    <b-form-invalid-feedback class="invalid-feedback" :state="!errorMatch">
+                      {{ lang_en.changePassword.passNotMatch }}
                     </b-form-invalid-feedback>
                   </div>
                   <b-row>
@@ -129,22 +138,21 @@ export default {
   data () {
     return {
       inputs: {
-        username: null,
-        phone: null,
+        name: null,
+        phone_number: null,
         gender: null,
         birthday: null,
-        city: null,
-        district: null,
-        password: null,
-        confirmPassword: null
+        city_id: null,
+        district_id: null,
+        password: null
       },
       options: [
-        {value: 'nam', text: 'Nam'},
-        {value: 'nu', text: 'Nữ'}
+        {value: '1', text: 'Nam'},
+        {value: '2', text: 'Nữ'}
       ],
       optionsCity: [
-        {value: 'HCM', text: 'Hồ Chí Minh'},
-        {value: 'HN', text: 'Hà Nội'}
+        {value: '1', text: 'Hồ Chí Minh'},
+        {value: '2', text: 'Hà Nội'}
       ],
       optionsDistrict: [
         {value: '1', text: 'Quận 1'},
@@ -153,8 +161,10 @@ export default {
       repeat_password: '',
       lang_en: lang_en,
       click: false,
+      confirmPassword: null,
+      errorMatch: null,
       optionsDate: {
-        format: 'DD/MM/YYYY',
+        format: 'MM/DD/YYYY',
         useCurrent: false,
         viewMode: 'years'
       }
@@ -164,55 +174,87 @@ export default {
     datePicker
   },
   computed: {
-    errorName: function () {
+    errorName () {
       return this.checkInfo(this.inputs.name)
     },
-    errorPhone: function () {
-      return this.checkInfo(this.inputs.phone)
+    errorPhone () {
+      return this.checkInfo(this.inputs.phone_number)
     },
-    errorGender: function () {
+    errorGender () {
       return this.checkInfo(this.inputs.gender)
     },
-    errorBirthday: function () {
+    errorBirthday () {
       return this.checkInfo(this.inputs.birthday)
     },
-    errorCity: function () {
-      return this.checkInfo(this.inputs.city)
+    errorCity () {
+      return this.checkInfo(this.inputs.city_id)
     },
-    errorDistrict: function () {
-      return this.checkInfo(this.inputs.district)
+    errorDistrict () {
+      return this.checkInfo(this.inputs.district_id)
     },
-    errorPassword: function () {
+    errorPassword () {
       return this.checkInfo(this.inputs.password)
     },
-    errorConfirmPassword: function () {
-      return this.checkInfo(this.inputs.confirmPassword)
+    errorConfirmPassword () {
+      return this.checkInfo(this.confirmPassword)
+    },
+    errorLengthPassword () {
+      if(!this.inputs.password || this.errorPassword)
+        return false
+      return (this.inputs.password.length < 6) 
+    },
+    errorLengthConfirmPassword () {
+      if(!this.confirmPassword || this.errorConfirmPassword)
+        return false
+      return (this.confirmPassword.length < 6) 
+    }
+  },
+  watch: {
+    confirmPassword () {
+      this.errorMatch = false
     }
   },
   methods: {
+    checkConfirmPass () {
+      return this.errorConfirmPassword || (this.inputs.password == this.confirmPassword)
+    },
     checkInfo (info) {
       return (this.click && (info == null || info.length <= 0))
     },
-
     checkValidate () {
       return !(this.errorName || this.errorPhone || this.errorGender || this.errorBirthday
-        || this.errorCity || this.errorDistrict || this.errorPassword || this.errorConfirmPassword)
-    },
-
-    checkPassword () {
-      return (this.inputs.password == this.inputs.confirmPassword)
+        || this.errorCity || this.errorDistrict || this.errorPassword || this.errorConfirmPassword
+        || this.errorMatch || this.errorLengthPassword || this.errorLengthConfirmPassword)
     },
     update () {
       this.click = true
       let result = this.checkValidate()
-      if(result) {
-        result = this.checkPassword()
-        if(result) {
-          this.$router.push('/active')
-        }
-        else {
-          console.log('password not match')
-        }
+      this.errorMatch = !this.checkConfirmPass()
+      if(result && !this.errorMatch) {
+        this.onRegister = true
+        setTimeout(() => {
+          AuthenticationAPI.register(this.inputs).then(res => {
+            if(res && res.data && res.data.data) {
+              let id = res.data.data
+              console.log(res)
+              this.$router.push({ name: 'ActiveAccount', params: { id: id }})
+            }
+          }).catch(err => {
+            console.log(err)
+            let message = ""
+            if(err.response.data.status == 422) {
+              message = err.response.data.mess
+            } else {
+              message = lang_en.commons.systemError
+            }
+            this.$bvModal.msgBoxOk(message, {
+              title: lang_en.register.registerFailed,
+              centered: true, 
+              size: 'sm',
+            })
+          })
+          this.onConfirm = false
+        }, 500)
       }
     },
   }

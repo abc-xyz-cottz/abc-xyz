@@ -17,9 +17,19 @@
                       id="code"
                       type="text"
                       class="form-control"
-                      placeholder="Nhập số code">
+                      placeholder="Nhập số code"
+                      v-model="inputs.code">
+                    <b-form-invalid-feedback  class="invalid-feedback" :state="!errorCode">
+                      {{ lang_en.commons.requiredField }}
+                    </b-form-invalid-feedback>
                   </div>
-                  <b-button variant="primary" class="pull-right"> Xác Nhận</b-button>
+                  <b-button 
+                    @click="confirm" 
+                    :variant="onConfirm ? '' : 'primary'" 
+                    class="pull-right"
+                    :disabled="onConfirm">
+                    {{ onConfirm ? "Xác nhận..." : "Xác nhận" }}
+                  </b-button>
                 </b-form>
               </b-card-body>
             </b-card>
@@ -29,8 +39,81 @@
     </div>
   </div>
 </template>
+
 <script>
+import AuthenticationAPI from '@/api/authentication'
+import lang_en from "@/lang/lang_en.json"
 export default {
-  
+  name: 'ActiveAccount',
+  data () {
+    return {
+      inputs: {
+        id: null,
+        code: null
+      },
+      click: false,
+      onConfirm: null,
+      lang_en : lang_en
+    }
+  },
+  computed: {
+    errorCode: function () {
+      return this.checkInfo(this.inputs.code)
+    }
+  },
+  mounted () {
+    console.log(this.$route)
+  },
+  methods: {
+    checkInfo (info) {
+      return (this.click && (info == null || info.length <= 0))
+    },
+    checkValidate () {
+      return !(this.errorCode)
+    },
+    confirm () {
+      this.click = true
+      let result = this.checkValidate()
+      if(result) {
+        // get id account
+        this.inputs.id = this.$route.params.id
+        this.onConfirm = true
+        setTimeout(() => {
+          AuthenticationAPI.activeAccount(this.inputs).then(res => {
+            if(res && res.data) {
+              let message = ""
+              if (res.data.status == 200) {
+                // show popup success
+                message = lang_en.register.activeAccountSuccess
+                this.$bvModal.msgBoxOk(message, {
+                  title: lang_en.register.registerSuccess,
+                  centered: true, 
+                  size: 'sm',
+                }).then(res => {
+                  if(res) {
+                    this.$router.push('/customer-login')
+                  }
+                })
+              }
+            }
+          }).catch(err => {
+            console.log(err)
+            let message = ""
+            if(err.response.data.status == 422) {
+              message = err.response.data.mess
+            } else {
+              message = lang_en.commons.systemError
+            }
+            this.$bvModal.msgBoxOk(message, {
+              title: lang_en.commons.updateFailed,
+              centered: true, 
+              size: 'sm',
+            })
+          })
+          this.onConfirm = false
+        }, 500)
+      }
+    }
+  }
 }
 </script>
