@@ -5,6 +5,6 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  ROOT_API: '"http://cottz.herokuapp.com/api/"'
-  // ROOT_API: '"http://localhost:8000/api/"'
+  // ROOT_API: '"http://cottz.herokuapp.com/api/"'
+  ROOT_API: '"http://localhost:8000/api/"'
 })
