@@ -45,7 +45,7 @@
                     <b-col
                       cols="12"
                       class="mb-2">
-                      <a href="/forgetpass" class="pull-left mt-2">Quên Mật Khẩu</a>
+                      <a href="/staff-forgetpass" class="pull-left mt-2">Quên Mật Khẩu</a>
                     </b-col>
                   </b-row>
                 </b-form>

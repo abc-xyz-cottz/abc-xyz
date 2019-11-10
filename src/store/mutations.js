@@ -12,8 +12,7 @@ export default {
   },
 
   updateToken(state, data) {
-    console.log(data)
-    const token = data.token
+    const token = data
     Cookies.set(TOKEN_NAME, token, { expires: 365 });
     session.defaults.headers['token'] = `${token}`
     state.token = token;

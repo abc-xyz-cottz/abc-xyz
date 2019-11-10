@@ -38,7 +38,7 @@ export default {
       this.$router.push("/")
     },
     goToChangePass () {
-      this.$router.push("/changepass")
+      this.$router.push("/cus-changepass")
     }
   }
 }

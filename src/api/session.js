@@ -13,8 +13,9 @@ const session = axios.create({
 });
 
 let token = Cookies.get(TOKEN_NAME);
+console.log(token)
 if (token) {
-  // token = JSON.parse(token);
+
   session.defaults.headers['token'] = `${token}`
 }
 

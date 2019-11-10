@@ -6,9 +6,12 @@ import CustomerLogin from '@/views/authentication/CustomerLogin'
 import StaffLogin from '@/views/authentication/StaffLogin'
 import Register from '@/views/authentication/Register'
 import ActiveAccount from '@/views/authentication/ActiveAccount'
-import ChangePass from '@/views/authentication/ChangePass'
-import ActivePassword from '@/views/authentication/ActivePassword'
-import ForgetPass from '@/views/authentication/ForgetPass'
+import CustomerChangePass from '@/views/authentication/CustomerChangePass'
+import StaffChangePass from '@/views/authentication/StaffChangePass'
+import StaffActivePass from '@/views/authentication/StaffActivePass'
+import StaffForgetPass from '@/views/authentication/StaffForgetPass'
+import CustomerForgetPass from '@/views/authentication/CustomerForgetPass'
+import CustomerActivePass from '@/views/authentication/CustomerActivePass'
 
 // Customer group
 import InfoUser from '@/components/author/InfoUser'
@@ -79,19 +82,34 @@ export default new Router({
       component: ActiveAccount
     },
     {
-      path: '/changepass',
-      name: 'ChangePass',
-      component: ChangePass
+      path: '/cus-changepass',
+      name: 'CustomerChangePass',
+      component: CustomerChangePass
     },
     {
-      path: '/forgetpass',
-      name: 'ForgetPass',
-      component: ForgetPass
+      path: '/staff-changepass',
+      name: 'StaffChangePass',
+      component: StaffChangePass
     },
     {
-      path: '/activepass',
-      name: 'ActivePassword',
-      component: ActivePassword
+      path: '/cus-forgetpass',
+      name: 'CustomerForgetPass',
+      component: CustomerForgetPass
+    },
+    {
+      path: '/cus-active-pass',
+      name: 'CustomerActivePass',
+      component: CustomerActivePass
+    },
+    {
+      path: '/staff-forgetpass',
+      name: 'StaffForgetPass',
+      component: StaffForgetPass
+    },
+    {
+      path: '/staff-activepass',
+      name: 'StaffActivePass',
+      component: StaffActivePass
     },
 
     // Customer group

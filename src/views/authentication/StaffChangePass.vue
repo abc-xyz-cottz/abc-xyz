@@ -9,17 +9,17 @@
               <b-card-body>
                 <b-form method="put">
                   <h1 class="text-center">
-                    Quên Mật Khẩu
+                    Đổi Mật Khẩu
                   </h1>
                   <div class="form-group">
                     <label>
-                      Số Điện Thoại
+                      Mật Khẩu Hiện Tại
                     </label><span class="error-sybol"></span>
-                    <input id="phone"  
-                      type="text" 
+                    <input id="oldPassword"  
+                      type="password" 
                       class="form-control"
-                      v-model="inputs.phone_number">
-                    <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
+                      v-model="inputs.old_password">
+                    <b-form-invalid-feedback  class="invalid-feedback" :state="!errorOldPassword">
                       {{ lang_en.commons.requiredField }}
                     </b-form-invalid-feedback>
                   </div>
@@ -30,12 +30,9 @@
                     <input id="newPassword"
                       type="password" 
                       class="form-control"
-                      v-model="inputs.new_pass">
+                      v-model="inputs.new_password">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorNewPassword">
                       {{ lang_en.commons.requiredField }}
-                    </b-form-invalid-feedback>
-                    <b-form-invalid-feedback  class="invalid-feedback" :state="!errorLengthPassword">
-                      {{ lang_en.commons.minLengthAccount }}
                     </b-form-invalid-feedback>
                   </div>
                   <div class="form-group">
@@ -45,12 +42,9 @@
                     <input id="confirmPassword"
                       type="password" 
                       class="form-control"
-                      v-model="confirmPassword">
-                    <b-form-invalid-feedback class="invalid-feedback" :state="!errorconfirmPassword">
+                      v-model="confirmPass">
+                    <b-form-invalid-feedback class="invalid-feedback" :state="!errorConfirmPassword">
                       {{ lang_en.commons.requiredField}}
-                    </b-form-invalid-feedback>
-                    <b-form-invalid-feedback  class="invalid-feedback" :state="!errorLengthconfirmPassword">
-                      {{ lang_en.commons.minLengthAccount }}
                     </b-form-invalid-feedback>
                     <b-form-invalid-feedback class="invalid-feedback" :state="!errorMatch">
                       {{ lang_en.changePassword.passNotMatch }}
@@ -82,10 +76,10 @@ export default {
   data () {
     return {  
       inputs: {
-        phone_number: null,
-        new_pass: null,
+        new_password: null,
+        old_password: null,
       },
-      confirmPassword : null,
+      confirmPass : null,
       click: false,
       lang_en: lang_en,
       onUpdate: null,
@@ -93,67 +87,65 @@ export default {
     }
   },
   computed: {
-    errorPhone () {
-      return this.checkInfo(this.inputs.phone_number)
-    },
     errorNewPassword () {
-      return this.checkInfo(this.inputs.new_pass)
+      return this.checkInfo(this.inputs.new_password)
     },
-    errorconfirmPassword () {
-      return this.checkInfo(this.confirmPassword)
+    errorConfirmPassword () {
+      return this.checkInfo(this.confirmPass)
     },
-    errorLengthPassword () {
-      if(!this.inputs.new_pass || this.errorNewPassword)
-        return false
-      return (this.inputs.new_pass.length < 6) 
-    },
-    errorLengthconfirmPassword () {
-      if(!this.confirmPassword || this.errorconfirmPassword)
-        return false
-      return (this.confirmPassword.length < 6) 
+    errorOldPassword () {
+      return this.checkInfo(this.inputs.old_password)
     }
   },
   watch: {
-    confirmPassword () {
+    confirmPass () {
       this.errorMatch = false
     }
   },
   methods: {
-    checkconfirmPassword () {
-      return this.errorconfirmPassword || (this.inputs.new_pass == this.confirmPassword)
+    checkConfirmPass () {
+      return this.errorConfirmPassword || (this.inputs.new_password == this.confirmPass)
     },
     checkInfo (info) {
       return (this.click && (info == null || info.length <= 0))
     },
     checkValidate () {
-      return !(this.errorPhone || this.errorNewPassword || this.errorconfirmPassword || this.errorMatch
-            || this.errorLengthPassword)
+      return !(this.errorNewPassword || this.errorConfirmPassword || this.errorMatch)
     },
     update () {
       this.click = true
       let result = this.checkValidate()
-      this.errorMatch = !this.checkconfirmPassword()
+      this.errorMatch = !this.checkConfirmPass()
       if(result && !this.errorMatch) {
         this.onUpdate = true
         setTimeout(() => {
-        //   AuthenticationAPI.staffUpdatePass(this.inputs).then(res => {
-        //     if(res && res.data && res.data.status == 200) {
-        //       // Redirect to login
-        //       this.$router.push('/login')
-        //     }
-        //   }).catch(err => {
-        //     let message = ""
-        //     if(err.response.data.status == 422) {
-        //       message = err.response.data.mess
-        //     } else {
-        //       message = lang_en.commons.systemError
-        //     }
-        //     this.$bvModal.msgBoxOk(message, {
-        //       title: lang_en.commons.updateFailed,
-        //       centered: true, 
-        //       size: 'sm',
-        //     })
-        //   })
+          AuthenticationAPI.staffChangePass(this.inputs).then(res => {
+            if(res && res.data && res.data.status == 200) {
+              // Check role to go to home page
+              let role = this.$store.state.user.role
+              if(role == "STAFF") {
+                this.$router.push('/home-staff')
+              }
+              if(role == "ADMIN") {
+                this.$router.push('/home-admin')
+              }
+              if(role == "SUPER_ADMIN") {
+                this.$router.push('/home-sp-admin')
+              }
+            }
+          }).catch(err => {
+            let message = ""
+            if(err.response.data.status == 422) {
+              message = err.response.data.mess
+            } else {
+              message = lang_en.commons.systemError
+            }
+            this.$bvModal.msgBoxOk(message, {
+              title: lang_en.commons.updateFailed,
+              centered: true, 
+              size: 'sm',
+            })
+          })
           this.onUpdate = false
         }, 500)
       }

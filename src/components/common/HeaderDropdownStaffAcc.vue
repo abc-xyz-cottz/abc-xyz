@@ -37,7 +37,7 @@ export default {
       window.location.replace("/")
     },
     goToChangePass () {
-      this.$router.push({ name: 'ChangePass' })
+      this.$router.push('/staff-changepass')
     }
   }
 }

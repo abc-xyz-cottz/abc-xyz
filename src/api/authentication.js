@@ -30,9 +30,37 @@ export default {
   },
 
   /**
+   * Staff change password
+   */
+  staffChangePass (req) {
+    return session.post(RootAPI + 'staff/change-pass', req)
+  },
+
+  /**
+   * Customer update password
+   */
+  CustomerChangePass (req) {
+    return session.post(RootAPI + 'customer/change-pass', req)
+  },
+
+  /**
+   * Customer forget password
+   */
+  CustomerForgetPass (req) {
+    return session.post(RootAPI + 'customer/update-pass', req)
+  },
+
+  /**
+   * Customer active password
+   */
+  CustomerActivePass (req) {
+    return session.post(RootAPI + 'customer/active-pass', req)
+  },
+
+  /**
    * Confirm code to update password
    */
-  activePass (req) {
+  staffActivePass (req) {
     return session.post(RootAPI + 'staff/active-pass', req)
   },
 
