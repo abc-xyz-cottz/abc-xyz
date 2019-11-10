@@ -224,7 +224,7 @@ export default {
     checkValidate () {
       return !(this.errorName || this.errorPhone || this.errorGender || this.errorBirthday
         || this.errorCity || this.errorDistrict || this.errorPassword || this.errorConfirmPassword
-        || this.errorMatch || errorLengthPassword || errorLengthConfirmPassword)
+        || this.errorMatch || this.errorLengthPassword || this.errorLengthConfirmPassword)
     },
     update () {
       this.click = true
