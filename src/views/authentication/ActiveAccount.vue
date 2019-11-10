@@ -43,6 +43,8 @@
 <script>
 import AuthenticationAPI from '@/api/authentication'
 import lang_en from "@/lang/lang_en.json"
+import CustomerApi from '@/api/customer'
+import CustomerMapper from '@/mapper/customer'
 export default {
   name: 'ActiveAccount',
   data () {
@@ -91,7 +93,21 @@ export default {
                   size: 'sm',
                 }).then(res => {
                   if(res) {
-                    this.$router.push('/customer-login')
+                    let inputs = {phone_number: this.$route.params.phone_number, password: this.$route.params.password}
+                    console.log(inputs)
+                    CustomerApi.customerLogin(inputs).then(res => {
+                      if(res && res.data && res.data.data) {
+                        // Store token
+                        this.$store.commit('updateToken', res.data.data.token)
+
+                        // Store user info
+                        const usr = CustomerMapper.mapCustomerModelToDto(res.data.data.customer_info)
+                        this.$store.commit('updateUser', usr)
+
+                        // Go to home page
+                        this.$router.push("/")
+                      }
+                    })
                   }
                 })
               }

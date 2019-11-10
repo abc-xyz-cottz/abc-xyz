@@ -24,7 +24,7 @@
             </div>
 
             <div class="form-group">
-              <label>Số Điện Thoại</label>
+              <label>Giới Tính</label>
               <b-form-select :options="options" class="mb-3"></b-form-select>
             </div>
 
