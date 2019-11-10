@@ -8,8 +8,8 @@
               no-body>
               <b-card-body class="pb-2">
                 <b-form @submit.prevent="logIn">
-                  <h2>
-                    {{ $t(login.title) }}
+                  <h2 class="text-center">
+                    Logo: CusRes
                   </h2>
                   <div class="form-group">
                     <label>{{ $t(login.label.phone) }}</label><span class="error-sybol"></span>

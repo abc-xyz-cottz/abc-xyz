@@ -46,7 +46,7 @@
       </AppHeader>
 
       <div class="app-body" >
-        <template v-if="this.$store.state.user && this.$store.state.user.role == 'ADMIN'">
+        <template v-if="this.$store.state.user && this.$store.state.user.role == roleAdmin">
           <AppSidebar fixed>
             <SidebarHeader />
             <SidebarForm />
@@ -58,7 +58,7 @@
           </AppSidebar>
         </template>
 
-        <template v-if="this.$store.state.user && this.$store.state.user.role == 'SUPPER_ADMIN'">
+        <template v-if="this.$store.state.user && this.$store.state.user.role == roleSpAdmin">
           <AppSidebar fixed>
             <SidebarHeader />
             <SidebarForm />
@@ -98,6 +98,9 @@ import HeaderDropdownStaffAcc from '@/components/common/HeaderDropdownStaffAcc'
 import HeaderDropdownGift from '@/components/common/HeaderDropdownGift'
 import DefaultAside from '@/components/common/DefaultAside'
 import QrcodeVue from 'qrcode.vue'
+import {Constant} from '@/common/constant'
+
+
 export default {
   name: 'App',
   components: {
@@ -128,6 +131,8 @@ export default {
       fullName: '',
       value: 'https://www.facebook.com/tanarmy77',
       size: 40,
+      roleAdmin: Constant.ROLE_ADMIN,
+      roleSpAdmin: Constant.ROLE_SP_ADMIN
     }
   },
   mounted (){

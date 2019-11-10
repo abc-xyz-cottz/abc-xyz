@@ -72,6 +72,8 @@
 <script>
 import lang_en from "@/lang/lang_en.json"
 import AuthenticationAPI from '@/api/authentication'
+import {Constant} from '@/common/constant'
+
 export default {
   data () {
     return {  
@@ -123,13 +125,13 @@ export default {
             if(res && res.data && res.data.status == 200) {
               // Check role to go to home page
               let role = this.$store.state.user.role
-              if(role == "STAFF") {
+              if(role == Constant.ROLE_STAFF) {
                 this.$router.push('/home-staff')
               }
-              if(role == "ADMIN") {
+              if(role == Constant.ROLE_ADMIN) {
                 this.$router.push('/home-admin')
               }
-              if(role == "SUPER_ADMIN") {
+              if(role == Constant.ROLE_SP_ADMIN) {
                 this.$router.push('/home-sp-admin')
               }
             }

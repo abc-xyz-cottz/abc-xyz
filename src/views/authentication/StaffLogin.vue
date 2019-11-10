@@ -60,6 +60,8 @@
 <script>
 import StaffMapper from '@/mapper/staff'
 import Staff from '@/api/staff'
+import {Constant} from '@/common/constant'
+
 
 export default {
   name: 'Login',
@@ -88,13 +90,13 @@ export default {
              this.$store.commit('updateUser', usr);
 
               let role = res.data.data.staff_info.fields.role_name
-              if(role == "STAFF") {
+              if(role == Constant.ROLE_STAFF) {
                 this.$router.push("/home-staff")
               }
-              if(role == "ADMIN") {
+              if(role == Constant.ROLE_ADMIN) {
                 this.$router.push("/home-admin")
               }
-              if(role == "SUPPER_ADMIN") {
+              if(role == Constant.ROLE_SP_ADMIN) {
                 this.$router.push("/home-sp-admin")
               }
 

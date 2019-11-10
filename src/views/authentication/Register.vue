@@ -10,14 +10,15 @@
             class="mx-4">
             <b-card-body class="p-4">
               <b-form @submit.prevent="update">
-                  <h3>Đăng Ký</h3>
+                  <h3 class="text-center">Đăng Ký</h3>
                   <div class="form-group">
                     <label>Tên</label><span class="error-sybol"></span>
                     <input
                       id="name"
                       v-model="inputs.name"
                       type="text"
-                      class="form-control">
+                      class="form-control"
+                      maxlength="100">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorName">
                       {{ lang_en.commons.requiredField }}
                     </b-form-invalid-feedback>
@@ -29,7 +30,8 @@
                       id="phone_number"
                       v-model="inputs.phone_number"
                       type="text"
-                      class="form-control">
+                      class="form-control"
+                      maxlength="15">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
                       {{ lang_en.commons.requiredField }}
                     </b-form-invalid-feedback>
@@ -86,7 +88,9 @@
                       id="password"
                       v-model="inputs.password"
                       type="password"
-                      class="form-control">
+                      class="form-control"
+                      autocomplete="new-password"
+                      maxlength="255">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPassword">
                       {{ lang_en.commons.requiredField }}
                     </b-form-invalid-feedback>
@@ -100,7 +104,8 @@
                       id="confirm-password"
                       v-model="confirmPassword"
                       type="password"
-                      class="form-control">
+                      class="form-control"
+                      maxlength="255">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorConfirmPassword">
                       {{ lang_en.commons.requiredField }}
                     </b-form-invalid-feedback>
@@ -148,7 +153,8 @@ export default {
       },
       options: [
         {value: '1', text: 'Nam'},
-        {value: '2', text: 'Nữ'}
+        {value: '2', text: 'Nữ'},
+        {value: '3', text: 'Khác'}
       ],
       optionsCity: [
         {value: '1', text: 'Hồ Chí Minh'},

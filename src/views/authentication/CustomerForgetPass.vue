@@ -18,7 +18,8 @@
                     <input id="phone"
                       type="text"
                       class="form-control"
-                      v-model="inputs.phone_number">
+                      v-model="inputs.phone_number"
+                      maxlength="15">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
                       {{ lang_en.commons.requiredField }}
                     </b-form-invalid-feedback>
@@ -31,7 +32,8 @@
                       type="password"
                       class="form-control"
                       v-model="inputs.new_pass"
-                      autocomplete="new-password">
+                      autocomplete="new-password"
+                      maxlength="255">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorNewPassword">
                       {{ lang_en.commons.requiredField }}
                     </b-form-invalid-feedback>
@@ -46,7 +48,8 @@
                     <input id="confirmPassword"
                       type="password"
                       class="form-control"
-                      v-model="confirmPassword">
+                      v-model="confirmPassword"
+                      maxlength="255">
                     <b-form-invalid-feedback class="invalid-feedback" :state="!errorconfirmPassword">
                       {{ lang_en.commons.requiredField}}
                     </b-form-invalid-feedback>

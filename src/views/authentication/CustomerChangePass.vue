@@ -18,7 +18,8 @@
                     <input id="oldPassword"
                       type="password"
                       class="form-control"
-                      v-model="inputs.old_password">
+                      v-model="inputs.old_password"
+                      maxlength="255">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorOldPassword">
                       {{ lang_en.commons.requiredField }}
                     </b-form-invalid-feedback>
@@ -30,7 +31,8 @@
                     <input id="newPassword"
                       type="password"
                       class="form-control"
-                      v-model="inputs.new_password">
+                      v-model="inputs.new_password"
+                      maxlength="255">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorNewPassword">
                       {{ lang_en.commons.requiredField }}
                     </b-form-invalid-feedback>
@@ -42,7 +44,8 @@
                     <input id="confirmPassword"
                       type="password"
                       class="form-control"
-                      v-model="confirmPass">
+                      v-model="confirmPass"
+                      maxlength="255">
                     <b-form-invalid-feedback class="invalid-feedback" :state="!errorConfirmPassword">
                       {{ lang_en.commons.requiredField}}
                     </b-form-invalid-feedback>

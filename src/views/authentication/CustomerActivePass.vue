@@ -18,7 +18,8 @@
                       type="text"
                       class="form-control"
                       placeholder="Nhập số code"
-                      v-model="inputs.code">
+                      v-model="inputs.code"
+                      maxlength="4">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorCode">
                       {{ lang_en.commons.requiredField }}
                     </b-form-invalid-feedback>
