@@ -229,32 +229,35 @@ export default {
     update () {
       this.click = true
       let result = this.checkValidate()
-      this.errorMatch = !this.checkConfirmPass()
-      if(result && !this.errorMatch) {
-        this.onRegister = true
-        setTimeout(() => {
-          AuthenticationAPI.register(this.inputs).then(res => {
-            if(res && res.data && res.data.data) {
-              let id = res.data.data
-              console.log(res)
-              this.$router.push({ name: 'ActiveAccount', params: { id: id }})
-            }
-          }).catch(err => {
-            console.log(err)
-            let message = ""
-            if(err.response.data.status == 422) {
-              message = err.response.data.mess
-            } else {
-              message = lang_en.commons.systemError
-            }
-            this.$bvModal.msgBoxOk(message, {
-              title: lang_en.register.registerFailed,
-              centered: true, 
-              size: 'sm',
+      if(result) {
+        this.errorMatch = !this.checkConfirmPass()
+        if(!this.errorMatch) {
+          this.onRegister = true
+          setTimeout(() => {
+            AuthenticationAPI.register(this.inputs).then(res => {
+              if(res && res.data && res.data.data) {
+                let id = res.data.data
+                console.log(res)
+                this.$router.push({ name: 'ActiveAccount', params: 
+                  { id: id, phone_number: this.inputs.phone_number, password: this.inputs.password }})
+              }
+            }).catch(err => {
+              console.log(err)
+              let message = ""
+              if(err.response.data.status == 422) {
+                message = err.response.data.mess
+              } else {
+                message = lang_en.commons.systemError
+              }
+              this.$bvModal.msgBoxOk(message, {
+                title: lang_en.register.registerFailed,
+                centered: true, 
+                size: 'sm',
+              })
             })
-          })
-          this.onConfirm = false
-        }, 500)
+            this.onConfirm = false
+          }, 500)
+        }
       }
     },
   }
