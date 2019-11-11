@@ -39,7 +39,7 @@
 
                   <div class="form-group">
                     <label>Giới Tính</label><span class="error-sybol"></span>
-                    <b-form-select :options="options" v-model="inputs.gender" class="mb-3"></b-form-select>
+                    <b-form-select :options="optionsGender" v-model="inputs.gender" class="mb-3"></b-form-select>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorGender">
                       Vui lòng chọn giới tính
                     </b-form-invalid-feedback>
@@ -65,7 +65,9 @@
                       :options="optionsCity"
                       v-model="inputs.city_id"
                       type="text"
-                      class="form-control"></b-form-select>
+                      class="form-control"
+                      v-on:change="changeCity($event.target)"
+                    ></b-form-select>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorCity">
                       Vui lòng chọn thành phố
                     </b-form-invalid-feedback>
@@ -77,7 +79,9 @@
                       :options="optionsDistrict"
                       v-model="inputs.district_id"
                       type="text"
-                      class="form-control"></b-form-select>
+                      class="form-control"
+                      :disabled="!inputs.city_id"
+                    ></b-form-select>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorDistrict">
                       Vui lòng nhập quận
                     </b-form-invalid-feedback>
@@ -138,6 +142,10 @@ import lang_vn from "@/lang/lang_vn.json"
 import 'bootstrap/dist/css/bootstrap.css'
 import datePicker from 'vue-bootstrap-datetimepicker'
 import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css'
+import MasterApi from '@/api/master'
+import MasterMapper from '@/mapper/master'
+
+
 export default {
   name: 'Register',
   data () {
@@ -151,18 +159,14 @@ export default {
         district_id: null,
         password: null
       },
-      options: [
+      optionsGender: [
         {value: '1', text: 'Nam'},
         {value: '2', text: 'Nữ'},
         {value: '3', text: 'Khác'}
       ],
       optionsCity: [
-        {value: '1', text: 'Hồ Chí Minh'},
-        {value: '2', text: 'Hà Nội'}
       ],
       optionsDistrict: [
-        {value: '1', text: 'Quận 1'},
-        {value: '2', text: 'Quận 3'}
       ],
       repeat_password: '',
       lang_vn: lang_vn,
@@ -178,6 +182,9 @@ export default {
   },
   components: {
     datePicker
+  },
+  mounted () {
+    this.getOptionCity()
   },
   computed: {
     errorName () {
@@ -232,6 +239,10 @@ export default {
         || this.errorCity || this.errorDistrict || this.errorPassword || this.errorConfirmPassword
         || this.errorMatch || this.errorLengthPassword || this.errorLengthConfirmPassword)
     },
+
+    /**
+     * Register
+     */
     update () {
       this.click = true
       let result = this.checkValidate()
@@ -266,6 +277,31 @@ export default {
         }
       }
     },
+
+    /**
+     * Get city options
+     */
+    getOptionCity() {
+      MasterApi.getCityOptions().then(res => {
+        this.optionsCity = MasterMapper.mapCityModelToDto(res.data.data)
+      })
+    },
+
+    /**
+     * Get district by city
+     */
+    changeCity() {
+      let cityId = this.inputs.city_id
+      if(cityId != "" && cityId != undefined) {
+        MasterApi.getDistrictOptions(cityId).then(res => {
+          this.optionsDistrict = MasterMapper.mapCityModelToDto(res.data.data)
+        })
+      } else {
+        this.inputs.district_id = ""
+      }
+
+    }
+
   }
 }
 </script>

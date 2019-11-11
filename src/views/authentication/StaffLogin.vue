@@ -11,6 +11,9 @@
                   <h1 class="text-center">
                     RS
                   </h1>
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="errorFlag">
+                      {{errorMess}}
+                  </b-form-invalid-feedback>
                   <div class="form-group">
                     <label>Số Điện Thoại</label><span class="error-sybol"></span>
                     <input
@@ -18,7 +21,12 @@
                       v-model="inputs.phone_number"
                       type="text"
                       class="form-control"
-                      placeholder="Nhập số điện thoại">
+                      placeholder="Nhập số điện thoại" phoneNumberCheck
+                      @keyup="intergerOnly($event.target)"
+                      v-on:change="checkPhoneNumberFormat($event.target)">
+                    <b-form-invalid-feedback  class="invalid-feedback" :state="phoneNumberCheckFlag">
+                      Số điện thoại không đúng
+                    </b-form-invalid-feedback>
                   </div>
                   <div class="form-group">
                     <label>Mật Khẩu</label><span class="error-sybol"></span>
@@ -61,6 +69,8 @@
 import StaffMapper from '@/mapper/staff'
 import Staff from '@/api/staff'
 import {Constant} from '@/common/constant'
+import commonFunc from '@/common/commonFunc'
+import lang_en from "@/lang/lang_en.json"
 
 
 export default {
@@ -74,12 +84,19 @@ export default {
       code: '',
       onLogin: false,
       selected: '',
+      phoneNumberCheckFlag: true,
+      errorFlag: true,
+      errorMess: ""
     }
   },
   methods: {
+    /**
+     *  Login
+     */
      logIn () {
-       this.onLogin = true
-       //setTimeout(() => {
+       if(this.phoneNumberCheckFlag) {
+         this.onLogin = true
+          //setTimeout(() => {
          Staff.logIn(this.inputs).then(res => {
 
             // Store token
@@ -101,14 +118,53 @@ export default {
               }
 
          }).catch(err => {
-           console.log(err);
-           this.onLogin = false
+           let message = ""
+            if(err.response.data.status == 500) {
+              message = lang_en.commons.systemError
+            } else {
+              message = err.response.data.mess
+            }
+            this.errorFlag = false
+            this.errorMess = message
+            this.onLogin = false
          })
        //}, 5000)
+       }
+
      },
-     onDecode (result) {
-       this.code = result
-     }
+
+    /**
+     * Check phone number
+     */
+    checkPhoneNumberFormat(item) {
+      let valueInput = item.value
+      if (valueInput != null && valueInput != "") {
+        if (commonFunc.phoneNumberCheck(valueInput)) {
+          this.phoneNumberCheckFlag = true
+        } else {
+          this.phoneNumberCheckFlag = false
+        }
+      } else {
+        this.phoneNumberCheckFlag = true
+      }
+    },
+
+    /**
+     * Only input integer
+     */
+     intergerOnly(item) {
+      let valueInput = item.value
+      let result = commonFunc.intergerOnly(valueInput)
+      item.value = result
+
+      if(valueInput.length == 10) {
+        if (commonFunc.phoneNumberCheck(valueInput)) {
+          this.phoneNumberCheckFlag = true
+        } else {
+          this.phoneNumberCheckFlag = false
+        }
+      }
+    },
   }
 }
 </script>

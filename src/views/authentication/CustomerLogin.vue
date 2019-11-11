@@ -11,15 +11,24 @@
                   <h2 class="text-center">
                     Logo: CusRes
                   </h2>
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="errorFlag">
+                      {{errorMess}}
+                  </b-form-invalid-feedback>
                   <div class="form-group">
                     <label>{{ $t(login.label.phone) }}</label><span class="error-sybol"></span>
                     <input
                       id="phone"
                       v-model="inputs.phone_number"
                       type="text"
-                      class="form-control">
+                      class="form-control"
+                      maxlength="15"
+                      @keyup="intergerOnly($event.target)"
+                      v-on:change="checkPhoneNumberFormat($event.target)">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
                       {{ login.commons.requiredPhone }}
+                    </b-form-invalid-feedback>
+                    <b-form-invalid-feedback  class="invalid-feedback" :state="phoneNumberCheckFlag">
+                      Số điện thoại không đúng
                     </b-form-invalid-feedback>
                   </div>
                   <div class="form-group">
@@ -73,6 +82,9 @@
 import CustomerApi from '@/api/customer'
 import CustomerMapper from '@/mapper/customer'
 import lang_vn from "@/lang/lang_vn.json"
+import commonFunc from '@/common/commonFunc'
+
+
 export default {
   name: 'Login',
   data () {
@@ -87,7 +99,10 @@ export default {
       onShowQRCode: false,
       login: lang_vn.login,
       click: false,
-      lang_vn: lang_vn
+      lang_vn: lang_vn,
+      phoneNumberCheckFlag: true,
+      errorFlag: true,
+      errorMess: ""
     }
   },
   components: {
@@ -106,9 +121,12 @@ export default {
     },
 
     checkValidate () {
-      return !(this.errorPhone || this.errorPassword)
+      return !(this.errorPhone || this.errorPassword || !this.phoneNumberCheckFlag)
     },
 
+    /**
+     * Login
+     */
     logIn () {
       this.click = true
       let result = this.checkValidate()
@@ -130,21 +148,51 @@ export default {
             }
 
           }).catch(err => {
-            console.log(err);
             let message = ""
-            if(err.response.data.status == 403) {
-              message = err.response.data.mess
-            } else {
+            if(err.response.data.status == 500) {
               message = lang_vn.commons.systemError
+            } else {
+              message = err.response.data.mess
             }
-            this.$bvModal.msgBoxOk(message, {
-              title: "Đăng nhập thất bại",
-              centered: true, 
-              size: 'sm',
-            })
+            this.errorFlag = false
+            this.errorMess = message
+
           })
           this.onLogin = false
         }, 500)
+      }
+    },
+
+    /**
+     * Check phone number
+     */
+    checkPhoneNumberFormat(item) {
+      let valueInput = item.value
+      if (valueInput != null && valueInput != "") {
+        if (commonFunc.phoneNumberCheck(valueInput)) {
+          this.phoneNumberCheckFlag = true
+        } else {
+          this.phoneNumberCheckFlag = false
+        }
+      } else {
+        this.phoneNumberCheckFlag = true
+      }
+    },
+
+    /**
+     * Only input integer
+     */
+     intergerOnly(item) {
+      let valueInput = item.value
+      let result = commonFunc.intergerOnly(valueInput)
+      item.value = result
+
+      if(valueInput.length == 10) {
+        if (commonFunc.phoneNumberCheck(valueInput)) {
+          this.phoneNumberCheckFlag = true
+        } else {
+          this.phoneNumberCheckFlag = false
+        }
       }
     },
   }
