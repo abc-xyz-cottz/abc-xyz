@@ -19,9 +19,14 @@
                       type="text"
                       class="form-control"
                       v-model="inputs.phone_number"
-                      maxlength="15">
+                      maxlength="15"
+                      @keyup="intergerOnly($event.target)"
+                      v-on:change="checkPhoneNumberFormat($event.target)">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
                       {{ lang_en.commons.requiredField }}
+                    </b-form-invalid-feedback>
+                    <b-form-invalid-feedback  class="invalid-feedback" :state="phoneNumberCheckFlag">
+                      Số điện thoại không đúng
                     </b-form-invalid-feedback>
                   </div>
                   <div class="form-group">
@@ -82,6 +87,9 @@
 <script>
 import lang_en from "@/lang/lang_en.json"
 import AuthenticationAPI from '@/api/authentication'
+import commonFunc from '@/common/commonFunc'
+
+
 export default {
   data () {
     return {
@@ -94,6 +102,7 @@ export default {
       lang_en: lang_en,
       onUpdate: null,
       errorMatch: null,
+      phoneNumberCheckFlag: true
     }
   },
   computed: {
@@ -133,6 +142,10 @@ export default {
       return !(this.errorPhone || this.errorNewPassword || this.errorconfirmPassword || this.errorMatch
             || this.errorLengthPassword)
     },
+
+    /**
+     *  Update pass
+     */
     update () {
       this.click = true
       let result = this.checkValidate()
@@ -161,7 +174,41 @@ export default {
           this.onUpdate = false
         }, 500)
       }
-    }
+    },
+
+    /**
+     * Check phone number
+     */
+    checkPhoneNumberFormat(item) {
+      let valueInput = item.value
+      if (valueInput != null && valueInput != "") {
+        if (commonFunc.phoneNumberCheck(valueInput)) {
+          this.phoneNumberCheckFlag = true
+        } else {
+          this.phoneNumberCheckFlag = false
+        }
+      } else {
+        this.phoneNumberCheckFlag = true
+      }
+    },
+
+    /**
+     * Only input integer
+     */
+     intergerOnly(item) {
+      let valueInput = item.value
+      let result = commonFunc.intergerOnly(valueInput)
+      item.value = result
+
+      if(valueInput.length == 10) {
+        if (commonFunc.phoneNumberCheck(valueInput)) {
+          this.phoneNumberCheckFlag = true
+        } else {
+          this.phoneNumberCheckFlag = false
+        }
+      }
+    },
+
   }
 }
 </script>

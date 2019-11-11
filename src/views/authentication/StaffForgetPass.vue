@@ -18,9 +18,15 @@
                     <input id="phone"  
                       type="text" 
                       class="form-control"
-                      v-model="inputs.phone_number">
+                      v-model="inputs.phone_number"
+                      maxlength="15"
+                      @keyup="intergerOnly($event.target)"
+                      v-on:change="checkPhoneNumberFormat($event.target)">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
-                      {{ lang_en.commons.requiredField }}
+                      Đây là mục bắt buộc nhập
+                    </b-form-invalid-feedback>
+                    <b-form-invalid-feedback  class="invalid-feedback" :state="phoneNumberCheckFlag">
+                      Số điện thoại không đúng
                     </b-form-invalid-feedback>
                   </div>
                   <div class="form-group">
@@ -33,7 +39,7 @@
                       v-model="inputs.new_pass"
                     autocomplete="new-password">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorNewPassword">
-                      {{ lang_en.commons.requiredField }}
+                      Đây là mục bắt buộc nhập
                     </b-form-invalid-feedback>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorLengthPassword">
                       {{ lang_en.commons.minLengthAccount }}
@@ -48,7 +54,7 @@
                       class="form-control"
                       v-model="confirmPassword">
                     <b-form-invalid-feedback class="invalid-feedback" :state="!errorconfirmPassword">
-                      {{ lang_en.commons.requiredField}}
+                      Đây là mục bắt buộc nhập
                     </b-form-invalid-feedback>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorLengthconfirmPassword">
                       {{ lang_en.commons.minLengthAccount }}
@@ -79,6 +85,9 @@
 <script>
 import lang_en from "@/lang/lang_en.json"
 import AuthenticationAPI from '@/api/authentication'
+import commonFunc from '@/common/commonFunc'
+
+
 export default {
   data () {
     return {  
@@ -91,6 +100,7 @@ export default {
       lang_en: lang_en,
       onUpdate: null,
       errorMatch: null,
+      phoneNumberCheckFlag: true
     }
   },
   computed: {
@@ -128,7 +138,7 @@ export default {
     },
     checkValidate () {
       return !(this.errorPhone || this.errorNewPassword || this.errorconfirmPassword || this.errorMatch
-            || this.errorLengthPassword)
+            || this.errorLengthPassword || !this.phoneNumberCheckFlag)
     },
     update () {
       this.click = true
@@ -158,7 +168,40 @@ export default {
           this.onUpdate = false
         }, 500)
       }
-    }
+    },
+
+    /**
+     * Check phone number
+     */
+    checkPhoneNumberFormat(item) {
+      let valueInput = item.value
+      if (valueInput != null && valueInput != "") {
+        if (commonFunc.phoneNumberCheck(valueInput)) {
+          this.phoneNumberCheckFlag = true
+        } else {
+          this.phoneNumberCheckFlag = false
+        }
+      } else {
+        this.phoneNumberCheckFlag = true
+      }
+    },
+
+    /**
+     * Only input integer
+     */
+     intergerOnly(item) {
+      let valueInput = item.value
+      let result = commonFunc.intergerOnly(valueInput)
+      item.value = result
+
+      if(valueInput.length == 10) {
+        if (commonFunc.phoneNumberCheck(valueInput)) {
+          this.phoneNumberCheckFlag = true
+        } else {
+          this.phoneNumberCheckFlag = false
+        }
+      }
+    },
   }
 }
 </script>
