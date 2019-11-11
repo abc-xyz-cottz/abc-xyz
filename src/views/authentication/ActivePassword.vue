@@ -20,7 +20,7 @@
                       v-model="inputs.code"
                       placeholder="Nhập số code">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorCode">
-                      {{ lang_en.commons.requiredField }}
+                      Vui lòng nhập code
                     </b-form-invalid-feedback>
                   </div>
                   <b-button 
@@ -40,7 +40,7 @@
   </div>
 </template>
 <script>
-import lang_en from "@/lang/lang_en.json"
+import lang_vn from "@/lang/lang_vn.json"
 import AuthenticationAPI from '@/api/authentication'
 export default {
   name: 'ActivePassword',
@@ -51,7 +51,7 @@ export default {
          code: null,
       },
       click: false,
-      lang_en: lang_en,
+      lang_vn: lang_vn,
       onConfirm: null
     }
   },
@@ -83,9 +83,9 @@ export default {
               let message = ""
               if (res.data.status == 200) {
                 // show popup success
-                message = lang_en.changePassword.passUpdated
+                message = "Password của bạn đã được cập nhật"
                 this.$bvModal.msgBoxOk(message, {
-                  title: lang_en.commons.updateSuccess,
+                  title: lang_vn.commons.updateSuccess,
                   centered: true, 
                   size: 'sm',
                 }).then(res => {
@@ -101,10 +101,10 @@ export default {
             if(err.response.data.status == 422) {
               message = err.response.data.mess
             } else {
-              message = lang_en.commons.systemError
+              message = lang_vn.commons.systemError
             }
             this.$bvModal.msgBoxOk(message, {
-              title: lang_en.commons.updateFailed,
+              title: lang_vn.commons.updateFailed,
               centered: true, 
               size: 'sm',
             })

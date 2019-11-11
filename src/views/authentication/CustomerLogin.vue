@@ -73,7 +73,6 @@
 import CustomerApi from '@/api/customer'
 import CustomerMapper from '@/mapper/customer'
 import lang_vn from "@/lang/lang_vn.json"
-import lang_en from "@/lang/lang_en.json"
 export default {
   name: 'Login',
   data () {
@@ -88,7 +87,7 @@ export default {
       onShowQRCode: false,
       login: lang_vn.login,
       click: false,
-      lang_en: lang_en
+      lang_vn: lang_vn
     }
   },
   components: {
@@ -136,10 +135,10 @@ export default {
             if(err.response.data.status == 403) {
               message = err.response.data.mess
             } else {
-              message = lang_en.commons.systemError
+              message = lang_vn.commons.systemError
             }
             this.$bvModal.msgBoxOk(message, {
-              title: lang_en.login.loginFailed,
+              title: "Đăng nhập thất bại",
               centered: true, 
               size: 'sm',
             })

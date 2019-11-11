@@ -20,7 +20,7 @@
                       class="form-control"
                       maxlength="100">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorName">
-                      {{ lang_en.commons.requiredField }}
+                      Vui long nhập tên
                     </b-form-invalid-feedback>
                   </div>
 
@@ -33,7 +33,7 @@
                       class="form-control"
                       maxlength="15">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
-                      {{ lang_en.commons.requiredField }}
+                      Vui lòng nhập số điện thoại
                     </b-form-invalid-feedback>
                   </div>
 
@@ -41,7 +41,7 @@
                     <label>Giới Tính</label><span class="error-sybol"></span>
                     <b-form-select :options="options" v-model="inputs.gender" class="mb-3"></b-form-select>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorGender">
-                      {{ lang_en.commons.requiredField }}
+                      Vui lòng chọn giới tính
                     </b-form-invalid-feedback>
                   </div>
 
@@ -55,7 +55,7 @@
                     </date-picker>
                      </div>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorBirthday">
-                      {{ lang_en.commons.requiredField }}
+                      Vui lòng nhập ngày sinh
                     </b-form-invalid-feedback>
                   </div>
                   <div class="form-group">
@@ -67,7 +67,7 @@
                       type="text"
                       class="form-control"></b-form-select>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorCity">
-                      {{ lang_en.commons.requiredField }}
+                      Vui lòng chọn thành phố
                     </b-form-invalid-feedback>
                   </div>
                   <div class="form-group">
@@ -79,7 +79,7 @@
                       type="text"
                       class="form-control"></b-form-select>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorDistrict">
-                      {{ lang_en.commons.requiredField }}
+                      Vui lòng nhập quận
                     </b-form-invalid-feedback>
                   </div>
                   <div class="form-group">
@@ -92,10 +92,10 @@
                       autocomplete="new-password"
                       maxlength="255">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPassword">
-                      {{ lang_en.commons.requiredField }}
+                      Vui lòng nhập mật khẩu
                     </b-form-invalid-feedback>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorLengthPassword">
-                      {{ lang_en.commons.minLengthAccount }}
+                      Mật khẩu phải ít nhất 6 kí tự
                     </b-form-invalid-feedback>
                   </div>
                   <div class="form-group">
@@ -107,13 +107,13 @@
                       class="form-control"
                       maxlength="255">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorConfirmPassword">
-                      {{ lang_en.commons.requiredField }}
+                      Vui lòng nhập lại mật khẩu
                     </b-form-invalid-feedback>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorLengthConfirmPassword">
-                      {{ lang_en.commons.minLengthAccount }}
+                      Mật khẩu phải ít nhất 6 kí tự
                     </b-form-invalid-feedback>
                     <b-form-invalid-feedback class="invalid-feedback" :state="!errorMatch">
-                      {{ lang_en.changePassword.passNotMatch }}
+                      Mật khẩu không khớp
                     </b-form-invalid-feedback>
                   </div>
                   <b-row>
@@ -134,7 +134,7 @@
 
 <script>
 import AuthenticationAPI from '@/api/authentication'
-import lang_en from "@/lang/lang_en.json"
+import lang_vn from "@/lang/lang_vn.json"
 import 'bootstrap/dist/css/bootstrap.css'
 import datePicker from 'vue-bootstrap-datetimepicker'
 import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css'
@@ -165,7 +165,7 @@ export default {
         {value: '2', text: 'Quận 3'}
       ],
       repeat_password: '',
-      lang_en: lang_en,
+      lang_vn: lang_vn,
       click: false,
       confirmPassword: null,
       errorMatch: null,
@@ -253,10 +253,10 @@ export default {
               if(err.response.data.status == 422) {
                 message = err.response.data.mess
               } else {
-                message = lang_en.commons.systemError
+                message = lang_vn.commons.systemError
               }
               this.$bvModal.msgBoxOk(message, {
-                title: lang_en.register.registerFailed,
+                title: "Đăng kí không thành công",
                 centered: true, 
                 size: 'sm',
               })

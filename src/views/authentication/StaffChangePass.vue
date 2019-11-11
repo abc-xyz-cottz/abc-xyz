@@ -20,7 +20,7 @@
                       class="form-control"
                       v-model="inputs.old_password">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorOldPassword">
-                      {{ lang_en.commons.requiredField }}
+                      Vui lòng nhập mật khẩu hiện tại
                     </b-form-invalid-feedback>
                   </div>
                   <div class="form-group">
@@ -32,7 +32,7 @@
                       class="form-control"
                       v-model="inputs.new_password">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorNewPassword">
-                      {{ lang_en.commons.requiredField }}
+                      Vui lòng nhập mật khẩu mới
                     </b-form-invalid-feedback>
                   </div>
                   <div class="form-group">
@@ -44,10 +44,10 @@
                       class="form-control"
                       v-model="confirmPass">
                     <b-form-invalid-feedback class="invalid-feedback" :state="!errorConfirmPassword">
-                      {{ lang_en.commons.requiredField}}
+                      Vui lòng nhập lại mật khẩu
                     </b-form-invalid-feedback>
                     <b-form-invalid-feedback class="invalid-feedback" :state="!errorMatch">
-                      {{ lang_en.changePassword.passNotMatch }}
+                      Mật khẩu không khớp
                     </b-form-invalid-feedback>
                   </div>
                   <b-row>
@@ -70,7 +70,7 @@
   </div>
 </template>
 <script>
-import lang_en from "@/lang/lang_en.json"
+import lang_vn from "@/lang/lang_vn.json"
 import AuthenticationAPI from '@/api/authentication'
 import {Constant} from '@/common/constant'
 
@@ -83,7 +83,7 @@ export default {
       },
       confirmPass : null,
       click: false,
-      lang_en: lang_en,
+      lang_vn: lang_vn,
       onUpdate: null,
       errorMatch: null,
     }
@@ -140,10 +140,10 @@ export default {
             if(err.response.data.status == 422) {
               message = err.response.data.mess
             } else {
-              message = lang_en.commons.systemError
+              message = lang_vn.commons.systemError
             }
             this.$bvModal.msgBoxOk(message, {
-              title: lang_en.commons.updateFailed,
+              title: lang_vn.commons.updateFailed,
               centered: true, 
               size: 'sm',
             })

@@ -20,7 +20,7 @@
                       class="form-control"
                       v-model="inputs.phone_number">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
-                      {{ lang_en.commons.requiredField }}
+                      Vui lòng nhập số điện thoại
                     </b-form-invalid-feedback>
                   </div>
                   <div class="form-group">
@@ -33,10 +33,10 @@
                       v-model="inputs.new_pass"
                     autocomplete="new-password">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorNewPassword">
-                      {{ lang_en.commons.requiredField }}
+                      Vui lòng nhập mật khẩu
                     </b-form-invalid-feedback>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorLengthPassword">
-                      {{ lang_en.commons.minLengthAccount }}
+                      Mật khẩu phải ít nhất 6 kí tự
                     </b-form-invalid-feedback>
                   </div>
                   <div class="form-group">
@@ -48,13 +48,10 @@
                       class="form-control"
                       v-model="confirmPassword">
                     <b-form-invalid-feedback class="invalid-feedback" :state="!errorconfirmPassword">
-                      {{ lang_en.commons.requiredField}}
-                    </b-form-invalid-feedback>
-                    <b-form-invalid-feedback  class="invalid-feedback" :state="!errorLengthconfirmPassword">
-                      {{ lang_en.commons.minLengthAccount }}
+                      Vui lòng nhập lại mật khẩu
                     </b-form-invalid-feedback>
                     <b-form-invalid-feedback class="invalid-feedback" :state="!errorMatch">
-                      {{ lang_en.changePassword.passNotMatch }}
+                      Mật khẩu không khớp
                     </b-form-invalid-feedback>
                   </div>
                   <b-row>
@@ -77,7 +74,7 @@
   </div>
 </template>
 <script>
-import lang_en from "@/lang/lang_en.json"
+import lang_vn from "@/lang/lang_vn.json"
 import AuthenticationAPI from '@/api/authentication'
 export default {
   data () {
@@ -88,9 +85,10 @@ export default {
       },
       confirmPassword : null,
       click: false,
-      lang_en: lang_en,
+      lang_vn: lang_vn,
       onUpdate: null,
       errorMatch: null,
+      errorLengthPassword: null
     }
   },
   computed: {
@@ -98,21 +96,11 @@ export default {
       return this.checkInfo(this.inputs.phone_number)
     },
     errorNewPassword () {
-      return this.checkInfo(this.inputs.new_pass)
+      return !this.errorLengthPassword && this.checkInfo(this.inputs.new_pass)
     },
     errorconfirmPassword () {
       return this.checkInfo(this.confirmPassword)
     },
-    errorLengthPassword () {
-      if(!this.inputs.new_pass || this.errorNewPassword)
-        return false
-      return (this.inputs.new_pass.length < 6) 
-    },
-    errorLengthconfirmPassword () {
-      if(!this.confirmPassword || this.errorconfirmPassword)
-        return false
-      return (this.confirmPassword.length < 6) 
-    }
   },
   watch: {
     confirmPassword () {
@@ -120,7 +108,12 @@ export default {
     }
   },
   methods: {
-    checkconfirmPassword () {
+    checkLengthPassword () {
+      if(this.errorNewPassword || this.inputs.new_pass.length >= 6)
+        return false
+      return true
+    },
+    checkConfirmPassword () {
       return this.errorconfirmPassword || (this.inputs.new_pass == this.confirmPassword)
     },
     checkInfo (info) {
@@ -132,8 +125,9 @@ export default {
     },
     update () {
       this.click = true
+      this.errorLengthPassword = this.checkLengthPassword()
       let result = this.checkValidate()
-      this.errorMatch = !this.checkconfirmPassword()
+      this.errorMatch = !this.checkConfirmPassword()
       if(result && !this.errorMatch) {
         this.onUpdate = true
         setTimeout(() => {
@@ -147,10 +141,10 @@ export default {
             if(err.response.data.status == 422) {
               message = err.response.data.mess
             } else {
-              message = lang_en.commons.systemError
+              message = lang_vn.commons.systemError
             }
             this.$bvModal.msgBoxOk(message, {
-              title: lang_en.commons.updateFailed,
+              title: lang_vn.commons.updateFailed,
               centered: true,
               size: 'sm',
             })

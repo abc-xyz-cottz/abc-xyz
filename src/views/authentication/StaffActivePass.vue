@@ -18,9 +18,11 @@
                       type="text"
                       class="form-control"
                       placeholder="Nhập số code"
-                      v-model="inputs.code">
+                      v-model="inputs.code"
+                      @keypress="isNumber"
+                      maxlength="4">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorCode">
-                      {{ lang_en.commons.requiredField }}
+                      Vui lòng nhập code
                     </b-form-invalid-feedback>
                   </div>
                   <b-button
@@ -42,7 +44,7 @@
 
 <script>
 import AuthenticationAPI from '@/api/authentication'
-import lang_en from "@/lang/lang_en.json"
+import lang_vn from "@/lang/lang_vn.json"
 export default {
   name: 'ActiveAccount',
   data () {
@@ -53,7 +55,7 @@ export default {
       },
       click: false,
       onConfirm: null,
-      lang_en : lang_en
+      lang_vn : lang_vn
     }
   },
   computed: {
@@ -85,9 +87,9 @@ export default {
               let message = ""
               if (res.data.status == 200) {
                 // show popup success
-                message = lang_en.register.activeAccountSuccess
+                message = "Tài khoản của bạn đã được kích hoạt"
                 this.$bvModal.msgBoxOk(message, {
-                  title: lang_en.register.registerSuccess,
+                  title: "Kích hoạt tài khoản thành công",
                   centered: true,
                   size: 'sm',
                 }).then(res => {
@@ -103,16 +105,25 @@ export default {
             if(err.response.data.status == 422) {
               message = err.response.data.mess
             } else {
-              message = lang_en.commons.systemError
+              message = lang_vn.commons.systemError
             }
             this.$bvModal.msgBoxOk(message, {
-              title: lang_en.commons.updateFailed,
+              title: lang_vn.commons.updateFailed,
               centered: true,
               size: 'sm',
             })
           })
           this.onConfirm = false
         }, 500)
+      }
+    },
+    isNumber (event) {
+      event = (event) ? event : window.event;
+      var charCode = (event.which) ? event.which : event.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        event.preventDefault()
+      } else {
+        return true;
       }
     }
   }

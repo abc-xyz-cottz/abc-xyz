@@ -20,7 +20,7 @@
                       placeholder="Nhập số code"
                       v-model="inputs.code">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorCode">
-                      {{ lang_en.commons.requiredField }}
+                      Vui lòng nhập code
                     </b-form-invalid-feedback>
                   </div>
                   <b-button 
@@ -42,7 +42,7 @@
 
 <script>
 import AuthenticationAPI from '@/api/authentication'
-import lang_en from "@/lang/lang_en.json"
+import lang_vn from "@/lang/lang_vn.json"
 import CustomerApi from '@/api/customer'
 import CustomerMapper from '@/mapper/customer'
 export default {
@@ -55,7 +55,7 @@ export default {
       },
       click: false,
       onConfirm: null,
-      lang_en : lang_en
+      lang_vn : lang_vn
     }
   },
   computed: {
@@ -86,15 +86,14 @@ export default {
               let message = ""
               if (res.data.status == 200) {
                 // show popup success
-                message = lang_en.register.activeAccountSuccess
+                message = "Tài khoản của bạn đã được đăng kí. Nhấn 'OK' để đăng nhập"
                 this.$bvModal.msgBoxOk(message, {
-                  title: lang_en.register.registerSuccess,
+                  title: "Đăng kí thành công",
                   centered: true, 
                   size: 'sm',
                 }).then(res => {
                   if(res) {
                     let inputs = {phone_number: this.$route.params.phone_number, password: this.$route.params.password}
-                    console.log(inputs)
                     CustomerApi.customerLogin(inputs).then(res => {
                       if(res && res.data && res.data.data) {
                         // Store token
@@ -118,10 +117,10 @@ export default {
             if(err.response.data.status == 422) {
               message = err.response.data.mess
             } else {
-              message = lang_en.commons.systemError
+              message = lang_vn.commons.systemError
             }
             this.$bvModal.msgBoxOk(message, {
-              title: lang_en.commons.updateFailed,
+              title: lang_vn.commons.updateFailed,
               centered: true, 
               size: 'sm',
             })
