@@ -17,5 +17,18 @@ export default {
       valueInput = valueInput.replace(/[^0-9-]+/g,'');
     }
     return valueInput
+  },
+
+  /**
+   * Input number 0-9 only
+   */
+  isNumber (event) {
+    event = (event) ? event : window.event;
+    var charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false
+    } else {
+      return true;
+    }
   }
 }

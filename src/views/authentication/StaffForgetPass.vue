@@ -157,6 +157,7 @@ export default {
               title: lang_vn.commons.updateFailed,
               centered: true,
               size: 'sm',
+              headerClass: 'bg-danger',
             })
           })
           this.onUpdate = false

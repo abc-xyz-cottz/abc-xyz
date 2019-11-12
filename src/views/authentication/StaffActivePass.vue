@@ -19,7 +19,7 @@
                       class="form-control"
                       placeholder="Nhập số code"
                       v-model="inputs.code"
-                      @keypress="isNumber"
+                      @keypress="validateCode"
                       maxlength="4">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorCode">
                       Vui lòng nhập code
@@ -45,6 +45,7 @@
 <script>
 import AuthenticationAPI from '@/api/authentication'
 import lang_vn from "@/lang/lang_vn.json"
+import commonFunc from '@/common/commonFunc'
 export default {
   name: 'ActiveAccount',
   data () {
@@ -119,13 +120,10 @@ export default {
         }, 500)
       }
     },
-    isNumber (event) {
-      event = (event) ? event : window.event;
-      var charCode = (event.which) ? event.which : event.keyCode;
-      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+    validateCode (event) {
+      // not number
+      if(!commonFunc.isNumber(event)) {
         event.preventDefault()
-      } else {
-        return true;
       }
     }
   }

@@ -272,6 +272,7 @@ export default {
                 title: "Đăng kí không thành công",
                 centered: true, 
                 size: 'sm',
+                headerClass: 'bg-danger',
               })
             })
             this.onConfirm = false

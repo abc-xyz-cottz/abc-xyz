@@ -19,6 +19,7 @@
                       class="form-control"
                       placeholder="Nhập số code"
                       v-model="inputs.code"
+                      @keypress="validateCode"
                       maxlength="4">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorCode">
                       Vui lòng nhập code
@@ -44,6 +45,7 @@
 <script>
 import AuthenticationAPI from '@/api/authentication'
 import lang_vn from "@/lang/lang_vn.json"
+import commonFunc from '@/common/commonFunc'
 export default {
   name: 'ActiveAccount',
   data () {
@@ -91,6 +93,7 @@ export default {
                   title: lang_vn.register.registerSuccess,
                   centered: true,
                   size: 'sm',
+                  headerClass: 'bg-success',
                 }).then(res => {
                   if(res) {
                     this.$router.push('/customer-login')
@@ -110,10 +113,17 @@ export default {
               title: lang_vn.commons.updateFailed,
               centered: true,
               size: 'sm',
+              headerClass: 'bg-danger',
             })
           })
           this.onConfirm = false
         }, 500)
+      }
+    },
+    validateCode (event) {
+      // not number
+      if(!commonFunc.isNumber(event)) {
+        event.preventDefault()
       }
     }
   }
