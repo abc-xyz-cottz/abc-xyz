@@ -14,40 +14,7 @@
             </b-col>
           </b-row>
           <hr>
-          <b-form @submit.prevent="search">
-              <b-row class="form-row">
-                <b-col md="4">
-                  <label> Tên </label>
-                  <input
-                  id="name"
-                  type="text"
-                  class="form-control">
-                </b-col>
-                <b-col md="4">
-                  <label> Giá </label>
-                  <input
-                  id="price"
-                  type="text"
-                  class="form-control">
-                </b-col>
-                <b-col md="4">
-                  <label> Trạng Thái </label>
-                  <b-form-select
-                  :options="options"
-                  id="status"
-                  type="text"
-                  class="form-control"></b-form-select>
-                </b-col>
-              </b-row>
-              <hr>
-            <b-row class="pull-right mb-3">
-              <b-col>
-                <b-button variant="primary" class="px-4">
-                  Tìm Kiếm
-                </b-button>
-              </b-col>
-            </b-row>
-          </b-form>
+
           <b-table 
           hover
           bordered
@@ -89,10 +56,6 @@ export default {
           label: 'STT'
         },
         {
-          key: 'image',
-          label: 'Hình Ảnh'
-        },
-        {
           key: 'name',
           label: 'Tên'
         },
@@ -111,12 +74,8 @@ export default {
         }
       ],
       items: [
-        {stt: '1',image: 'hình1', name: 'cocacola', price: '30000', status: 'Mở', action: ''},
-        {stt: '1',image: 'hình2', name: '7 up', price: '20000', status: 'Đóng', action: ''}
-      ],
-      options: [
-        {value: '1', text: 'q1'},
-        {value: '1', text: 'q2'}
+        {stt: '1', name: 'cocacola', price: '30000', status: 'Mở', action: ''},
+        {stt: '2',name: '7 up', price: '20000', status: 'Đóng', action: ''}
       ]
     }
   },
@@ -139,10 +98,10 @@ export default {
       })
     },
     edit (id) {
-      this.$router.push('/menu/index/' + id)
+      this.$router.push('/topping/index/' + id)
     },
     goToAdd () {
-      this.$router.push('/menu/index/')
+      this.$router.push('/topping/index/')
     }
   }
 }

@@ -6,6 +6,12 @@
           <b-card-body class="p-4">
             <b-form @submit="save">
               <b-row class="form-row">
+                <b-col md='12'>
+                  <h4 class="mt-2">Staff</h4>
+                </b-col>
+              </b-row>
+              <hr/>
+              <b-row class="form-row">
                 <b-col md="3" class="mt-2">
                   <label> Tên </label><span class="error-sybol"></span>
                 </b-col>

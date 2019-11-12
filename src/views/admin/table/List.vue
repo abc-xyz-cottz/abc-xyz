@@ -139,10 +139,10 @@ export default {
       })
     },
     edit (id) {
-      this.$router.push('/menu/index/' + id)
+      this.$router.push('/table/index/' + id)
     },
     goToAdd () {
-      this.$router.push('/menu/index/')
+      this.$router.push('/table/index/')
     }
   }
 }

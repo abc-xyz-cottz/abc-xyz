@@ -34,7 +34,7 @@ export default {
     logOut () {
       this.$store.commit('removeToken');
       // this.$router.push("/")
-      window.location.replace("/")
+      window.location.replace("/staff-login")
     },
     goToChangePass () {
       this.$router.push('/staff-changepass')
