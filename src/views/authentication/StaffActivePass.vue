@@ -92,6 +92,7 @@ export default {
                   title: "Kích hoạt tài khoản thành công",
                   centered: true,
                   size: 'sm',
+                  headerClass: 'bg-success',
                 }).then(res => {
                   if(res) {
                     this.$router.push('/staff-login')
@@ -111,6 +112,7 @@ export default {
               title: lang_vn.commons.updateFailed,
               centered: true,
               size: 'sm',
+              headerClass: 'bg-danger',
             })
           })
           this.onConfirm = false
