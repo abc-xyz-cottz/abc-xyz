@@ -5,7 +5,7 @@
         <b-card>
           <b-row>
             <b-col md='6'>
-              <h6 class="mt-2">Store Admin</h6>
+              <h4 class="mt-2">Admin Store</h4>
             </b-col>
             <b-col md='6'>
               <b-button variant="primary" class="pull-right px-4" @click="gotoAdd()">
@@ -142,10 +142,10 @@ export default {
       })
     },
     edit (id) {
-      this.$router.push('/supper/store/index/' + id)
+      this.$router.push('/admin-store/index/' + id)
     },
     gotoAdd () {
-      this.$router.push('/supper/store/index/')
+      this.$router.push('/admin-store/index/')
     }
   }
 }
