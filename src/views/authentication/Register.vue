@@ -47,13 +47,8 @@
 
                   <div class="form-group">
                     <label>Ngày Tháng Năm Sinh</label><span class="error-sybol"></span>
-                     <div class='input-group date'>
-                    <date-picker v-model="inputs.birthday" :config="optionsDate">
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
+                    <date-picker input-class="input-date" style="width:100%" class="form-control" v-model="inputs.birthday" :format="customFormatter" :disabledDates="disabledDates">
                     </date-picker>
-                     </div>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorBirthday">
                       Vui lòng nhập ngày sinh
                     </b-form-invalid-feedback>
@@ -140,7 +135,9 @@
 import AuthenticationAPI from '@/api/authentication'
 import lang_vn from "@/lang/lang_vn.json"
 import 'bootstrap/dist/css/bootstrap.css'
-import datePicker from 'vue-bootstrap-datetimepicker'
+// import datePicker from 'vue-bootstrap-datetimepicker'
+import datePicker from 'vuejs-datepicker'
+import moment from 'moment'
 import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css'
 import MasterApi from '@/api/master'
 import MasterMapper from '@/mapper/master'
@@ -176,7 +173,10 @@ export default {
       optionsDate: {
         format: 'MM/DD/YYYY',
         useCurrent: false,
-        viewMode: 'years'
+        // viewMode: 'years'
+      },
+      disabledDates: {
+        from: new Date(Date.now())
       }
     }
   },
@@ -228,6 +228,9 @@ export default {
     }
   },
   methods: {
+    customFormatter(date) {
+      return moment(date).format('DD/MM/YYYY');
+    },
     checkConfirmPass () {
       return this.errorConfirmPassword || (this.inputs.password == this.confirmPassword)
     },
@@ -254,7 +257,6 @@ export default {
             AuthenticationAPI.register(this.inputs).then(res => {
               if(res && res.data && res.data.data) {
                 let id = res.data.data
-                console.log(res)
                 this.$router.push({ name: 'ActiveAccount', params: 
                   { id: id, phone_number: this.inputs.phone_number, password: this.inputs.password }})
               }
