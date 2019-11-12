@@ -82,7 +82,6 @@
 import CustomerApi from '@/api/customer'
 import CustomerMapper from '@/mapper/customer'
 import lang_vn from "@/lang/lang_vn.json"
-import lang_en from "@/lang/lang_en.json"
 import commonFunc from '@/common/commonFunc'
 
 
@@ -100,7 +99,7 @@ export default {
       onShowQRCode: false,
       login: lang_vn.login,
       click: false,
-      lang_en: lang_en,
+      lang_vn: lang_vn,
       phoneNumberCheckFlag: true,
       errorFlag: true,
       errorMess: ""
@@ -151,7 +150,7 @@ export default {
           }).catch(err => {
             let message = ""
             if(err.response.data.status == 500) {
-              message = lang_en.commons.systemError
+              message = lang_vn.commons.systemError
             } else {
               message = err.response.data.mess
             }
