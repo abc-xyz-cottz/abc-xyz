@@ -3,5 +3,6 @@ export const Constant = {
   APP_USR: 'Cusres-Usr',
   ROLE_STAFF: 'STAFF',
   ROLE_ADMIN: 'ADMIN',
-  ROLE_SP_ADMIN: 'SUPER_ADMIN'
+  ROLE_SP_ADMIN: 'SUPER_ADMIN',
+  PAGE_LIMIT: 10
 }

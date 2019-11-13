@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div class="container-fluid">
     <b-row>
       <b-col>
@@ -21,14 +21,16 @@
                   <input
                   id="name"
                   type="text"
-                  class="form-control">
+                  class="form-control"
+                  v-model="inputs.name">
                 </b-col>
                 <b-col md="4">
                   <label> Giá </label>
                   <input
                   id="price"
                   type="text"
-                  class="form-control">
+                  class="form-control"
+                  v-model="inputs.price">
                 </b-col>
                 <b-col md="4">
                   <label> Trạng Thái </label>
@@ -36,13 +38,14 @@
                   :options="options"
                   id="status"
                   type="text"
-                  class="form-control"></b-form-select>
+                  class="form-control"
+                  v-model="inputs.status"></b-form-select>
                 </b-col>
               </b-row>
               <hr>
             <b-row class="pull-right mb-3">
               <b-col>
-                <b-button variant="primary" class="px-4">
+                <b-button variant="primary" class="px-4" :disable="onSearch" @click.prevent="search">
                   Tìm Kiếm
                 </b-button>
               </b-col>
@@ -54,7 +57,7 @@
           stacked="md"
           :fields="fields" 
           :items="items">
-          <template v-slot:cell(actions)="dataId">
+          <template v-slot:cell(action)="dataId">
             <b-list-group horizontal>
               <b-list-group-item v-b-tooltip.hover title="Edit" @click="edit(dataId.value)">
                 <i class="fa fa-edit" />
@@ -65,24 +68,25 @@
             </b-list-group>
           </template>
           </b-table>
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="rows"
-            :per-page="perPage"
-            aria-controls="my-table"
-            size="sm"
-          ></b-pagination>
         </b-card>
       </b-col>
     </b-row>
   </div>
 </template>
 <script>
+import adminAPI from '@/api/admin'
+import Mapper from '@/mapper/menu'
+import {Constant} from '@/common/constant'
+
+
 export default {
   data () {
     return {
-      perPage: '10',
-      currentPage: '1',
+      inputs: {
+        name: null,
+        price: null,
+        status: null
+      },
       fields: [
         {
           key: 'stt',
@@ -105,19 +109,22 @@ export default {
           label: 'Trạng Thái'
         },
         {
-          key: 'actions',
+          key: 'action',
           label: '',
           class: 'actions-cell'
         }
       ],
-      items: [
-        {stt: '1',image: 'hình1', name: 'cocacola', price: '30000', status: 'Mở', action: ''},
-        {stt: '1',image: 'hình2', name: '7 up', price: '20000', status: 'Đóng', action: ''}
-      ],
+      items: [],
       options: [
-        {value: '1', text: 'q1'},
-        {value: '1', text: 'q2'}
-      ]
+        {value: null, text: ''},
+        {value: 'true', text: 'Mở'},
+        {value: 'false', text: 'Đóng'}
+      ],
+      pageLimit: Constant.PAGE_LIMIT,
+      offset: 0,
+      hasNext: true,
+      onSearch: false,
+      loadByScroll: false
     }
   },
   computed: {
@@ -125,7 +132,79 @@ export default {
       return this.items.length
     }
   },
+  mounted() {
+    window.addEventListener('scroll', this.onScroll)
+
+    // Load list when load page
+    this.search()
+  },
   methods: {
+
+    /**
+     *  Processing on scroll: use for paging
+     */
+    onScroll (event) {
+      event.preventDefault()
+      var body = document.body
+      var html = document.documentElement
+      if (window.pageYOffset + window.innerHeight +1 > Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)) {
+        if(this.hasNext) {
+          this.offset = this.offset + 10
+          this.loadByScroll = true
+          this.search ()
+        }
+      }
+    },
+
+    /**
+     *  Search
+     */
+    search() {
+      this.onSearch = true
+      // Define params
+      let param = {
+        "name": this.inputs.name,
+        "price": this.inputs.price,
+        "status": this.inputs.status,
+        "limit": this.pageLimit,
+        "offset": this.offset
+      }
+
+      // Search
+      adminAPI.searchMenu(param).then(res => {
+        if(res != null && res.data != null && res.data.data != null){
+          this.onSearch = true
+           let it = Mapper.mapMenuModelToDto(res.data.data.menus, this.offset)
+
+           // Update items
+          if(this.loadByScroll) {
+            let temp = this.items
+            var newArray = temp.concat(it)
+            this.items = newArray
+          } else {
+            this.items = it
+          }
+          this.loadByScroll = false
+
+          // Check has next
+          if(this.offset + this.pageLimit >= res.data.data.total_row) {
+            this.hasNext = false
+          }
+        }else{
+
+            this.items = []
+        }
+        this.onSearch = false
+      }).catch(err => {
+        console.log(err)
+        this.onSearch = false
+      })
+    },
+
+    /**
+     * Delete
+     * @param id
+     */
     deleted (id) {
       this.$bvModal.msgBoxConfirm('Bạn có muốn xóa sản phẩm này không?', {
         title: false,
@@ -138,9 +217,19 @@ export default {
         }
       })
     },
+
+    /**
+     * Go to page edit
+     * @param id
+     */
     edit (id) {
+      alert(id)
       this.$router.push('/menu/index/' + id)
     },
+
+    /**
+     * Go to page add
+     */
     goToAdd () {
       this.$router.push('/menu/index/')
     }

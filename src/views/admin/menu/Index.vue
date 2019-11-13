@@ -75,8 +75,8 @@ export default {
   data () {
     return {
       options: [
-        {value: '1', text: 'q1'},
-        {value: '1', text: 'q2'}
+        {value: 'true', text: 'Mở'},
+        {value: 'false', text: 'Đóng'}
       ]
     }
   },

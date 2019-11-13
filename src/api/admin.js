@@ -2,10 +2,10 @@ import session from './session'
 import { RootAPI } from './index'
 
 export default {
-    /**
-   * Search role
+  /**
+   * Search menu
    */
-  searchRole (params) {
-    return session.post(RootAPI + 'role/search/'+ params)
+  searchMenu (params) {
+    return session.post(RootAPI + 'menu/search-by-staff/', params)
   },
 }

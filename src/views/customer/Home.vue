@@ -16,9 +16,11 @@
             @sliding-start="onSlideStart"
             @sliding-end="onSlideEnd"
           >
-          <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=58"></b-carousel-slide>
-          <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54"></b-carousel-slide>
-          <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=55"></b-carousel-slide>
+            <b-carousel-slide img-src="https://cdn.grabon.in/gograbon/images/web-images/uploads/1560234440866/Amazon-Gift-Vouchers.jpg"></b-carousel-slide>
+            <b-carousel-slide img-src="https://vinid.net/wp-content/uploads/2019/07/20190717_ViniD_HotDeal_Toco_BannerApp_1920x1080.jpg"></b-carousel-slide>
+            <b-carousel-slide img-src="https://cdn.grabon.in/gograbon/giftbycard/images/product/1532675623472/myntra-gift-card.jpg"></b-carousel-slide>
+            <b-carousel-slide img-src="https://static.lixiapp.com/oc_gallery/2018/01/10/127cb68899871df739787a1b62498175830cb3cf.png"></b-carousel-slide>
+            <b-carousel-slide img-src="https://www.mayfieldlavender.com/wp-content/uploads/2018/03/mayfield-afternoon-tea-voucher-regular-1.png"></b-carousel-slide>
           </b-carousel>
           <b-row>
             <b-col>
