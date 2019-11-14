@@ -19,7 +19,8 @@
                   <input
                   id="name"
                   type="text"
-                  class="form-control">
+                  class="form-control"
+                  v-model="menu.name">
                 </b-col>
               </b-row>
               <b-row class="form-row">
@@ -30,30 +31,33 @@
                   <input
                   id="price"
                   type="text"
-                  class="form-control">
+                  class="form-control"
+                  v-model="menu.price">
                 </b-col>
               </b-row>
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
-                  <label> Trạng Thái </label><span class="error-sybol"></span>
+                  <label> Trạng thái </label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="9">
                   <b-form-select
                   :options="options"      
                   id="status"
                   type="text"
-                  class="form-control"></b-form-select>
+                  class="form-control"
+                  v-model="menu.status"></b-form-select>
                 </b-col>
               </b-row>
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
-                  <label> Hình Ảnh </label><span class="error-sybol"></span>
+                  <label> Hình ảnh </label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="9">
                   <b-form-file
                   id="status"
                   type="text"
-                  class="form-control"></b-form-file>
+                  class="form-control"
+                  v-model="menu.image"></b-form-file>
                 </b-col>
               </b-row>
               <b-row class="text-center mt-3">
@@ -70,20 +74,50 @@
     </b-row>
   </div>
 </template>
+
+
 <script>
+import adminAPI from '@/api/admin'
+import Mapper from '@/mapper/menu'
+
+
 export default {
   data () {
     return {
       options: [
         {value: 'true', text: 'Mở'},
         {value: 'false', text: 'Đóng'}
-      ]
+      ],
+      menu: {
+        "name": null,
+        "price": null,
+        "status": null,
+        "image": null
+      }
     }
   },
+  mounted() {
+    this.getMenuDetail()
+  },
   methods: {
-    save () {
-      
-    }
+    /**
+     * Get menu detail
+     */
+    getMenuDetail() {
+      let menuId = this.$route.params.id
+      if(menuId){
+        adminAPI.getMenuDetail(menuId).then(res => {
+          this.menu = Mapper.mapMenuDetailModelToDto(res.data.data)
+        }).catch(err => {
+          console.log(err)
+        })
+      }
+    },
+
+    /**
+     * Save
+     */
+    save() {}
   }
 }
 </script>

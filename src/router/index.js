@@ -183,8 +183,13 @@ export default new Router({
       component: Menu
     },
     {
-      path: '/menu/index',
+      path: '/menu/add',
       name: 'MenuAdd',
+      component: MenuAdd
+    },
+    {
+      path: '/menu/edit/:id',
+      name: 'MenuEdit',
       component: MenuAdd
     },
     {

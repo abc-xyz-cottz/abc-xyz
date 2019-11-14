@@ -62,7 +62,7 @@
               <b-list-group-item v-b-tooltip.hover title="Edit" @click="edit(dataId.value)">
                 <i class="fa fa-edit" />
               </b-list-group-item>
-              <b-list-group-item v-b-tooltip.hover title="Delete" @click="deleted(dataId.value)">
+              <b-list-group-item v-b-tooltip.hover title="Delete" @click="deleted(dataId.value, dataId.item.name, dataId.item.stt)">
                 <i class="fa fa-trash" />
               </b-list-group-item>
             </b-list-group>
@@ -124,7 +124,8 @@ export default {
       offset: 0,
       hasNext: true,
       onSearch: false,
-      loadByScroll: false
+      loadByScroll: false,
+      numberDeleted: 0
     }
   },
   computed: {
@@ -191,7 +192,6 @@ export default {
             this.hasNext = false
           }
         }else{
-
             this.items = []
         }
         this.onSearch = false
@@ -205,15 +205,23 @@ export default {
      * Delete
      * @param id
      */
-    deleted (id) {
-      this.$bvModal.msgBoxConfirm('Bạn có muốn xóa sản phẩm này không?', {
+    deleted (id, name, rowIndex) {
+      this.$bvModal.msgBoxConfirm('Xóa ' + name + ". Bạn có chắc không?", {
         title: false,
         buttonSize: 'sm',
         centered: true, size: 'sm',
         footerClass: 'p-2'
       }).then(res => {
         if(res){
-          alert('đã xóa')
+          adminAPI.deleteMenu(id).then(res => {
+
+            this.items.splice(rowIndex-1-this.numberDeleted, 1)
+            this.numberDeleted += 1
+          }).catch(err => {
+            console.log(err)
+            this.onSearch = false
+          })
+
         }
       })
     },
@@ -223,15 +231,14 @@ export default {
      * @param id
      */
     edit (id) {
-      alert(id)
-      this.$router.push('/menu/index/' + id)
+      this.$router.push('/menu/edit/' + id)
     },
 
     /**
      * Go to page add
      */
     goToAdd () {
-      this.$router.push('/menu/index/')
+      this.$router.push('/menu/add')
     }
   }
 }

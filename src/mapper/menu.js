@@ -28,4 +28,16 @@ export default {
     }
     return result
   },
+
+  /**
+   * Mapping menu detail to dto
+   */
+  mapMenuDetailModelToDto(menu) {
+    return {
+      "name": menu.fields.name,
+      "price": menu.fields.price,
+      "status": menu.fields.active,
+      "image": menu.fields.image
+    }
+  }
 }
