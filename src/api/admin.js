@@ -21,5 +21,19 @@ export default {
    */
   deleteMenu(menuId) {
     return session.get(RootAPI + 'menu/delete/' + menuId)
-  }
+  },
+
+  /**
+   * Add menu
+   */
+  addMenu (params) {
+    return session.post(RootAPI + 'menu/add', params)
+  },
+
+  /**
+   * Edit menu
+   */
+  editMenu (params) {
+    return session.post(RootAPI + 'menu/update', params)
+  },
 }

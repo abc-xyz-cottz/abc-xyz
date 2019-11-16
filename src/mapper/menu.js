@@ -34,9 +34,10 @@ export default {
    */
   mapMenuDetailModelToDto(menu) {
     return {
+      "id": menu.pk,
       "name": menu.fields.name,
       "price": menu.fields.price,
-      "status": menu.fields.active,
+      "active": menu.fields.active,
       "image": menu.fields.image
     }
   }

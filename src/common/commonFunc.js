@@ -30,5 +30,18 @@ export default {
     } else {
       return true;
     }
-  }
+  },
+
+  /**
+   * Reindex list item
+   */
+  updateIndex(index, listIdDeleted) {
+    let result = index
+    for(var i in listIdDeleted) {
+      if(index > listIdDeleted[i]) {
+        result -= 1
+      }
+    }
+    return result
+  },
 }

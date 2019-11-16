@@ -45,7 +45,7 @@
               <hr>
             <b-row class="pull-right mb-3">
               <b-col>
-                <b-button variant="primary" class="px-4" :disable="onSearch" @click.prevent="search">
+                <b-button variant="primary" class="px-4" :disable="onSearch" @click.prevent="prepareToSearch">
                   Tìm Kiếm
                 </b-button>
               </b-col>
@@ -68,7 +68,12 @@
             </b-list-group>
           </template>
           </b-table>
+
+          <!-- Loading -->
+          <span class="loading-more" v-show="loading"><icon name="loading" width="60" /></span>
+          <span class="loading-more" v-if="hasNext === false">Hết</span>
         </b-card>
+
       </b-col>
     </b-row>
   </div>
@@ -77,6 +82,7 @@
 import adminAPI from '@/api/admin'
 import Mapper from '@/mapper/menu'
 import {Constant} from '@/common/constant'
+import commonFunc from '@/common/commonFunc'
 
 
 export default {
@@ -125,7 +131,8 @@ export default {
       hasNext: true,
       onSearch: false,
       loadByScroll: false,
-      numberDeleted: 0
+      listIdDeleted: [],
+      loading: false
     }
   },
   computed: {
@@ -136,6 +143,8 @@ export default {
   mounted() {
     window.addEventListener('scroll', this.onScroll)
 
+    window.addEventListener('resize', this.delete)
+
     // Load list when load page
     this.search()
   },
@@ -145,6 +154,9 @@ export default {
      *  Processing on scroll: use for paging
      */
     onScroll (event) {
+      if(this.onSearch) {
+        return
+      }
       event.preventDefault()
       var body = document.body
       var html = document.documentElement
@@ -158,10 +170,24 @@ export default {
     },
 
     /**
+     * Prepare to search
+     */
+    prepareToSearch() {
+      this.offset = 0
+      this.items = []
+      this.hasNext = true
+
+      this.search()
+    },
+
+    /**
      *  Search
      */
     search() {
+      if (this.loading) { return }
+
       this.onSearch = true
+      this.loading = true
       // Define params
       let param = {
         "name": this.inputs.name,
@@ -195,15 +221,16 @@ export default {
             this.items = []
         }
         this.onSearch = false
+        this.loading = false
       }).catch(err => {
         console.log(err)
         this.onSearch = false
+        this.loading = false
       })
     },
 
     /**
      * Delete
-     * @param id
      */
     deleted (id, name, rowIndex) {
       this.$bvModal.msgBoxConfirm('Xóa ' + name + ". Bạn có chắc không?", {
@@ -215,20 +242,19 @@ export default {
         if(res){
           adminAPI.deleteMenu(id).then(res => {
 
-            this.items.splice(rowIndex-1-this.numberDeleted, 1)
-            this.numberDeleted += 1
+            // Remove item in list
+            let indexTemp = commonFunc.updateIndex(rowIndex - 1, this.listIdDeleted)
+            this.items.splice(indexTemp, 1)
+            this.listIdDeleted.push(rowIndex - 1)
           }).catch(err => {
             console.log(err)
-            this.onSearch = false
           })
-
         }
       })
     },
 
     /**
      * Go to page edit
-     * @param id
      */
     edit (id) {
       this.$router.push('/menu/edit/' + id)

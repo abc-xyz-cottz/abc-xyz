@@ -35,7 +35,7 @@
                   v-model="menu.price">
                 </b-col>
               </b-row>
-              <b-row class="form-row">
+              <b-row class="form-row" v-if="this.$route.params.id">
                 <b-col md="3" class="mt-2">
                   <label> Trạng thái </label><span class="error-sybol"></span>
                 </b-col>
@@ -45,7 +45,7 @@
                   id="status"
                   type="text"
                   class="form-control"
-                  v-model="menu.status"></b-form-select>
+                  v-model="menu.active"></b-form-select>
                 </b-col>
               </b-row>
               <b-row class="form-row">
@@ -62,7 +62,7 @@
               </b-row>
               <b-row class="text-center mt-3">
                 <b-col>
-                  <b-button variant="primary" class="px-4">
+                  <b-button variant="primary" class="px-4" @click="save">
                     Lưu
                   </b-button>
                 </b-col>
@@ -89,9 +89,10 @@ export default {
         {value: 'false', text: 'Đóng'}
       ],
       menu: {
+        "id": null,
         "name": null,
         "price": null,
-        "status": null,
+        "active": null,
         "image": null
       }
     }
@@ -117,7 +118,42 @@ export default {
     /**
      * Save
      */
-    save() {}
+    save() {
+      let menuId = this.$route.params.id
+      if(menuId){
+        // Edit
+        this.menu.image = "abc.jpg"
+        adminAPI.editMenu(this.menu).then(res => {
+          if(res != null && res.data != null){
+            // Show notify edit success: TODO
+            alert("ok")
+          }else{
+            // Show notify edit fail: TODO
+            alert("fail")
+          }
+        }).catch(err => {
+          console.log(err)
+          // Show notify edit fail: TODO
+          alert("fail")
+        })
+      } else {
+        // Add
+        this.menu.image = "abc.jpg"
+        adminAPI.addMenu(this.menu).then(res => {
+          if(res != null && res.data != null){
+            // Go to list
+            this.$router.push('/menu/list')
+          }else{
+            // Show notify add fail: TODO
+            alert("add fail")
+          }
+        }).catch(err => {
+          console.log(err)
+          // Show notify add fail: TODO
+          alert("add fail")
+        })
+      }
+    }
   }
 }
 </script>

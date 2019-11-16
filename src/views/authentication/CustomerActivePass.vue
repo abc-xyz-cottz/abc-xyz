@@ -65,7 +65,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$route)
   },
   methods: {
     checkInfo (info) {
@@ -82,7 +81,6 @@ export default {
         this.inputs.phone_number = this.$route.params.phone_number
         this.onConfirm = true
         setTimeout(() => {
-          console.log(this.inputs)
           AuthenticationAPI.CustomerActivePass(this.inputs).then(res => {
             if(res && res.data) {
               let message = ""

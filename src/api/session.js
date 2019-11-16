@@ -12,8 +12,7 @@ const session = axios.create({
   timeout: 50000
 });
 
-let token = Cookies.get(TOKEN_NAME);
-console.log(token)
+let token = Cookies.get(TOKEN_NAME)
 if (token) {
 
   session.defaults.headers['token'] = `${token}`
