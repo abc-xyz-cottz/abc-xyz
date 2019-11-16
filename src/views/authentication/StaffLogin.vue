@@ -9,7 +9,7 @@
               <b-card-body>
                 <b-form @submit.prevent="logIn">
                   <h1 class="text-center">
-                    RS
+                    CusRes
                   </h1>
                   <b-form-invalid-feedback  class="invalid-feedback" :state="errorFlag">
                       {{errorMess}}

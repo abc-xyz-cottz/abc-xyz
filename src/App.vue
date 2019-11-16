@@ -5,12 +5,14 @@
       <AppHeader fixed v-if="this.$store.state.user == null">
         <div class="container">
           <b-link class="navbar-brand" to="/">
-            CusRes
+            <span>
+              <i class="fa fa-home fa-2x" />
+            </span>
           </b-link>
-          <a href="/staff-login" class="pull-left white">Nhân Viên</a>
-          <b-navbar-nav class="ml-auto">
-            <a href="/customer-login" class="pull-right white">Đăng Nhập &nbsp; /</a>
-            <a href="/register" class="pull-right white"> &nbsp; Đăng Ký Tài Khoản</a>
+          <a v-if="this.$route.name != 'StaffLogin' && this.$route.name != 'CustomerLogin'" href="/staff-login" class="pull-left white">Nhân Viên</a>
+          <b-navbar-nav class="ml-auto" v-if="this.$route.name != 'StaffLogin' && this.$route.name != 'CustomerLogin'">
+            <a href="/customer-login" class="pull-right white">Đăng Nhập &nbsp; </a>
+            <a href="/register" class="pull-right white" v-if="this.$route.name != 'Register'"> | &nbsp; Đăng Ký Tài Khoản</a>
           </b-navbar-nav>
         </div>
       </AppHeader>
@@ -22,7 +24,9 @@
           :default-open="true"
         />
         <b-link class="navbar-brand" to="/">
-          CusRes
+          <span>
+            <i class="fa fa-home fa-2x" />
+          </span>
         </b-link>
 
         <b-navbar-nav>
