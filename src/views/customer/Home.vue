@@ -1,8 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div class="container">
     <b-card-group>
-      <b-card
-        no-body>
+      <b-card no-body>
         <b-card-body>
           <b-carousel
             id="carousel-1"
@@ -11,22 +10,22 @@
             controls
             indicators
             background="#ababab"
-            img-height="250"
+            img-height="175"
             style="text-shadow: 1px 1px 2px #333;"
             @sliding-start="onSlideStart"
             @sliding-end="onSlideEnd"
           >
-            <b-carousel-slide img-src="https://cdn.grabon.in/gograbon/images/web-images/uploads/1560234440866/Amazon-Gift-Vouchers.jpg"></b-carousel-slide>
-            <b-carousel-slide img-src="https://vinid.net/wp-content/uploads/2019/07/20190717_ViniD_HotDeal_Toco_BannerApp_1920x1080.jpg"></b-carousel-slide>
-            <b-carousel-slide img-src="https://cdn.grabon.in/gograbon/giftbycard/images/product/1532675623472/myntra-gift-card.jpg"></b-carousel-slide>
-            <b-carousel-slide img-src="https://static.lixiapp.com/oc_gallery/2018/01/10/127cb68899871df739787a1b62498175830cb3cf.png"></b-carousel-slide>
-            <b-carousel-slide img-src="https://www.mayfieldlavender.com/wp-content/uploads/2018/03/mayfield-afternoon-tea-voucher-regular-1.png"></b-carousel-slide>
+            <b-carousel-slide img-src="../../static/img/quang-cao/1.jpg"></b-carousel-slide>
+            <b-carousel-slide img-src="../../static/img/quang-cao/2.jpg"></b-carousel-slide>
+            <b-carousel-slide img-src="../../static/img/quang-cao/3.jpg"></b-carousel-slide>
+            <b-carousel-slide img-src="../../static/img/quang-cao/4.jpg"></b-carousel-slide>
+            <b-carousel-slide img-src="../../static/img/quang-cao/5.jpg"></b-carousel-slide>
           </b-carousel>
           <b-row>
-            <b-col>
+            <b-col> <!-- @click="goToWelcome()" -->
               <b-button
                 class="mt-2"
-                @click="goToWelcome()"
+
                 @focus="onShowQRCode = true"
                 @blur="onShowQRCode = false">
                 Quét QR code
@@ -102,7 +101,13 @@
   </div>
 </template>
 <script>
+import { QrcodeStream } from 'vue-qrcode-reader'
+
+
 export default {
+  components: {
+    QrcodeStream
+  },
     data() {
       return {
         optionsCiti: [
@@ -119,41 +124,39 @@ export default {
         selected: '',
         onShowQRCode: false,
         perPage: '10',
-      currentPage: '1',
-      fields: [
-        {
-          key: 'stt',
-          label: 'STT'
-        },
-        {
-          key: 'name',
-          label: 'Tên'
-        },
-        {
-          key: 'citi',
-          label: 'Tỉnh/ Thành Phố'
-        },
-        {
-          key: 'district',
-          label: 'Quận'
-        },
-        {
-          key: 'address',
-          label: 'Địa Chỉ'
-        },
-        {
-          key: 'actions',
-          label: '',
-          class: 'actions-cell'
-        }
-      ],
-      items: [
+        currentPage: '1',
+        fields: [
+          {
+            key: 'stt',
+            label: 'STT'
+          },
+          {
+            key: 'name',
+            label: 'Tên'
+          },
+          {
+            key: 'citi',
+            label: 'Tỉnh/ Thành Phố'
+          },
+          {
+            key: 'district',
+            label: 'Quận'
+          },
+          {
+            key: 'address',
+            label: 'Địa Chỉ'
+          },
+          {
+            key: 'actions',
+            label: '',
+            class: 'actions-cell'
+          }
+        ],
+        items: [
         {stt: '1', name: 'cocacola', citi: 'HN', district: '3', address: 'haha', action: ''},
         {stt: '1', name: 'cocacola', citi: 'HN', district: '3', address: 'haha', action: ''},
       ]
       }
-    },
-    components: {
     },
     computed: {
       rows() {
@@ -168,7 +171,9 @@ export default {
         this.sliding = false
       },
       onDecode (result) {
-        this.code = result
+        this.onShowQRCode = false
+        let url = result.replace("http://localhost:8088", "")
+        this.$router.push(url)
       },
       toBuy () {
         // this.$bvModal.msgBoxOk('Giao dịch thành công!', {
