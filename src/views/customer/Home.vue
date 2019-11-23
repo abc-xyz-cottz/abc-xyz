@@ -22,15 +22,12 @@
             <b-carousel-slide img-src="../../static/img/quang-cao/5.jpg"></b-carousel-slide>
           </b-carousel>
           <b-row>
-            <b-col> <!-- @click="goToWelcome()" -->
+            <b-col>
               <b-button
                 class="mt-2"
-
-                @focus="onShowQRCode = true"
-                @blur="onShowQRCode = false">
+                @click="showPopupQRCode()">
                 Quét QR code
               </b-button>
-              <qrcode-stream v-if="onShowQRCode" @decode="onDecode" class="showQACode" />
               <p class="">(Bạn có thể gọi món hoặc gửi yêu cầu tới nhân viên nhà hàng thông qua quét QR code)
               </p>
             </b-col>
@@ -98,6 +95,15 @@
         </b-card-body>
       </b-card>
     </b-card-group>
+
+    <!-- Modal Scan QR code -->
+    <b-modal hide-header-close no-close-on-backdrop centered hide-footer
+    id="modal-scan"
+    :title='$t("modal.customer.title")'>
+    <qrcode-stream @decode="onDecode" class="showQRCode"/>
+    <b-button class="mt-3" variant="primary" block @click="hidePopupQRCode">Close</b-button>
+    </b-modal>
+
   </div>
 </template>
 <script>
@@ -170,18 +176,20 @@ export default {
       onSlideEnd() {
         this.sliding = false
       },
+
+      /**
+       * Decode QR code
+       */
       onDecode (result) {
         this.onShowQRCode = false
         let url = result.replace("http://localhost:8088", "")
         this.$router.push(url)
       },
+
+      /**
+       * Buy promotion
+       */
       toBuy () {
-        // this.$bvModal.msgBoxOk('Giao dịch thành công!', {
-        //   title: false,
-        //   buttonSize: 'sm',
-        //   centered: true, size: 'sm',
-        //   footerClass: 'p-2'
-        // })
         this.$bvModal.msgBoxOk('Bạn không đủ điểm tại nhà hàng này!', {
           title: false,
           buttonSize: 'sm',
@@ -189,10 +197,22 @@ export default {
           footerClass: 'p-2'
         })
       },
-      // this function will be delete in future
-      goToWelcome () {
-        this.$router.push('/welcome')
-      }
+
+      /**
+       * Event click btn show QR code
+       */
+      showPopupQRCode () {
+        this.onShowQRCode = true
+        this.$bvModal.show('modal-scan')
+      },
+
+      /**
+       * Hide popup scan QR code
+       */
+      hidePopupQRCode () {
+        this.onShowQRCode = false
+        this.$bvModal.hide('modal-scan')
+      },
     }
   }
 </script>
