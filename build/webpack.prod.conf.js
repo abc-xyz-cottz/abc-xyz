@@ -25,6 +25,10 @@ const webpackConfig = merge(baseWebpackConfig, {
       extract: true
     })
   },
+  node: {
+      fs: "empty",
+    tls: "empty"
+    },
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
     path: config.build.assetsRoot,

@@ -46,6 +46,8 @@
 import AuthenticationAPI from '@/api/authentication'
 import lang_vn from "@/lang/lang_vn.json"
 import commonFunc from '@/common/commonFunc'
+
+
 export default {
   name: 'ActiveAccount',
   data () {

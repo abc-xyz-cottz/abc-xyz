@@ -2,7 +2,7 @@
     <div class="container">
       <b-card no-body>
       <b-card-body class="welcome-page">
-         <b-form @submit.prevent="send">
+         <!--<b-form>-->
             <b-row>
               <b-col>
                 <b-table 
@@ -35,14 +35,16 @@
             </b-row>
             <b-row>
               <b-col cols="12" class="mt-3">
-                <button class="btn btn-primary pull-right  px-4">
+                <button class="btn btn-primary pull-right  px-4" @click="sendOrder">
                     Đặt Món
                 </button>
               </b-col>
             </b-row>
-         </b-form>
+         <!--</b-form>-->
       </b-card-body>
       </b-card>
+
+      <!-- Modal -->
       <b-modal id="modal-order" title="Thông Báo">
         <p>Đặt món thành công!</p>
         <p>Đăng ký tài khoản để tích điểm và nhận nhiều khuyến mãi từ nhà hàng</p>
@@ -57,6 +59,8 @@
     </div>
 </template>
 <script>
+import CustomerAPI from '@/api/customer'
+
 export default {
   data () {
     return {
@@ -104,12 +108,49 @@ export default {
         {stt: '2', image: 'a2', name: '7 up', price: '30000', action: ''},
         {stt: '1', image: 'a1', name: 'cocacola', price: '30000', action: ''},
         {stt: '2', image: 'a2', name: '7 up', price: '30000', action: ''},
-      ]
+      ],
+      socket: null,
+      connected: false
     }
   },
+
+  mounted() {
+    let storeId = 1 // this.$route.params.sid
+    this.socket = new WebSocket(
+      'ws://127.0.0.1:8000/join-group/' + storeId)
+
+    this.socket.onopen = event => {
+        console.log('connected')
+        this.connected = true
+        // this.socket.send({})
+    }
+
+    this.socket.onmessage = event => {
+      alert("mess den")
+      var json_data = JSON.parse(event.data)
+      this.dataSet = json_data.text
+      console.log(json_data.text)
+      alert(json_data.text)
+    }
+
+    this.socket.onclose = event => {
+      this.connected = false
+    }
+
+  },
+
   methods: {
-    send () {
-      this.$bvModal.show('modal-order')
+    sendOrder () {
+      // alert("send order start")
+      // this.$bvModal.show('modal-order')
+      CustomerAPI.sendOrder().then(res => {
+        console.log(JSON.parse(res))
+      }).catch(err => {
+        console.log(err)
+
+      })
+      // this.socket.send({"abc": "xyz"})
+      // alert("send order end")
     },
     countDownt (num) {
       this.counter -= 1

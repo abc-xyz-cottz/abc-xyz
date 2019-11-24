@@ -35,5 +35,12 @@ export default {
    */
   getOptionLevel () {
     return session.get(RootAPI + 'membershiptype/list')
+  },
+
+  /**
+   * Customer send order
+   */
+  sendOrder () {
+    return session.post(RootAPI + 'customer/send-order')
   }
 }
