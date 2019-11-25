@@ -96,24 +96,30 @@ export default {
     this.storeId = this.$route.params.sid
     this.tableId = this.$route.params.tid
 
-    var socket = new WebSocket(
-        'ws://127.0.0.1:8000/join-group/' + this.$route.params.sid)
+    // Store store
+    this.$store.commit('updateStore', this.$route.params.sid)
 
-    socket.onopen = event => {
-        console.log('connected')
-        this.connected = true
-        socket.send({})
-    }
+    // Store table
+    this.$store.commit('updateTable', this.$route.params.tid)
 
-    socket.onmessage = event => {
-      var json_data = JSON.parse(event.data)
-      this.dataSet = json_data.text
-      console.log(json_data.text)
-    }
-
-    socket.onclose = event => {
-      this.connected = false
-    }
+    // var socket = new WebSocket(
+    //     'ws://127.0.0.1:8000/join-group/' + this.$route.params.sid)
+    //
+    // socket.onopen = event => {
+    //     console.log('connected')
+    //     this.connected = true
+    //     socket.send({})
+    // }
+    //
+    // socket.onmessage = event => {
+    //   var json_data = JSON.parse(event.data)
+    //   this.dataSet = json_data.text
+    //   console.log(json_data.text)
+    // }
+    //
+    // socket.onclose = event => {
+    //   this.connected = false
+    // }
   },
 
   methods: {
@@ -122,7 +128,7 @@ export default {
      */
     goToOrder () {
       this.$router.push({params:{sid:this.storeId}})
-      this.$router.push('/order')
+      this.$router.push('/menu')
     },
 
     /**

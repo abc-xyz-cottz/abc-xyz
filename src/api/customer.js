@@ -40,7 +40,14 @@ export default {
   /**
    * Customer send order
    */
-  sendOrder () {
-    return session.post(RootAPI + 'customer/send-order')
+  sendOrder (listOrder) {
+    return session.post(RootAPI + 'customer/send-order', listOrder)
+  },
+
+  /**
+   * Get list menu
+   */
+  getMenu(storeId) {
+    return session.get(RootAPI + 'menu/customer/' + storeId)
   }
 }

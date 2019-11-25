@@ -2,8 +2,6 @@ export default {
 
   /**
    * Mapping menu model to dto
-   * @param menus
-   * @returns {Array}
    */
   mapMenuModelToDto(menus, offset) {
     let result = []
@@ -40,5 +38,27 @@ export default {
       "active": menu.fields.active,
       "image": menu.fields.image
     }
-  }
+  },
+
+  /**
+   * Mapping menu for customer model to dto
+   */
+  mapCustomerMenuModelToDto(menus) {
+    let result = []
+
+    var stt = 0
+    for (var index in menus) {
+      stt = stt + 1
+
+      let menuTemp = {
+        stt: stt
+        , image: menus[index].fields.image
+        , name: menus[index].fields.name
+        , price: menus[index].fields.price
+        , action: stt
+      }
+      result.push(menuTemp)
+    }
+    return result
+  },
 }

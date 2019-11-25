@@ -1,107 +1,124 @@
 <template>
   <div class="container-fluid">
-    <b-row>
-      <b-col>
-        <b-card>
-          <b-row>
-            <b-col md='6'>
-              <h6 class="mt-2">Admin</h6>
-            </b-col>
+    <div>
+      <b-row class="form-row">
+        <b-col md='12'>
+          <h4 class="mt-2">Quản lý order</h4>
+        </b-col>
+      </b-row>
+      <hr/>
+        <b-tabs content-class="mt-3">
+            <!-- First tab -->
+            <b-tab title="Orders" active>
+                <div  v-for="(item, index) in firstItems" :key="item.table + index">
+                    <b-row class="border border-dark mt-4 mess">
+                        <h4>{{item.table}}</h4>
+                        <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
+                        <b-col class="col-6">
+                            <div class="is-left">
+                                <b-button class="btn-danger pull-right ml-3 px-4" @click="cancel(index)">
+                                    Hủy
+                                </b-button>
+                            </div>
+                        </b-col>
+                        <b-col class="col-6">
+                            <div class="text-right">
+                                <b-button class="btn-primary pull-right ml-3 px-4" @click="confirm(index)">
+                                    Xác nhận
+                                </b-button>
+                            </div>
+                        </b-col>
+                    </b-row>
+                </div>
+            </b-tab>
 
-          </b-row>
-          <hr/>
-          <b-row>
-            <b-col>
-              <b-button variant="primary" class="pull-center px-4" @click="goToToppingList()">
-                Quản lý topping
-              </b-button>
-            </b-col>
-          </b-row>
-          <br>
-          <b-row>
-            <b-col>
-              <b-button variant="primary" class="pull-center px-4" @click="goToMenuList()">
-                Quản lý menu
-              </b-button>
-            </b-col>
-          </b-row>
-          <br>
-          <b-row>
-            <b-col>
-              <b-button variant="primary" class="pull-center px-4" @click="goToStaffList()">
-                Quản lý nhân viên
-              </b-button>
-            </b-col>
-          </b-row>
-          <br>
-          <b-row>
-            <b-col>
-              <b-button variant="primary" class="pull-center px-4" @click="goToPmtList()">
-                Quản lý khuyến mãi
-              </b-button>
-            </b-col>
-          </b-row>
-          <br>
-          <b-row>
-            <b-col>
-              <b-button variant="primary" class="pull-center px-4" @click="goToTableList()">
-                Quản lý bàn ăn
-              </b-button>
-            </b-col>
-          </b-row>
-          <br>
-          <b-row>
-            <b-col>
-              <b-button variant="primary" class="pull-center px-4" @click="goToSetting()">
-                Quản lý cấu hình
-              </b-button>
-            </b-col>
-          </b-row>
-          <br>
-          <b-row>
-            <b-col>
-              <b-button variant="primary" class="pull-center px-4" @click="goToPrintQrCode()">
-                In QR code
-              </b-button>
-            </b-col>
-          </b-row>
-          <br>
+            <!-- Second tab -->
+            <b-tab title="Đã xác nhận">
+                <div  v-for="item in secondItems" :key="item.table">
+                    <b-row class="border border-dark mt-4 mess">
+                        <h4>{{item.table}}</h4>
+                        <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
+                    </b-row>
+                </div>
+            </b-tab>
 
-        </b-card>
-      </b-col>
-    </b-row>
+            <!-- Third tab -->
+            <b-tab title="Đã hủy">
+                <div  v-for="item in thirdItems" :key="item.table">
+                    <b-row class="border border-dark mt-4 mess">
+                        <h4>{{item.table}}</h4>
+                        <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
+                    </b-row>
+                </div>
+            </b-tab>
+        </b-tabs>
+    </div>
   </div>
 </template>
 <script>
+import Cookies from 'js-cookie'
+import {Constant} from '@/common/constant'
+
+
 export default {
   data () {
     return {
+      firstItems: [
+      ],
+      secondItems: [],
+      thirdItems: []
     }
   },
   computed: {
   },
+  mounted() {
+    let user = JSON.parse(Cookies.get(Constant.APP_USR))
+    let storeId = user.storeId
+
+    var socket = new WebSocket(
+        'ws://127.0.0.1:8000/join-group/' + storeId)
+
+    socket.onopen = event => {
+        console.log('connected')
+        this.connected = true
+        socket.send({})
+    }
+
+    socket.onmessage = event => {
+      var json_data = JSON.parse(event.data)
+      this.dataSet = json_data.text
+      console.log(json_data.text)
+      this.firstItems.push(json_data.text)
+      // alert(JSON.stringify(json_data.text))
+    }
+
+    socket.onclose = event => {
+      this.connected = false
+    }
+  },
   methods: {
-    goToToppingList () {
-      this.$router.push('/topping/list')
+     /**
+     * Confirm
+     */
+    confirm(index) {
+    this.secondItems.push(this.firstItems[index])
+    this.firstItems.splice(index, 1)
     },
-    goToMenuList () {
-      this.$router.push('/menu/list')
-    },
-    goToStaffList () {
-      this.$router.push('/staff/list')
-    },
-    goToPmtList () {
-      this.$router.push('/promo/list')
-    },
-    goToTableList () {
-      this.$router.push('/table/list')
-    },
-    goToSetting () {
-      this.$router.push('/setting')
-    },
-    goToPrintQrCode () {
-      this.$router.push('/print-qr-code')
+
+    /**
+     * Cancel
+     */
+    cancel(index) {
+    this.thirdItems.push(this.firstItems[index])
+    this.firstItems.splice(index, 1)
     }
   }
 }
 </script>
+
+<style lang="scss">
+.mess {
+    background-color: white
+
+}
+</style>

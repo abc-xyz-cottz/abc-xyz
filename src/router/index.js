@@ -129,7 +129,7 @@ export default new Router({
       component: Welcome
     },
     {
-      path: '/order',
+      path: '/menu',
       name: 'Order',
       component: Order
     },
