@@ -12,7 +12,7 @@
             <b-tab title="Orders" active>
                 <div  v-for="(item, index) in firstItems" :key="item.table + index">
                     <b-row class="border border-dark mt-4 mess">
-                        <h4>{{item.table}}</h4>
+                        <h4>{{item.table}}, Tổng thành tiền: {{item.totalPrice}}</h4>
                         <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
                         <b-col class="col-6">
                             <div class="is-left">
@@ -23,7 +23,7 @@
                         </b-col>
                         <b-col class="col-6">
                             <div class="text-right">
-                                <b-button class="btn-primary pull-right ml-3 px-4" @click="confirm(index)">
+                                <b-button class="btn-primary pull-right ml-3 px-4" @click="confirm(index, item.orderId)">
                                     Xác nhận
                                 </b-button>
                             </div>
@@ -58,6 +58,7 @@
 <script>
 import Cookies from 'js-cookie'
 import {Constant} from '@/common/constant'
+import adminAPI from '@/api/admin'
 
 
 export default {
@@ -100,9 +101,12 @@ export default {
      /**
      * Confirm
      */
-    confirm(index) {
-    this.secondItems.push(this.firstItems[index])
-    this.firstItems.splice(index, 1)
+    confirm(index, orderId) {
+      this.secondItems.push(this.firstItems[index])
+      this.firstItems.splice(index, 1)
+
+       // Update order status to db
+
     },
 
     /**
