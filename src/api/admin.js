@@ -41,6 +41,6 @@ export default {
    * Update order status
    */
   updateOrderStatus(params) {
-    return session.post(RootAPI + 'menu/update', params)
+    return session.post(RootAPI + 'staff/update-order-status', params)
   }
 }

@@ -16,7 +16,7 @@
                         <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
                         <b-col class="col-6">
                             <div class="is-left">
-                                <b-button class="btn-danger pull-right ml-3 px-4" @click="cancel(index)">
+                                <b-button class="btn-danger pull-right ml-3 px-4" @click="cancel(index, item.orderId)">
                                     Hủy
                                 </b-button>
                             </div>
@@ -106,15 +106,28 @@ export default {
       this.firstItems.splice(index, 1)
 
        // Update order status to db
-
+       let orderInfo = {"id": orderId, "status": Constant.ORDER_APPROVED}
+      adminAPI.updateOrderStatus(orderInfo).then(res => {
+        alert("ok")
+      }).catch(err => {
+        console.log(err)
+      })
     },
 
     /**
      * Cancel
      */
-    cancel(index) {
-    this.thirdItems.push(this.firstItems[index])
-    this.firstItems.splice(index, 1)
+    cancel(index, orderId) {
+      this.thirdItems.push(this.firstItems[index])
+      this.firstItems.splice(index, 1)
+
+      // Update order status to db
+      let orderInfo = {"id": orderId, "status": Constant.ORDER_CANCELED}
+      adminAPI.updateOrderStatus(orderInfo).then(res => {
+        alert("ok")
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }
