@@ -78,6 +78,7 @@
   </div>
 </template>
 <script>
+import adminAPI from '@/api/admin'
 export default {
   data () {
     return {
@@ -117,13 +118,21 @@ export default {
       items: [
         {stt: '1', name: 'cocacola', phone: '30000', permission: 'Mở',createDate: '2019/10/12', action: ''},
         {stt: '1', name: '7 up', phone: '30000', permission: 'Mở',createDate: '2019/10/12', action: ''}
-      ]
+      ],
+      inputs: {
+        name: '',
+        phone: '',
+        role: ''
+      },
     }
   },
   computed: {
     rows() {
       return this.items.length
     }
+  },
+  mounted() {
+    this.search()
   },
   methods: {
     deleted (id) {
@@ -139,6 +148,19 @@ export default {
     },
     gotoAdd () {
       this.$router.push('/staff/index/')
+    },
+    search () {
+      let param = {
+        "name": this.inputs.name,
+        "phone_number": this.inputs.phone,
+        "role_id": this.inputs.role,
+        "store_name": this.$store.state.user.storeId
+      }
+      
+      adminAPI.searchStaff().then(res => {
+        console.log(res)
+        // this.optionsCity = MasterMapper.mapCityModelToDto(res.data.data)
+      })
     }
   }
 }

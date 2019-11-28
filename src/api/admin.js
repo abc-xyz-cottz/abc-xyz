@@ -42,5 +42,12 @@ export default {
    */
   updateOrderStatus(params) {
     return session.post(RootAPI + 'staff/update-order-status', params)
+  },
+
+  /**
+   * Get staff list
+   */
+  getStaffList() {
+    return session.get(RootAPI + 'staff/search/?limit=10&offset=0')
   }
 }
