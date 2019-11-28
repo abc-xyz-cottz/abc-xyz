@@ -203,6 +203,11 @@ export default new Router({
       component: StaffAdd
     },
     {
+      path: '/staff/index/:id',
+      name: 'StaffAdd',
+      component: StaffAdd
+    },
+    {
       path: '/promo/list',
       name: 'Promo',
       component: Promo

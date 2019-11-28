@@ -9,5 +9,36 @@ export default {
       storeId: staff.fields.store_id,
       userType: "staff",
     }
-  }
+  },
+  mapStaffModelSearchToDto (staffs, offset) {
+    let result = []
+
+    var stt = offset
+    for (var index in staffs) {
+      stt = stt + 1
+
+      let staffTemp = {
+        stt: stt
+        , name: staffs[index].fields.name
+        , phone: staffs[index].fields.phone_number
+        , permission: staffs[index].fields.role_name
+        , createDate: staffs[index].fields.created_at
+        , id: staffs[index].pk
+      }
+      result.push(staffTemp)
+    }
+    return result
+  },
+
+  /**
+   * Mapping staff detail to dto
+   */
+  mapStaffDetailModelToDto(staff) {
+    return {
+      "id": staff.pk,
+      "name": staff.fields.name,
+      "phone_number": staff.fields.phone_number,
+      "role_id": staff.fields.role_id,
+    }
+  },
 }

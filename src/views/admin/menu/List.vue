@@ -201,7 +201,7 @@ export default {
       adminAPI.searchMenu(param).then(res => {
         if(res != null && res.data != null && res.data.data != null){
           this.onSearch = true
-           let it = Mapper.mapMenuModelToDto(res.data.data.menus, this.offset)
+          let it = Mapper.mapMenuModelToDto(res.data.data.menus, this.offset)
 
            // Update items
           if(this.loadByScroll) {

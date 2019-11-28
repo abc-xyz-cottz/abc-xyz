@@ -21,14 +21,16 @@
                   <input
                   id="name"
                   type="text"
-                  class="form-control">
+                  class="form-control"
+                  v-model="inputs.name">
                 </b-col>
                 <b-col md="4">
                   <label> Số Điện Thoại </label>
                   <input
                   id="phone"
                   type="text"
-                  class="form-control">
+                  class="form-control"
+                  v-model="inputs.phone">
                 </b-col>
                 <b-col md="4">
                   <label> Quyền </label>
@@ -36,13 +38,14 @@
                   id="permision"
                   :options="options"
                   type="text"
-                  class="form-control"></b-form-select>
+                  class="form-control"
+                  v-model="inputs.role"></b-form-select>
                 </b-col>
               </b-row>
               <hr>
             <b-row class="pull-right mb-3">
               <b-col>
-                <b-button variant="primary" class="px-4">
+                <b-button variant="primary" class="px-4" :disable="onSearch" @click.prevent="prepareToSearch">
                   Tìm Kiếm
                 </b-button>
               </b-col>
@@ -56,22 +59,18 @@
           :items="items">
           <template v-slot:cell(actions)="dataId">
             <b-list-group horizontal>
-              <b-list-group-item v-b-tooltip.hover title="Edit" @click="edit(dataId.value)">
+              <b-list-group-item v-b-tooltip.hover title="Edit" @click="edit(dataId.item.id)">
                 <i class="fa fa-edit" />
               </b-list-group-item>
-              <b-list-group-item v-b-tooltip.hover title="Delete" @click="deleted(dataId.value)">
+              <b-list-group-item v-b-tooltip.hover title="Delete" @click="deleted(dataId.item.id)">
                 <i class="fa fa-trash" />
               </b-list-group-item>
             </b-list-group>
           </template>
           </b-table>
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="rows"
-            :per-page="perPage"
-            aria-controls="my-table"
-            size="sm"
-          ></b-pagination>
+          <!-- Loading -->
+          <span class="loading-more" v-show="loading"><icon name="loading" width="60" /></span>
+          <span class="loading-more" v-if="hasNext === false">Hết</span>
         </b-card>
       </b-col>
     </b-row>
@@ -79,6 +78,8 @@
 </template>
 <script>
 import adminAPI from '@/api/admin'
+import Mapper from '@/mapper/staff'
+import {Constant} from '@/common/constant'
 export default {
   data () {
     return {
@@ -115,15 +116,18 @@ export default {
           class: 'actions-cell'
         }
       ],
-      items: [
-        {stt: '1', name: 'cocacola', phone: '30000', permission: 'Mở',createDate: '2019/10/12', action: ''},
-        {stt: '1', name: '7 up', phone: '30000', permission: 'Mở',createDate: '2019/10/12', action: ''}
-      ],
+      items: [],
       inputs: {
         name: '',
         phone: '',
         role: ''
       },
+      loadByScroll: false,
+      onSearch: false,
+      hasNext: true,
+      loading: false,
+      pageLimit: Constant.PAGE_LIMIT,
+      offset: 0,
     }
   },
   computed: {
@@ -132,9 +136,37 @@ export default {
     }
   },
   mounted() {
+    window.addEventListener('scroll', this.onScroll)
     this.search()
   },
   methods: {
+    onScroll (event) {
+      if(this.onSearch) {
+        return
+      }
+      event.preventDefault()
+      var body = document.body
+      var html = document.documentElement
+      if (window.pageYOffset + window.innerHeight +1 > Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)) {
+        if(this.hasNext) {
+          this.offset = this.offset + 10
+          this.loadByScroll = true
+          this.search ()
+        }
+      }
+    },
+
+    /**
+     * Prepare to search
+     */
+    prepareToSearch() {
+      this.offset = 0
+      this.items = []
+      this.hasNext = true
+
+      this.search()
+    },
+
     deleted (id) {
       this.$bvModal.msgBoxConfirm('Bạn có muốn xóa không?', {
         title: false,
@@ -144,22 +176,53 @@ export default {
       })
     },
     edit (id) {
+      console.log(id)
       this.$router.push('/staff/index/' + id)
     },
     gotoAdd () {
       this.$router.push('/staff/index/')
     },
     search () {
-      let param = {
+      if (this.loading) { return }
+
+      this.onSearch = true
+      this.loading = true
+
+      let req = {
         "name": this.inputs.name,
         "phone_number": this.inputs.phone,
         "role_id": this.inputs.role,
-        "store_name": this.$store.state.user.storeId
+        "store_name": "store ".concat(this.$store.state.user.storeId)
       }
       
-      adminAPI.searchStaff().then(res => {
-        console.log(res)
-        // this.optionsCity = MasterMapper.mapCityModelToDto(res.data.data)
+      adminAPI.searchStaff(req).then(res => {
+        if (res != null && res.data != null && res.data.data != null) {
+
+          let it = Mapper.mapStaffModelSearchToDto(res.data.data.staffs, this.offset)
+
+          // Update items
+          if(this.loadByScroll) {
+            let temp = this.items
+            var newArray = temp.concat(it)
+            this.items = newArray
+          } else {
+            this.items = it
+          }
+          this.loadByScroll = false
+
+          // Check has next
+          if(this.offset + this.pageLimit >= res.data.data.total_row) {
+            this.hasNext = false
+          }
+        } else {
+          this.items = []
+        }
+          this.onSearch = false
+          this.loading = false
+        }).catch(err => {
+          console.log(err)
+          this.onSearch = false
+          this.loading = false
       })
     }
   }

@@ -45,9 +45,30 @@ export default {
   },
 
   /**
-   * Get staff list
+   * Search staff
    */
-  getStaffList() {
-    return session.get(RootAPI + 'staff/search/?limit=10&offset=0')
-  }
+  searchStaff(req) {
+    return session.post(RootAPI + 'staff/search/?limit=10&offset=0', req)
+  },
+
+  /**
+   * Add staff
+   */
+  addStaff(req) {
+    return session.post(RootAPI + 'staff/add', req)
+  },
+
+  /**
+   * Edit staff
+   */
+  editStaff(req) {
+    return session.post(RootAPI + 'staff/update', req)
+  },
+
+  /**
+   * Get staff detail
+   */
+  getStaffDetail(staffId) {
+    return session.get(RootAPI + 'staff/' + staffId)
+  },
 }
