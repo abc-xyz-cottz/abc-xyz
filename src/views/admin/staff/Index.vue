@@ -88,7 +88,7 @@ export default {
         "name": null,
         "phone_number": null,
         "role_id": null,
-        "password": '123456'
+        "password": null
       }
     }
   },
