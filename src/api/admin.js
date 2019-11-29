@@ -71,4 +71,46 @@ export default {
   getStaffDetail(staffId) {
     return session.get(RootAPI + 'staff/' + staffId)
   },
+
+  /**
+   * Delete staff
+   */
+  deleteStaff(staffId) {
+    return session.get(RootAPI + 'staff/delete/' + staffId)
+  },
+
+  /**
+   * Get promotion list
+   */
+  getPromoList() {
+    return session.get(RootAPI + 'promotion/staff')
+  },
+  
+  /**
+   * Delete promtion
+   */
+  deletePromo(promoId) {
+    return session.get(RootAPI + 'promotion/delete/' + promoId)
+  },
+
+  /**
+   * Get promotion detail
+   */
+  getPromoDetail(staffId) {
+    return session.get(RootAPI + 'promotion/' + staffId + '/staff')
+  },
+
+  /**
+   * Edit promo
+   */
+  editPromo(req) {
+    return session.post(RootAPI + 'promotion/update', req)
+  },
+
+  /**
+   * Add promo
+   */
+  addPromo(req) {
+    return session.post(RootAPI + 'promotion/add', req)
+  },
 }

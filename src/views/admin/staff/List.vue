@@ -62,7 +62,7 @@
               <b-list-group-item v-b-tooltip.hover title="Edit" @click="edit(dataId.item.id)">
                 <i class="fa fa-edit" />
               </b-list-group-item>
-              <b-list-group-item v-b-tooltip.hover title="Delete" @click="deleted(dataId.item.id)">
+              <b-list-group-item v-b-tooltip.hover title="Delete" @click="deleted(dataId.item.id, dataId.item.name, dataId.item.stt)">
                 <i class="fa fa-trash" />
               </b-list-group-item>
             </b-list-group>
@@ -80,6 +80,7 @@
 import adminAPI from '@/api/admin'
 import Mapper from '@/mapper/staff'
 import {Constant} from '@/common/constant'
+import commonFunc from '@/common/commonFunc'
 export default {
   data () {
     return {
@@ -128,6 +129,7 @@ export default {
       loading: false,
       pageLimit: Constant.PAGE_LIMIT,
       offset: 0,
+      listIdDeleted: [],
     }
   },
   computed: {
@@ -167,16 +169,26 @@ export default {
       this.search()
     },
 
-    deleted (id) {
-      this.$bvModal.msgBoxConfirm('Bạn có muốn xóa không?', {
+    deleted (id, name, rowIndex) {
+      this.$bvModal.msgBoxConfirm('Xóa ' + name + ". Bạn có chắc không?", {
         title: false,
         buttonSize: 'sm',
         centered: true, size: 'sm',
         footerClass: 'p-2'
+      }).then(res => {
+        if(res){
+          adminAPI.deleteStaff(id).then(res => {
+            // Remove item in list
+            let indexTemp = commonFunc.updateIndex(rowIndex - 1, this.listIdDeleted)
+            this.items.splice(indexTemp, 1)
+            this.listIdDeleted.push(rowIndex - 1)
+          }).catch(err => {
+            console.log(err)
+          })
+        }
       })
     },
     edit (id) {
-      console.log(id)
       this.$router.push('/staff/index/' + id)
     },
     gotoAdd () {

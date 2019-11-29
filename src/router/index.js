@@ -223,6 +223,11 @@ export default new Router({
       component: PromoAdd
     },
     {
+      path: '/promo/index/:id',
+      name: 'PromoAdd',
+      component: PromoAdd
+    },
+    {
       path: '/table/list',
       name: 'Table',
       component: Table

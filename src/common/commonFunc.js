@@ -44,4 +44,16 @@ export default {
     }
     return result
   },
+
+  /**
+   * Calculate date
+   */
+  calculateDate(date) {
+    let result = date.substring(0, 10)
+    result = new Date(result)
+    var present_date = new Date()
+    let now = new Date()
+    let day = new Date(result.getTime() - now.getTime())
+    return Math.floor(day / (1000 * 60 * 60 * 24))
+  },
 }
