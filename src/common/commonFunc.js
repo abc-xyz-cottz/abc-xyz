@@ -56,4 +56,12 @@ export default {
     let day = new Date(result.getTime() - now.getTime())
     return Math.floor(day / (1000 * 60 * 60 * 24))
   },
+
+  /**
+   * Format date
+   */
+  formatDate(date) {
+    let result = date.substring(0, 10)
+    return result
+  },
 }

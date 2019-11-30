@@ -27,6 +27,7 @@
     "font-awesome": "^4.7.0",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
+    "moment": "^2.24.0",
     "pc-bootstrap4-datetimepicker": "^4.17.50",
     "qrcode.vue": "^1.6.2",
     "socket.io-client": "^2.3.0",

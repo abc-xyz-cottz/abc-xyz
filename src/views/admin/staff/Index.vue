@@ -21,6 +21,9 @@
                   type="text"
                   class="form-control"
                   v-model="staff.name">
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorName">
+                    Vui lòng nhập tên
+                  </b-form-invalid-feedback>
                 </b-col>
               </b-row>
               <b-row class="form-row">
@@ -33,6 +36,9 @@
                   type="text"
                   class="form-control"
                   v-model="staff.phone_number">
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
+                    Vui lòng nhập số điện thoại
+                  </b-form-invalid-feedback>
                 </b-col>
               </b-row>
               <b-row class="form-row">
@@ -46,6 +52,9 @@
                   type="text"
                   class="form-control"
                   v-model="staff.role_id"></b-form-select>
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorRole">
+                    Vui lòng nhập quyền
+                  </b-form-invalid-feedback>
                 </b-col>
               </b-row>
               <b-row class="form-row">
@@ -58,6 +67,9 @@
                   type="text"
                   class="form-control"
                   v-model="staff.password">
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPassword">
+                    Vui lòng nhập mật khẩu
+                  </b-form-invalid-feedback>
                 </b-col>
               </b-row>
               <b-row class="text-center mt-3">
@@ -89,16 +101,34 @@ export default {
         "phone_number": null,
         "role_id": null,
         "password": null
-      }
+      },
+      click: false,
     }
   },
   mounted() {
     this.getStaffDetail()
   },
+  computed: {
+    errorName: function () {
+      return this.checkInfo(this.staff.name)
+    },
+    errorPhone: function () {
+      return this.checkInfo(this.staff.phone_number)
+    },
+    errorRole: function () {
+      return this.checkInfo(this.staff.role_id)
+    },
+    errorPassword: function () {
+      return this.checkInfo(this.staff.password)
+    }
+  },
   methods: {
-    /**
-     * Get staff detail
-     */
+    checkInfo (info) {
+      return (this.click && (info == null || info.length <= 0))
+    },
+    checkValidate () {
+      return !(this.errorName || this.errorPhone || this.errorRole || this.errorPassword)
+    },
     getStaffDetail() {
       let staffId = this.$route.params.id
       if(staffId){
@@ -109,41 +139,79 @@ export default {
         })
       }
     },
-
-
     save () {
-      let staffId = this.$route.params.id
-      if(staffId){
-        // Edit
-        adminAPI.editStaff(this.staff).then(res => {
-          if(res != null && res.data != null){
-            // Show notify edit success: TODO
-            alert("ok")
-          }else{
+      this.click = true
+      let result = this.checkValidate()
+      if(result) { 
+        let staffId = this.$route.params.id
+        if(staffId){
+          // Edit
+          adminAPI.editStaff(this.staff).then(res => {
+            if(res != null && res.data != null){
+              let message = ""
+              if (res.data.status == 200) {
+                // show popup success
+                this.$bvModal.msgBoxOk("Cập nhật thành công", {
+                  title: "Cập Nhật Nhân Viên",
+                  centered: true, 
+                  size: 'sm',
+                  headerClass: 'bg-success',
+                }).then(res => {
+                  this.$router.push("/staff/list")
+                })
+              }
+            }
+          }).catch(err => {
+            console.log(err)
             // Show notify edit fail: TODO
-            alert("fail")
-          }
-        }).catch(err => {
-          console.log(err)
-          // Show notify edit fail: TODO
-          alert("fail")
-        })
-      } else {
-        // Add
-        adminAPI.addStaff(this.staff).then(res => {
-          if(res != null && res.data != null){
-            // Go to list
-            this.$router.push('/staff/list')
-          }else{
-            // Show notify add fail: TODO
-            alert("add fail")
-          }
-        }).catch(err => {
-          console.log(err)
-          // Show notify add fail: TODO
-          alert("add fail")
-        })
+            let message = ""
+            if(err.response.data.status == 422) {
+              message = err.response.data.mess
+            } else {
+              message = "Lỗi hệ thống"
+            }
+            this.$bvModal.msgBoxOk(message, {
+              title: "Cập Nhật Nhân Viên",
+              centered: true, 
+              size: 'sm',
+              headerClass: 'bg-danger',
+            })
+          })
+        } else {
+          // Add
+          adminAPI.addStaff(this.staff).then(res => {
+            if(res != null && res.data != null){
+              let message = ""
+              if (res.data.status == 200) {
+                // show popup success
+                this.$bvModal.msgBoxOk("Thêm thành công", {
+                  title: "Thêm Nhân Viên",
+                  centered: true, 
+                  size: 'sm',
+                  headerClass: 'bg-success',
+                }).then(res => {
+                  this.$router.push("/staff/list")
+                })
+              }
+            }
+          }).catch(err => {
+            console.log(err)
+            let message = ""
+              if(err.response.data.status == 422) {
+                message = err.response.data.mess
+              } else {
+                message = "Lỗi hệ thống"
+              }
+              this.$bvModal.msgBoxOk(message, {
+                title: "Thêm Nhân Viên",
+                centered: true, 
+                size: 'sm',
+                headerClass: 'bg-danger',
+              })
+          })
+        }
       }
+      
     }
   }
 }

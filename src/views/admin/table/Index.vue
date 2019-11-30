@@ -21,6 +21,9 @@
                   type="text"
                   class="form-control"
                   v-model="table.name">
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorName">
+                    Vui lòng nhập tên
+                  </b-form-invalid-feedback>
                 </b-col>
               </b-row>
               <b-row class="text-center mt-3">
@@ -45,13 +48,25 @@ export default {
     return {
       table: {
         "name": null,
-      }
+      },
+      click: false,
     }
   },
   mounted() {
     this.getTableDetail()
   },
+  computed: {
+    errorName: function () {
+      return this.checkInfo(this.table.name)
+    }
+  },
   methods: {
+    checkInfo (info) {
+      return (this.click && (info == null || info.length <= 0))
+    },
+    checkValidate () {
+      return !(this.errorName)
+    },
     getTableDetail() {
       let tableId = this.$route.params.id
       if(tableId){
@@ -66,39 +81,77 @@ export default {
       }
     },
     save () {
-      let tableId = this.$route.params.id
-      if(tableId){
-        // Edit
-        let table = this.table
-        table.id = tableId
-        adminAPI.editTable(table).then(res => {
-          if(res != null && res.data != null){
-            // Show notify edit success: TODO
-            alert("ok")
-          }else{
-            // Show notify edit fail: TODO
-            alert("fail")
-          }
-        }).catch(err => {
-          console.log(err)
-          // Show notify edit fail: TODO
-          alert("fail")
-        })
-      } else {
-        // Add
-        adminAPI.addTable(this.table).then(res => {
-          if(res != null && res.data != null){
-            // Go to list
-            this.$router.push('/table/list')
-          }else{
-            // Show notify add fail: TODO
-            alert("add fail")
-          }
-        }).catch(err => {
-          console.log(err)
-          // Show notify add fail: TODO
-          alert("add fail")
-        })
+      this.click = true
+      let result = this.checkValidate()
+      if(result) {  
+        let tableId = this.$route.params.id
+        if(tableId){
+          // Edit
+          let table = this.table
+          table.id = tableId
+          adminAPI.editTable(table).then(res => {
+            if(res != null && res.data != null){
+              let message = ""
+              if (res.data.status == 200) {
+                // show popup success
+                this.$bvModal.msgBoxOk("Cập nhật thành công", {
+                  title: "Cập Nhật Bàn",
+                  centered: true, 
+                  size: 'sm',
+                  headerClass: 'bg-success',
+                }).then(res => {
+                  this.$router.push("/table/list")
+                })
+              }
+            }
+          }).catch(err => {
+            console.log(err)
+            let message = ""
+            if(err.response.data.status == 422) {
+              message = err.response.data.mess
+            } else {
+              message = "Lỗi hệ thống"
+            }
+            this.$bvModal.msgBoxOk(message, {
+              title: "Cập Nhật Bàn",
+              centered: true, 
+              size: 'sm',
+              headerClass: 'bg-danger',
+            })
+          })
+        } else {
+          // Add
+          adminAPI.addTable(this.table).then(res => {
+            if(res != null && res.data != null){
+              let message = ""
+              if (res.data.status == 200) {
+                // show popup success
+                this.$bvModal.msgBoxOk("Thêm thành công", {
+                  title: "Thêm Bàn",
+                  centered: true, 
+                  size: 'sm',
+                  headerClass: 'bg-success',
+                }).then(res => {
+                  this.$router.push("/table/list")
+                })
+              }
+            }
+          }).catch(err => {
+            console.log(err)
+            let message = ""
+              if(err.response.data.status == 422) {
+                message = err.response.data.mess
+              } else {
+                message = "Lỗi hệ thống"
+              }
+              this.$bvModal.msgBoxOk(message, {
+                title: "Thêm Bàn",
+                centered: true, 
+                size: 'sm',
+                headerClass: 'bg-danger',
+              })
+          })
+        }
       }
     }
   }

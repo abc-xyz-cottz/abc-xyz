@@ -25,6 +25,9 @@
                   type="text"
                   class="form-control"
                   v-model="data.value">
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorExpireDay">
+                    Vui lòng nhập số ngày
+                  </b-form-invalid-feedback>
                 </b-col>
                 <b-col md="3" class="mt-2">
                   <label> Ngày </label>
@@ -46,32 +49,57 @@ export default {
         "id" : null,
         "expired_point" : null,
         "value": null
-      }
+      },
+      click: false,
     }
   },
   mounted () {
     this.getSystemConfig()
   },
+  computed: {
+    errorExpireDay: function () {
+      return this.checkInfo(this.data.value)
+    }
+  },
   methods: {
+    checkInfo (info) {
+      return (this.click && (info == null || info.length <= 0))
+    },
+    checkValidate () {
+      return !(this.errorExpireDay)
+    },
     save () {
-      adminAPI.saveSystemConfig(this.data).then(res => {
+      this.click = true
+      let result = this.checkValidate()
+      if(result) { 
+        adminAPI.saveSystemConfig(this.data).then(res => {
           if(res != null && res.data != null){
-            // Show notify edit success: TODO
-            alert("ok")
-          }else{
-            // Show notify edit fail: TODO
-            alert("fail")
+            let message = ""
+            if (res.data.status == 200) {
+              // show popup success
+              this.$bvModal.msgBoxOk("Cập nhật thành công", {
+                title: "Cập Nhật Cài Đặt",
+                centered: true, 
+                size: 'sm',
+                headerClass: 'bg-success',
+              })
+            }
           }
         }).catch(err => {
           console.log(err)
-          // Show notify edit fail: TODO
-          alert("fail")
+          let message = "Lỗi hệ thống"
+          this.$bvModal.msgBoxOk(message, {
+            title: "Cập Nhật Cài Đặt",
+            centered: true, 
+            size: 'sm',
+            headerClass: 'bg-danger',
+          })
         })
+      }
     },
     getSystemConfig () {
       adminAPI.getSystemConfig().then(res => {
         if(res != null && res.data != null && res.data.data != null) {
-          console.log(res.data.data)
           this.data = Mapper.mapSysCfgModelToDto(res.data.data)
         }
       })

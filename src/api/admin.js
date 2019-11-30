@@ -143,6 +143,13 @@ export default {
   },
 
   /**
+   * Delete table
+   */
+  deleteTable(tableId) {
+    return session.get(RootAPI + 'table/delete/' + tableId)
+  },
+
+  /**
    * Get system config
    */
   getSystemConfig() {

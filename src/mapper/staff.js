@@ -1,3 +1,4 @@
+import commonFunc from '@/common/commonFunc'
 export default {
   mapStaffModelToDto (staff) {
     return {
@@ -22,7 +23,7 @@ export default {
         , name: staffs[index].fields.name
         , phone: staffs[index].fields.phone_number
         , permission: staffs[index].fields.role_name
-        , createDate: staffs[index].fields.created_at
+        , createDate: commonFunc.formatDate(staffs[index].fields.created_at)
         , id: staffs[index].pk
       }
       result.push(staffTemp)

@@ -1,3 +1,4 @@
+import commonFunc from '@/common/commonFunc'
 export default {
     mapPromoModelToDto (promotions) {
       let result = []
@@ -10,8 +11,8 @@ export default {
           stt: stt
           , name: promotions[index].fields.name
           , price: promotions[index].fields.cost
-          , expired: promotions[index].fields.expired_at
-          , createDate: promotions[index].fields.created_at
+          , expired: commonFunc.formatDate(promotions[index].fields.expired_at)
+          , createDate: commonFunc.formatDate(promotions[index].fields.created_at)
           , id: promotions[index].pk
         }
         result.push(promoTemp)

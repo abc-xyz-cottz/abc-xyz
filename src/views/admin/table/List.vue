@@ -95,7 +95,7 @@ export default {
         footerClass: 'p-2'
       }).then(res => {
         if(res){
-          adminAPI.deletePromo(id).then(res => {
+          adminAPI.deleteTable(id).then(res => {
             // Remove item in list
             let indexTemp = commonFunc.updateIndex(rowIndex - 1, this.listIdDeleted)
             this.items.splice(indexTemp, 1)

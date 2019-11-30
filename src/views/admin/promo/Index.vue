@@ -21,6 +21,9 @@
                   type="text"
                   class="form-control"
                   v-model="promo.name">
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorName">
+                    Vui lòng nhập tên
+                  </b-form-invalid-feedback>
                 </b-col>
               </b-row>
               <b-row class="form-row">
@@ -33,6 +36,9 @@
                   type="text"
                   class="form-control"
                   v-model="promo.cost">
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorCost">
+                    Vui lòng nhập giá
+                  </b-form-invalid-feedback>
                 </b-col>
               </b-row>
               <b-row class="form-row">
@@ -45,6 +51,9 @@
                   type="text"
                   class="form-control"
                   v-model="promo.expired_on">
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorExpiredOn">
+                    Vui lòng nhập ngày hết hạn
+                  </b-form-invalid-feedback>
                 </b-col>
                 <b-col md="3"><label class="mt-1">Ngày</label></b-col>
               </b-row>
@@ -58,6 +67,9 @@
                   type="text"
                   class="form-control"
                   v-model="promo.quantity">
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorQuantity">
+                    Vui lòng nhập số lượng
+                  </b-form-invalid-feedback>
                 </b-col>
               </b-row>
               <b-row class="text-center mt-3">
@@ -86,13 +98,34 @@ export default {
         "cost": null,
         "expired_on": null,
         "quantity": null
-      }
+      },
+      click: false,
     }
   },
   mounted() {
     this.getPromoDetail()
   },
+  computed: {
+    errorName: function () {
+      return this.checkInfo(this.promo.name)
+    },
+    errorCost: function () {
+      return this.checkInfo(this.promo.cost)
+    },
+    errorExpiredOn: function () {
+      return this.checkInfo(this.promo.expired_on)
+    },
+    errorQuantity: function () {
+      return this.checkInfo(this.promo.quantity)
+    }
+  },
   methods: {
+    checkInfo (info) {
+      return (this.click && (info == null || info.length <= 0))
+    },
+    checkValidate () {
+      return !(this.errorName || this.errorCost || this.errorExpiredOn || this.errorQuantity)
+    },
     getPromoDetail() {
       let promoId = this.$route.params.id
       if(promoId){
@@ -107,40 +140,80 @@ export default {
       }
     },
     save () {
-      let promoId = this.$route.params.id
-      if(promoId){
-        // Edit
-        let promo = this.promo
-        promo.id = promoId
-        adminAPI.editPromo(promo).then(res => {
-          if(res != null && res.data != null){
-            // Show notify edit success: TODO
-            alert("ok")
-          }else{
+      this.click = true
+      let result = this.checkValidate()
+      if(result) { 
+        let promoId = this.$route.params.id
+        if(promoId){
+          // Edit
+          let promo = this.promo
+          promo.id = promoId
+          adminAPI.editPromo(promo).then(res => {
+            if(res != null && res.data != null){
+              let message = ""
+              if (res.data.status == 200) {
+                // show popup success
+                this.$bvModal.msgBoxOk("Cập nhật thành công", {
+                  title: "Cập Nhật Promotion",
+                  centered: true, 
+                  size: 'sm',
+                  headerClass: 'bg-success',
+                }).then(res => {
+                  this.$router.push("/promo/list")
+                })
+              }
+            }
+          }).catch(err => {
+            console.log(err)
             // Show notify edit fail: TODO
-            alert("fail")
-          }
-        }).catch(err => {
-          console.log(err)
-          // Show notify edit fail: TODO
-          alert("fail")
-        })
-      } else {
-        // Add
-        adminAPI.addPromo(this.promo).then(res => {
-          if(res != null && res.data != null){
-            // Go to list
-            this.$router.push('/promo/list')
-          }else{
-            // Show notify add fail: TODO
-            alert("add fail")
-          }
-        }).catch(err => {
-          console.log(err)
-          // Show notify add fail: TODO
-          alert("add fail")
-        })
+            let message = ""
+            if(err.response.data.status == 422) {
+              message = err.response.data.mess
+            } else {
+              message = "Lỗi hệ thống"
+            }
+            this.$bvModal.msgBoxOk(message, {
+              title: "Cập Nhật Promotion",
+              centered: true, 
+              size: 'sm',
+              headerClass: 'bg-danger',
+            })
+          })
+        } else {
+          // Add
+          adminAPI.addPromo(this.promo).then(res => {
+            if(res != null && res.data != null){
+              let message = ""
+              if (res.data.status == 200) {
+                // show popup success
+                this.$bvModal.msgBoxOk("Thêm thành công", {
+                  title: "Thêm Promotion",
+                  centered: true, 
+                  size: 'sm',
+                  headerClass: 'bg-success',
+                }).then(res => {
+                  this.$router.push("/promo/list")
+                })
+              }
+            }
+          }).catch(err => {
+            console.log(err)
+            let message = ""
+              if(err.response.data.status == 422) {
+                message = err.response.data.mess
+              } else {
+                message = "Lỗi hệ thống"
+              }
+              this.$bvModal.msgBoxOk(message, {
+                title: "Thêm Promotion",
+                centered: true, 
+                size: 'sm',
+                headerClass: 'bg-danger',
+              })
+          })
+        }
       }
+      
     }
   }
 }
