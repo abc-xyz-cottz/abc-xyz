@@ -23,7 +23,8 @@
                   <input
                   id="pasword"
                   type="text"
-                  class="form-control">
+                  class="form-control"
+                  v-model="data.value">
                 </b-col>
                 <b-col md="3" class="mt-2">
                   <label> Ngày </label>
@@ -36,40 +37,44 @@
   </div>
 </template>
 <script>
+import adminAPI from '@/api/admin'
+import Mapper from '@/mapper/setting'
 export default {
   data () {
     return {
-      perPage: '10',
-      currentPage: '1',
-      fields: [
-        {
-          key: 'stt',
-          label: 'STT'
-        },
-        {
-          key: 'point',
-          label: 'Điểm'
-        },
-        {
-          key: 'actions',
-          label: '',
-          class: 'actions-cell'
-        }
-      ],
-      items: [
-        {stt: '1', point: 'cocacola',  action: ''},
-        {stt: '1', point: '7 up', action: ''}
-      ]
+      data: {
+        "id" : null,
+        "expired_point" : null,
+        "value": null
+      }
     }
   },
-  computed: {
-    rows() {
-      return this.items.length
-    }
+  mounted () {
+    this.getSystemConfig()
   },
   methods: {
     save () {
-
+      adminAPI.saveSystemConfig(this.data).then(res => {
+          if(res != null && res.data != null){
+            // Show notify edit success: TODO
+            alert("ok")
+          }else{
+            // Show notify edit fail: TODO
+            alert("fail")
+          }
+        }).catch(err => {
+          console.log(err)
+          // Show notify edit fail: TODO
+          alert("fail")
+        })
+    },
+    getSystemConfig () {
+      adminAPI.getSystemConfig().then(res => {
+        if(res != null && res.data != null && res.data.data != null) {
+          console.log(res.data.data)
+          this.data = Mapper.mapSysCfgModelToDto(res.data.data)
+        }
+      })
     }
   }
 }

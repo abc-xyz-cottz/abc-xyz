@@ -113,4 +113,46 @@ export default {
   addPromo(req) {
     return session.post(RootAPI + 'promotion/add', req)
   },
+
+  /**
+   * Get table list
+   */
+  getTableList() {
+    return session.get(RootAPI + 'table/')
+  },
+
+  /**
+   * Get table detail
+   */
+  getTableDetail(tableId) {
+    return session.get(RootAPI + 'table/' + tableId)
+  },
+
+  /**
+   * Edit table
+   */
+  editTable(req) {
+    return session.post(RootAPI + 'table/update', req)
+  },
+
+  /**
+   * Add table
+   */
+  addTable(req) {
+    return session.post(RootAPI + 'table/add', req)
+  },
+
+  /**
+   * Get system config
+   */
+  getSystemConfig() {
+    return session.get(RootAPI + 'sys-config/detail')
+  },
+
+  /**
+   * Save system config
+   */
+  saveSystemConfig(req) {
+    return session.post(RootAPI + 'sys-config/add-update', req)
+  }
 }

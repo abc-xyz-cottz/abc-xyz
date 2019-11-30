@@ -73,7 +73,8 @@ export default {
           class: 'actions-cell'
         }
       ],
-      items: []
+      items: [],
+      listIdDeleted: [],
     }
   },
   computed: {
@@ -105,7 +106,6 @@ export default {
       })
     },
     edit (id) {
-      console.log(id)
       this.$router.push('/promo/index/' + id)
     },
     goToAdd () {
@@ -114,8 +114,7 @@ export default {
     getPromoList () {
       adminAPI.getPromoList().then(res => {
         if(res != null && res.data != null && res.data.data != null) {
-          let items = Mapper.mapPromoModelToDto(res.data.data)
-          this.items = items
+          this.items = Mapper.mapPromoModelToDto(res.data.data)
         }
       })
     }

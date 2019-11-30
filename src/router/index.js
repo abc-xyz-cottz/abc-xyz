@@ -238,6 +238,11 @@ export default new Router({
       component: TableAdd
     },
     {
+      path: '/table/index/:id',
+      name: 'TableAdd',
+      component: TableAdd
+    },
+    {
       path: '/setting',
       name: 'Setting',
       component: Setting
