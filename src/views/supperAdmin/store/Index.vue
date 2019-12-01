@@ -19,7 +19,11 @@
                   <input
                   id="name"
                   type="text"
-                  class="form-control">
+                  class="form-control"
+                  v-model="store.name">
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorName">
+                    Vui lòng nhập tên
+                  </b-form-invalid-feedback>
                 </b-col>
               </b-row>
               <b-row class="form-row">
@@ -31,7 +35,11 @@
                   :options="optionsCiti"
                   id="citi"
                   type="text"
-                  class="form-control"></b-form-select>
+                  class="form-control"
+                  v-model="store.city_id"></b-form-select>
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorCiti">
+                    Vui lòng nhập tỉnh/thành phố
+                  </b-form-invalid-feedback>
                 </b-col>
               </b-row>
               <b-row class="form-row">
@@ -43,7 +51,11 @@
                   :options="optionsDistrict"
                   id="district"
                   type="text"
-                  class="form-control"></b-form-select>
+                  class="form-control"
+                  v-model="store.district_id"></b-form-select>
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorDistrict">
+                    Vui lòng nhập quận
+                  </b-form-invalid-feedback>
                 </b-col>
               </b-row>
               <b-row class="form-row">
@@ -54,7 +66,11 @@
                   <input
                   id="address"
                   type="text"
-                  class="form-control">
+                  class="form-control"
+                  v-model="store.address">
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorAddress">
+                    Vui lòng nhập địa chỉ
+                  </b-form-invalid-feedback>
                 </b-col>
               </b-row>
               <b-row class="form-row">
@@ -65,13 +81,18 @@
                   <input
                   id="expriedDate"
                   type="text"
-                  class="form-control">
+                  class="form-control"
+                  v-model="store.expired_at"
+                  @keypress="validateCode">
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorMonth">
+                    Vui lòng nhập tháng
+                  </b-form-invalid-feedback>
                 </b-col>
                 <b-col md="3"> <label class="mt-1">Tháng</label></b-col>
               </b-row>
               <b-row class="text-center mt-3">
                 <b-col>
-                    <b-button variant="primary" class="px-4">
+                    <b-button variant="primary" class="px-4" @click="save">
                     Lưu
                     </b-button>
                 </b-col>
@@ -84,6 +105,9 @@
   </div>
 </template>
 <script>
+import superAdminAPI from '@/api/superAdmin'
+import Mapper from '@/mapper/store'
+import commonFunc from '@/common/commonFunc'
 export default {
   data () {
     return {
@@ -93,13 +117,138 @@ export default {
       ],
       optionsDistrict: [
         {value: '1', text: "Quận 1"},
-        {value: '3', text: "Quận 3"}
-      ]
+        {value: '2', text: "Quận 3"}
+      ],
+      store: {
+        "name": null,
+        "address": null,
+        "city_id": null,
+        "district_id": null,
+        "expired_at": null
+      },
+      click: false,
+    }
+  },
+  mounted() {
+    this.getStoreDetail()
+  },
+  computed: {
+    errorName: function () {
+      return this.checkInfo(this.store.name)
+    },
+    errorCiti: function () {
+      return this.checkInfo(this.store.city_id)
+    },
+    errorDistrict: function () {
+      return this.checkInfo(this.store.district_id)
+    },
+    errorAddress: function () {
+      return this.checkInfo(this.store.address)
+    },
+    errorMonth: function () {
+      return this.checkInfo(this.store.expired_at)
     }
   },
   methods: {
+    checkInfo (info) {
+      return (this.click && (info == null || info.length <= 0))
+    },
+    checkValidate () {
+      return !(this.errorName || this.errorCiti || this.errorDistrict || this.errorAddress || this.errorMonth)
+    },
+    getStoreDetail() {
+      let storeId = this.$route.params.id
+      if(storeId){
+        superAdminAPI.getStoreDetail(storeId).then(res => {
+          if(res != null && res.data != null && res.data.data != null) {
+            this.store = Mapper.mapStoreDetailModelToDto(res.data.data)
+            this.store.expired_at = commonFunc.calculateMonth(this.store.expired_at)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      }
+    },
     save () {
-
+      this.click = true
+      let result = this.checkValidate()
+      if(result) { 
+        let storeId = this.$route.params.id
+        if(storeId){
+          // Edit
+          let store = this.store
+          store.id = storeId
+          superAdminAPI.editStore(store).then(res => {
+            if(res != null && res.data != null){
+              let message = ""
+              if (res.data.status == 200) {
+                // show popup success
+                this.$bvModal.msgBoxOk("Cập nhật thành công", {
+                  title: "Cập Nhật Cửa Hàng",
+                  centered: true, 
+                  size: 'sm',
+                  headerClass: 'bg-success',
+                }).then(res => {
+                  this.$router.push("/store/list")
+                })
+              }
+            }
+          }).catch(err => {
+            console.log(err)
+            // Show notify edit fail: TODO
+            let message = ""
+            if(err.response.data.status == 422) {
+              message = err.response.data.mess
+            } else {
+              message = "Lỗi hệ thống"
+            }
+            this.$bvModal.msgBoxOk(message, {
+              title: "Cập Nhật Cửa Hàng",
+              centered: true, 
+              size: 'sm',
+              headerClass: 'bg-danger',
+            })
+          })
+        } else {
+          // Add
+          superAdminAPI.addStore(this.store).then(res => {
+            if(res != null && res.data != null){
+              let message = ""
+              if (res.data.status == 200) {
+                // show popup success
+                this.$bvModal.msgBoxOk("Thêm thành công", {
+                  title: "Thêm Cửa Hàng",
+                  centered: true, 
+                  size: 'sm',
+                  headerClass: 'bg-success',
+                }).then(res => {
+                  this.$router.push("/store/list")
+                })
+              }
+            }
+          }).catch(err => {
+            console.log(err)
+            let message = ""
+              if(err.response.data.status == 422) {
+                message = err.response.data.mess
+              } else {
+                message = "Lỗi hệ thống"
+              }
+              this.$bvModal.msgBoxOk(message, {
+                title: "Thêm Cửa Hàng",
+                centered: true, 
+                size: 'sm',
+                headerClass: 'bg-danger',
+              })
+          })
+        }
+      }    
+    },
+    validateCode (event) {
+      // not number
+      if(!commonFunc.isNumber(event)) {
+        event.preventDefault()
+      }
     }
   }
 }

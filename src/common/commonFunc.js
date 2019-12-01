@@ -51,7 +51,6 @@ export default {
   calculateDate(date) {
     let result = date.substring(0, 10)
     result = new Date(result)
-    var present_date = new Date()
     let now = new Date()
     let day = new Date(result.getTime() - now.getTime())
     return Math.floor(day / (1000 * 60 * 60 * 24))
@@ -63,5 +62,16 @@ export default {
   formatDate(date) {
     let result = date.substring(0, 10)
     return result
+  },
+
+  /**
+   * Calculate month
+   */
+  calculateMonth(date) {
+    let result = date.substring(0, 10)
+    result = new Date(result)
+    let now = new Date()
+    let day = new Date(result.getTime() - now.getTime())
+    return Math.floor(day / (1000 * 60 * 60 * 24 * 30))
   },
 }

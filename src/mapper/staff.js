@@ -32,14 +32,49 @@ export default {
   },
 
   /**
-   * Mapping staff detail to dto
+   * Mapping admin store to dto
    */
-  mapStaffDetailModelToDto(staff) {
+  mapAdminStoreModelToDto(staff) {
     return {
       "id": staff.pk,
       "name": staff.fields.name,
       "phone_number": staff.fields.phone_number,
       "role_id": staff.fields.role_id,
+    }
+  },
+
+   /**
+   * Mapping admin store detail to dto
+   */
+  mapAdminStoreToDto (staffs, offset) {
+    let result = []
+
+    var stt = offset
+    for (var index in staffs) {
+      stt = stt + 1
+      let staffTemp = {
+        stt: stt
+        , name: staffs[index].fields.name
+        , phone: staffs[index].fields.phone_number
+        , store: staffs[index].fields.store_name
+        , permission: staffs[index].fields.role_name
+        , createDate: commonFunc.formatDate(staffs[index].fields.created_at)
+        , id: staffs[index].pk
+      }
+      result.push(staffTemp)
+    }
+    return result
+  },
+  /**
+  * Mapping admin store detail to dto
+  */
+  mapAdminStoreDetailModelToDto(adminStore) {
+    return {
+      "name": adminStore.fields.name,
+      "phone_number": adminStore.fields.phone_number,
+      "password": adminStore.fields.password,
+      "role_id": adminStore.fields.role_id,
+      "store_id": adminStore.fields.store_id
     }
   },
 }

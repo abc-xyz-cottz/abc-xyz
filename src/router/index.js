@@ -270,12 +270,22 @@ export default new Router({
       component: StoreAdd
     },
     {
+      path: '/store/index/:id',
+      name: 'StoreAdd',
+      component: StoreAdd
+    },
+    {
       path: '/admin-store/list',
       name: 'StoreAdmin',
       component: StoreAdmin
     },
     {
       path: '/admin-store/index',
+      name: 'StoreAdminAdd',
+      component: StoreAdminAdd
+    },
+    {
+      path: '/admin-store/index/:id',
       name: 'StoreAdminAdd',
       component: StoreAdminAdd
     },

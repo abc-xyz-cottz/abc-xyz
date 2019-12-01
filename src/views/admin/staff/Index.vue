@@ -133,7 +133,9 @@ export default {
       let staffId = this.$route.params.id
       if(staffId){
         adminAPI.getStaffDetail(staffId).then(res => {
-          this.staff = Mapper.mapStaffDetailModelToDto(res.data.data)
+          if(res != null && res.data != null && res.data.data != null) {
+            this.staff = Mapper.mapStaffDetailModelToDto(res.data.data)
+          }
         }).catch(err => {
           console.log(err)
         })
