@@ -4,25 +4,25 @@
       <b-card-body>
         <b-row>
           <b-col class="mb-3">
-            <span>Tổng Điểm: 1000 </span>
+            <span>Tổng điểm: {{ total_point }} </span>
           </b-col>
         </b-row>
         <b-row>
           <b-col>
             <b-table 
-                hover
-                bordered
-                stacked="md"
-                :fields="fields" 
-                :items="items">
-                <template v-slot:cell(actions)="dataId">
-                  <b-list-group horizontal>
-                    <b-list-group-item @click="showDetail()">
-                      <i class="fa fa-info" />
-                    </b-list-group-item>
-                  </b-list-group>
-                </template>
-                </b-table>
+              hover
+              bordered
+              stacked="md"
+              :fields="fields" 
+              :items="items">
+              <template v-slot:cell(actions)="dataId">
+                <b-list-group horizontal>
+                  <b-list-group-item @click="showDetail(dataId.item.store_id)">
+                    <i class="fa fa-info" />
+                  </b-list-group-item>
+                </b-list-group>
+              </template>
+            </b-table>
           </b-col>
         </b-row>
       </b-card-body>
@@ -46,6 +46,10 @@
   </div>
 </template>
 <script>
+import customerAPI from '@/api/customer'
+import Mapper from '@/mapper/point'
+// import {Constant} from '@/common/constant'
+// import commonFunc from '@/common/commonFunc'
 export default {
   data () {
     return {
@@ -71,13 +75,8 @@ export default {
           class: 'actions-cell'
         }
       ],
-      items: [
-        {stt: '1', name: 'cocacola', point: '30000', action: ''},
-        {stt: '2', name: 'cocacola', point: '30000', action: ''},
-        {stt: '3', name: 'cocacola', point: '30000', action: ''},
-        {stt: '4', name: 'cocacola', point: '30000', action: ''},
-        {stt: '5', name: 'cocacola', point: '30000', action: ''}
-      ],
+      items: [],
+      total_point: null,
       fieldsPoint: [
         {
           key: 'stt',
@@ -99,9 +98,25 @@ export default {
       ]
     }
   },
+  mounted() {
+    this.getPointList()
+  },
   methods: {
-    showDetail () {
+    showDetail (store_id) {
+      customerAPI.getPointDetailList(store_id).then(res => {
+        if(res != null && res.data != null && res.data.data != null) {
+          this.itemsPoint = Mapper.mapPointDetailModelToDto(res.data.data.point_detail)
+        }
+      })
       this.$bvModal.show('modal-point')
+    },
+    getPointList () {
+      customerAPI.getPointList().then(res => {
+        if(res != null && res.data != null && res.data.data != null) {
+          this.items = Mapper.mapPointModelToDto(res.data.data.point_list)
+          this.total_point = res.data.data.total_point
+        }
+      })
     }
   }
 }

@@ -49,5 +49,19 @@ export default {
    */
   getMenu(storeId) {
     return session.get(RootAPI + 'menu/customer/' + storeId)
-  }
+  },
+
+  /**
+   * get point list of customer
+   */
+  getPointList () {
+    return session.get(RootAPI + 'customer/point')
+  },
+
+  /**
+   * get point detail list of customer
+   */
+  getPointDetailList (store_id) {
+    return session.get(RootAPI + 'customer/point-detail/' + store_id)
+  },
 }
