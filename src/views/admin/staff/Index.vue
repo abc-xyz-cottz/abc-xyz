@@ -35,7 +35,8 @@
                   id="phone"
                   type="text"
                   class="form-control"
-                  v-model="staff.phone_number">
+                  v-model="staff.phone_number"
+                  @keypress="validateCode">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
                     Vui lòng nhập số điện thoại
                   </b-form-invalid-feedback>
@@ -89,6 +90,7 @@
 <script>
 import adminAPI from '@/api/admin'
 import Mapper from '@/mapper/staff'
+import commonFunc from '@/common/commonFunc'
 export default {
   data () {
     return {
@@ -146,9 +148,12 @@ export default {
       let result = this.checkValidate()
       if(result) { 
         let staffId = this.$route.params.id
+        let staff = this.staff
+        staff.id = staffId
         if(staffId){
           // Edit
-          adminAPI.editStaff(this.staff).then(res => {
+          this.staff = 
+          adminAPI.editStaff(staff).then(res => {
             if(res != null && res.data != null){
               let message = ""
               if (res.data.status == 200) {
@@ -214,6 +219,12 @@ export default {
         }
       }
       
+    },
+    validateCode (event) {
+      // not number
+      if(!commonFunc.isNumber(event)) {
+        event.preventDefault()
+      }
     }
   }
 }

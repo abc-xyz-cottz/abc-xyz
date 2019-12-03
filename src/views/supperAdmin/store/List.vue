@@ -27,11 +27,12 @@
               <div class="form-group col-md-4 col-sm-12">
                 <label>Tỉnh/ Thành Phố</label>
                 <b-form-select 
-                  :options="optionsCiti"
-                  id="citi"
+                  :options="optionsCity"
+                  id="city_id"
                   type="text" 
                   class="form-control"
-                  v-model="inputs.city_id"></b-form-select>
+                  v-model="inputs.city_id"
+                  v-on:change="changeCity($event.target)"></b-form-select>
               </div>
               <div class="form-group col-md-4 col-sm-12">
                 <label>Quận</label>
@@ -76,6 +77,8 @@
 <script>
 import superAdminAPI from '@/api/superAdmin'
 import Mapper from '@/mapper/store'
+import MasterApi from '@/api/master'
+import MasterMapper from '@/mapper/master'
 import commonFunc from '@/common/commonFunc'
 import {Constant} from '@/common/constant'
 export default {
@@ -117,16 +120,7 @@ export default {
         }
       ],
       items: [],
-      optionsCiti: [
-        {value: '', text: "Tất cả"},
-        {value: '1', text: "HN"},
-        {value: '2', text: "HCM"}
-      ],
-      optionsDistrict: [
-        {value: '', text: "Tất cả"},
-        {value: '1', text: "Quận 1"},
-        {value: '3', text: "Quận 3"}
-      ],
+      optionsDistrict: [],
       items: [],
       inputs: {
         name: '',
@@ -140,6 +134,8 @@ export default {
       pageLimit: Constant.PAGE_LIMIT,
       offset: 0,
       listIdDeleted: [],
+      optionsCity: [],
+      optionsDistrict: [],
     }
   },
   computed: {
@@ -149,6 +145,7 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.onScroll)
+    this.getOptionCity()
     this.search()
   },
   methods: {
@@ -236,6 +233,28 @@ export default {
           this.onSearch = false
           this.loading = false
       })
+    },
+    /**
+     * Get city options
+     */
+    getOptionCity() {
+      MasterApi.getCityOptions().then(res => {
+        this.optionsCity = MasterMapper.mapCityModelToDto(res.data.data)
+      })
+    },
+
+    /**
+     * Get district by city
+     */
+    changeCity() {
+      let cityId = this.inputs.city_id
+      if(cityId != "" && cityId != undefined) {
+        MasterApi.getDistrictOptions(cityId).then(res => {
+          this.optionsDistrict = MasterMapper.mapCityModelToDto(res.data.data)
+        })
+      } else {
+        this.inputs.district_id = ""
+      }
     }
   }
 }

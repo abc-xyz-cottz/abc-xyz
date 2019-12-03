@@ -77,4 +77,17 @@ export default {
       "store_id": adminStore.fields.store_id
     }
   },
+
+  /**
+  * Mapping staff detail to dto
+  */
+  mapStaffDetailModelToDto(staff) {
+    return {
+      "name": staff.fields.name,
+      "phone_number": staff.fields.phone_number,
+      "password": '',
+      "role_id": staff.fields.role_id,
+      "store_id": staff.fields.store_id
+    }
+  },
 }

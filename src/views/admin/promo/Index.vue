@@ -35,7 +35,8 @@
                   id="price"
                   type="text"
                   class="form-control"
-                  v-model="promo.cost">
+                  v-model="promo.cost"
+                  @keypress="validateCode">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorCost">
                     Vui lòng nhập giá
                   </b-form-invalid-feedback>
@@ -50,7 +51,8 @@
                   id="expiredDate"
                   type="text"
                   class="form-control"
-                  v-model="promo.expired_on">
+                  v-model="promo.expired_on"
+                  @keypress="validateCode">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorExpiredOn">
                     Vui lòng nhập ngày hết hạn
                   </b-form-invalid-feedback>
@@ -66,7 +68,8 @@
                   id="number"
                   type="text"
                   class="form-control"
-                  v-model="promo.quantity">
+                  v-model="promo.quantity"
+                  @keypress="validateCode">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorQuantity">
                     Vui lòng nhập số lượng
                   </b-form-invalid-feedback>
@@ -213,6 +216,12 @@ export default {
           })
         }
       }    
+    },
+    validateCode (event) {
+      // not number
+      if(!commonFunc.isNumber(event)) {
+        event.preventDefault()
+      }
     }
   }
 }

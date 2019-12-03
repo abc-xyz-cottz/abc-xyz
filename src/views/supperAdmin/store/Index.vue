@@ -31,12 +31,13 @@
                   <label> Tỉnh/ Thành Phố </label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="9">
-                  <b-form-select
-                  :options="optionsCiti"
-                  id="citi"
-                  type="text"
+                  <b-form-select 
+                  :options="optionsCity"
+                  id="city_id"
+                  type="text" 
                   class="form-control"
-                  v-model="store.city_id"></b-form-select>
+                  v-model="store.city_id"
+                  v-on:change="changeCity($event.target)"></b-form-select>
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorCiti">
                     Vui lòng nhập tỉnh/thành phố
                   </b-form-invalid-feedback>
@@ -47,12 +48,12 @@
                   <label> Quận </label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="9">
-                  <b-form-select
-                  :options="optionsDistrict"
-                  id="district"
-                  type="text"
-                  class="form-control"
-                  v-model="store.district_id"></b-form-select>
+                  <b-form-select 
+                    :options="optionsDistrict"
+                    id="district"
+                    type="text" 
+                    class="form-control"
+                    v-model="store.district_id"></b-form-select>
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorDistrict">
                     Vui lòng nhập quận
                   </b-form-invalid-feedback>
@@ -108,17 +109,13 @@
 import superAdminAPI from '@/api/superAdmin'
 import Mapper from '@/mapper/store'
 import commonFunc from '@/common/commonFunc'
+import MasterApi from '@/api/master'
+import MasterMapper from '@/mapper/master'
 export default {
   data () {
     return {
-      optionsCiti: [
-        {value: '1', text: "HN"},
-        {value: '2', text: "HCM"}
-      ],
-      optionsDistrict: [
-        {value: '1', text: "Quận 1"},
-        {value: '2', text: "Quận 3"}
-      ],
+      optionsCity: [],
+      optionsDistrict: [],
       store: {
         "name": null,
         "address": null,
@@ -130,6 +127,7 @@ export default {
     }
   },
   mounted() {
+    this.getOptionCity()
     this.getStoreDetail()
   },
   computed: {
@@ -248,6 +246,28 @@ export default {
       // not number
       if(!commonFunc.isNumber(event)) {
         event.preventDefault()
+      }
+    },
+    /**
+     * Get city options
+     */
+    getOptionCity() {
+      MasterApi.getCityOptions().then(res => {
+        this.optionsCity = MasterMapper.mapCityModelToDto(res.data.data)
+      })
+    },
+
+    /**
+     * Get district by city
+     */
+    changeCity() {
+      let cityId = this.store.city_id
+      if(cityId != "" && cityId != undefined) {
+        MasterApi.getDistrictOptions(cityId).then(res => {
+          this.optionsDistrict = MasterMapper.mapCityModelToDto(res.data.data)
+        })
+      } else {
+        this.store.district_id = ""
       }
     }
   }

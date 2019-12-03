@@ -209,7 +209,6 @@ export default {
       
       adminAPI.searchStaff(req).then(res => {
         if (res != null && res.data != null && res.data.data != null) {
-
           let it = Mapper.mapStaffModelSearchToDto(res.data.data.staffs, this.offset)
 
           // Update items

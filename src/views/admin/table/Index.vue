@@ -72,7 +72,6 @@ export default {
       if(tableId){
         adminAPI.getTableDetail(tableId).then(res => {
           if(res != null && res.data != null && res.data.data != null) {
-            console.log(res.data.data)
             this.table = Mapper.mapTableDetailModelToDto(res.data.data)
           }
         }).catch(err => {

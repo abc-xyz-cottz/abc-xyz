@@ -153,7 +153,6 @@ export default {
         superAdminAPI.getAdminStoreDetail(AdminStoreId).then(res => {
           if(res != null && res.data != null && res.data.data != null) {
             this.adminStore = Mapper.mapAdminStoreDetailModelToDto(res.data.data)
-            console.log(res.data.data)
             // this.store.expired_at = commonFunc.calculateMonth(this.store.expired_at)
           }
         }).catch(err => {
