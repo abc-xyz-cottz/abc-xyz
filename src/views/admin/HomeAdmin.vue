@@ -10,9 +10,12 @@
         <b-tabs content-class="mt-3">
             <!-- First tab -->
             <b-tab title="Orders" active>
-                <div  v-for="(item, index) in firstItems" :key="item.table + index">
+                <div  v-for="(item, index) in created" :key="item.table + index">
                     <b-row class="border border-dark mt-4 mess">
-                        <h4>{{item.table}}, Tổng thành tiền: {{item.totalPrice}}</h4>
+                      <h4 class="col-12">Bàn: {{item.table}}</h4>
+                        <p class="col-12">Khách hàng: {{item.customerName}}</p>
+                        <p class="col-12">Tổng thành tiền: {{item.totalPrice}}</p>
+                        <p class="col-12" >Chi tiết:</p>
                         <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
                         <b-col class="col-6">
                             <div class="is-left">
@@ -34,7 +37,7 @@
 
             <!-- Second tab -->
             <b-tab title="Đã xác nhận">
-                <div  v-for="item in secondItems" :key="item.table">
+                <div  v-for="item in approved" :key="item.table">
                     <b-row class="border border-dark mt-4 mess">
                         <h4>{{item.table}}</h4>
                         <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
@@ -44,7 +47,7 @@
 
             <!-- Third tab -->
             <b-tab title="Đã hủy">
-                <div  v-for="item in thirdItems" :key="item.table">
+                <div  v-for="item in canceled" :key="item.table">
                     <b-row class="border border-dark mt-4 mess">
                         <h4>{{item.table}}</h4>
                         <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
@@ -64,10 +67,10 @@ import adminAPI from '@/api/admin'
 export default {
   data () {
     return {
-      firstItems: [
+      created: [
       ],
-      secondItems: [],
-      thirdItems: []
+      approved: [],
+      canceled: []
     }
   },
   computed: {
@@ -76,8 +79,7 @@ export default {
     let user = JSON.parse(Cookies.get(Constant.APP_USR))
     let storeId = user.storeId
 
-    var socket = new WebSocket(
-        'ws://127.0.0.1:8000/join-group/' + storeId)
+    var socket = new WebSocket('ws://127.0.0.1:8000/join-group/' + storeId)
 
     socket.onopen = event => {
         console.log('connected')
@@ -89,7 +91,7 @@ export default {
       var json_data = JSON.parse(event.data)
       this.dataSet = json_data.text
       console.log(json_data.text)
-      this.firstItems.push(json_data.text)
+      this.created.push(json_data.text)
       // alert(JSON.stringify(json_data.text))
     }
 
@@ -102,8 +104,8 @@ export default {
      * Confirm
      */
     confirm(index, orderId) {
-      this.secondItems.push(this.firstItems[index])
-      this.firstItems.splice(index, 1)
+      this.approved.push(this.created[index])
+      this.created.splice(index, 1)
 
        // Update order status to db
        let orderInfo = {"id": orderId, "status": Constant.ORDER_APPROVED}
@@ -118,8 +120,8 @@ export default {
      * Cancel
      */
     cancel(index, orderId) {
-      this.thirdItems.push(this.firstItems[index])
-      this.firstItems.splice(index, 1)
+      this.canceled.push(this.created[index])
+      this.created.splice(index, 1)
 
       // Update order status to db
       let orderInfo = {"id": orderId, "status": Constant.ORDER_CANCELED}
@@ -136,6 +138,5 @@ export default {
 <style lang="scss">
 .mess {
     background-color: white
-
 }
 </style>
