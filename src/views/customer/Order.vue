@@ -129,10 +129,12 @@ export default {
       // Get customer info
       let customer = Cookies.get(Constant.APP_USR)
       let customerId = null
+      let customerName = null
       if(customer) {
-        customerId = JSON.parse(customer).id
+        let cusTemp = JSON.parse(customer)
+        customerId = cusTemp.id
+        customerName = cusTemp.userName + " - " + cusTemp.phoneNumber
       }
-
 
       // Get list order
       let listOrder = []
@@ -146,7 +148,8 @@ export default {
       }
 
       // Send order
-      let orderInfo = {"customerId": customerId, "storeId": this.storeId, "tableId": this.tableId, "orders": listOrder}
+      let orderInfo = {"customerId": customerId,"customerName": customerName, "storeId": this.storeId, "tableId": this.tableId, "orders": listOrder}
+      console.log(JSON.stringify(orderInfo))
       CustomerAPI.sendOrder(orderInfo).then(res => {
         this.$bvModal.msgBoxOk("Món ăn bạn gọi đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé!!!", {
           title: "Đặt món thành công!!! ",
