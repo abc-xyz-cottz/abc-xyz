@@ -117,17 +117,16 @@ export default {
       optionsCity: [],
       optionsDistrict: [],
       store: {
-        "name": null,
-        "address": null,
-        "city_id": null,
-        "district_id": null,
-        "expired_at": null
+        "name": '',
+        "address": '',
+        "city_id": '',
+        "district_id": '',
+        "expired_at": ''
       },
       click: false,
     }
   },
   mounted() {
-    this.getOptionCity()
     this.getStoreDetail()
   },
   computed: {
@@ -161,6 +160,7 @@ export default {
           if(res != null && res.data != null && res.data.data != null) {
             this.store = Mapper.mapStoreDetailModelToDto(res.data.data)
             this.store.expired_at = commonFunc.calculateMonth(this.store.expired_at)
+            this.getOptionCity()
           }
         }).catch(err => {
           console.log(err)
@@ -254,6 +254,9 @@ export default {
     getOptionCity() {
       MasterApi.getCityOptions().then(res => {
         this.optionsCity = MasterMapper.mapCityModelToDto(res.data.data)
+        this.changeCity()
+      }).catch(err => {
+        console.log(err)
       })
     },
 
@@ -262,8 +265,10 @@ export default {
      */
     changeCity() {
       let cityId = this.store.city_id
+      // console.log(cityId)
       if(cityId != "" && cityId != undefined) {
         MasterApi.getDistrictOptions(cityId).then(res => {
+          // console.log(res.data.data)
           this.optionsDistrict = MasterMapper.mapCityModelToDto(res.data.data)
         })
       } else {

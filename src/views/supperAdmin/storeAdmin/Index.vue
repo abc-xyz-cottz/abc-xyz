@@ -35,7 +35,8 @@
                   id="phone"
                   type="text"
                   class="form-control"
-                  v-model="adminStore.phone_number">
+                  v-model="adminStore.phone_number"
+                  autocomplete="disable">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
                     Vui lòng nhập số điện thoại
                   </b-form-invalid-feedback>

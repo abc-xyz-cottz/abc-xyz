@@ -65,7 +65,7 @@
                 <b-col md="9">
                   <input
                   id="password"
-                  type="text"
+                  type="password"
                   class="form-control"
                   v-model="staff.password">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPassword">
@@ -152,7 +152,7 @@ export default {
         staff.id = staffId
         if(staffId){
           // Edit
-          this.staff = 
+          this.staff = staff
           adminAPI.editStaff(staff).then(res => {
             if(res != null && res.data != null){
               let message = ""
