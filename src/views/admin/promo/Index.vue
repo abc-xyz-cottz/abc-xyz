@@ -20,7 +20,8 @@
                   id="name"
                   type="text"
                   class="form-control"
-                  v-model="promo.name">
+                  v-model="promo.name"
+                  maxlength="100">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorName">
                     Vui lòng nhập tên
                   </b-form-invalid-feedback>
@@ -37,7 +38,7 @@
                   class="form-control"
                   v-model="promo.cost"
                   @keypress="validateCode">
-                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorCost">
+                  <b-form-invalid-feedback class="invalid-feedback" :state="!errorCost">
                     Vui lòng nhập giá
                   </b-form-invalid-feedback>
                 </b-col>

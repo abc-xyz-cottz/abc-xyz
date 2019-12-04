@@ -22,7 +22,8 @@
                   id="name"
                   type="text"
                   class="form-control"
-                  v-model="inputs.name">
+                  v-model="inputs.name"
+                  maxlength="100">
               </div>
               <div class="form-group col-md-4 col-sm-12">
                 <label>Tỉnh/ Thành Phố</label>
@@ -37,6 +38,7 @@
               <div class="form-group col-md-4 col-sm-12">
                 <label>Quận</label>
                 <b-form-select 
+                  v-bind="{ disabled: inputs.city_id=='' }"
                   :options="optionsDistrict"
                   id="district"
                   type="text" 

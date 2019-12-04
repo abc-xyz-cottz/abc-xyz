@@ -24,7 +24,9 @@
                   id="pasword"
                   type="text"
                   class="form-control"
-                  v-model="data.value">
+                  v-model="data.value"
+                  @keypress="validateCode"
+                  maxlength="30">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorExpireDay">
                     Vui lòng nhập số ngày
                   </b-form-invalid-feedback>
@@ -42,6 +44,7 @@
 <script>
 import adminAPI from '@/api/admin'
 import Mapper from '@/mapper/setting'
+import commonFunc from '@/common/commonFunc'
 export default {
   data () {
     return {
@@ -103,6 +106,12 @@ export default {
           this.data = Mapper.mapSysCfgModelToDto(res.data.data)
         }
       })
+    },
+    validateCode (event) {
+      // not number
+      if(!commonFunc.isNumber(event)) {
+        event.preventDefault()
+      }
     }
   }
 }

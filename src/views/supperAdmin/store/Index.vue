@@ -20,7 +20,8 @@
                   id="name"
                   type="text"
                   class="form-control"
-                  v-model="store.name">
+                  v-model="store.name"
+                  maxlength="100">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorName">
                     Vui lòng nhập tên
                   </b-form-invalid-feedback>
@@ -48,13 +49,15 @@
                   <label> Quận </label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="9">
-                  <b-form-select 
+                  <b-form-select
+                    v-bind="{ disabled: store.city_id=='' }"
                     :options="optionsDistrict"
                     id="district"
                     type="text" 
                     class="form-control"
-                    v-model="store.district_id"></b-form-select>
-                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorDistrict">
+                    v-model="store.district_id"
+                    ></b-form-select>
+                  <b-form-invalid-feedback class="invalid-feedback" :state="!errorDistrict">
                     Vui lòng nhập quận
                   </b-form-invalid-feedback>
                 </b-col>
@@ -128,6 +131,7 @@ export default {
   },
   mounted() {
     this.getStoreDetail()
+    this.getOptionCity()
   },
   computed: {
     errorName: function () {

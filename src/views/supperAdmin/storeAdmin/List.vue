@@ -22,7 +22,8 @@
                   id="name"
                   type="text"
                   class="form-control"
-                  v-model="inputs.name">
+                  v-model="inputs.name"
+                  maxlength="100">
               </div>
               <div class="form-group col-md-3 col-sm-12">
                 <label>Số Điện Thoại</label>
@@ -30,7 +31,9 @@
                   id="phone"
                   type="text" 
                   class="form-control"
-                  v-model="inputs.phone_number">
+                  v-model="inputs.phone_number"
+                  @keypress="validateCode"
+                  maxlength="20">
               </div>
               <div class="form-group col-md-3 col-sm-12">
                 <label>Quyền</label>
@@ -46,7 +49,9 @@
                 <input 
                   id="nameStore"
                   type="text" 
-                  class="form-control">
+                  class="form-control"
+                  maxlength="100"
+                  v-model="inputs.store_name">
               </div>
             </div>
             <hr>
@@ -209,7 +214,7 @@ export default {
         "name": this.inputs.name,
         "phone_number": this.inputs.phone_number,
         "role_id": this.inputs.role_id,
-        "store_name": "Store ".concat(this.$store.state.user.storeId)
+        "store_name": this.inputs.store_name
       }
       
       superAdminAPI.searchAdminStore(req).then(res => {
@@ -239,6 +244,12 @@ export default {
           this.onSearch = false
           this.loading = false
       })
+    },
+    validateCode (event) {
+      // not number
+      if(!commonFunc.isNumber(event)) {
+        event.preventDefault()
+      }
     }
   }
 }
