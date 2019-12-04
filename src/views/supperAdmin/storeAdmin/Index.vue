@@ -36,7 +36,7 @@
                   type="text"
                   class="form-control"
                   v-model="adminStore.phone_number"
-                  autocomplete="disable">
+                  autocomplete="new-password">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
                     Vui lòng nhập số điện thoại
                   </b-form-invalid-feedback>
@@ -73,7 +73,8 @@
                   id="pasword"
                   type="password"
                   class="form-control"
-                  v-model="adminStore.password">
+                  v-model="adminStore.password"
+                  autocomplete="new-password">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPassword">
                     Vui lòng nhập mật khẩu
                   </b-form-invalid-feedback>

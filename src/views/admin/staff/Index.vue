@@ -20,7 +20,8 @@
                   id="name"
                   type="text"
                   class="form-control"
-                  v-model="staff.name">
+                  v-model="staff.name"
+                  maxlength="100">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorName">
                     Vui lòng nhập tên
                   </b-form-invalid-feedback>
@@ -36,7 +37,9 @@
                   type="text"
                   class="form-control"
                   v-model="staff.phone_number"
-                  @keypress="validateCode">
+                  @keypress="validateCode"
+                  autocomplete="new-password"
+                  maxlength="20">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
                     Vui lòng nhập số điện thoại
                   </b-form-invalid-feedback>
@@ -58,7 +61,7 @@
                   </b-form-invalid-feedback>
                 </b-col>
               </b-row>
-              <b-row class="form-row">
+              <b-row class="form-row" v-if="this.$route.params.id == null">
                 <b-col md="3" class="mt-2">
                   <label> Mật Khẩu </label><span class="error-sybol"></span>
                 </b-col>
@@ -67,10 +70,15 @@
                   id="password"
                   type="password"
                   class="form-control"
-                  v-model="staff.password">
+                  v-model="staff.password"
+                  autocomplete="new-password"
+                  maxlength="100">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPassword">
                     Vui lòng nhập mật khẩu
                   </b-form-invalid-feedback>
+                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorLengthPassword">
+                      Mật khẩu phải ít nhất 6 kí tự
+                    </b-form-invalid-feedback>
                 </b-col>
               </b-row>
               <b-row class="text-center mt-3">
@@ -121,15 +129,23 @@ export default {
       return this.checkInfo(this.staff.role_id)
     },
     errorPassword: function () {
+      if(this.$route.params.id != null) {
+        return false
+      }
       return this.checkInfo(this.staff.password)
-    }
+    },
+    errorLengthPassword () {
+      if(!this.staff.password || this.errorPassword)
+        return false
+      return (this.staff.password.length < 6) 
+    },
   },
   methods: {
     checkInfo (info) {
       return (this.click && (info == null || info.length <= 0))
     },
     checkValidate () {
-      return !(this.errorName || this.errorPhone || this.errorRole || this.errorPassword)
+      return !(this.errorName || this.errorPhone || this.errorRole || this.errorPassword || this.errorLengthPassword)
     },
     getStaffDetail() {
       let staffId = this.$route.params.id
