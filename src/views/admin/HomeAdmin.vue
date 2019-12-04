@@ -13,24 +13,26 @@
                 <div  v-for="(item, index) in created" :key="item.table + index">
                     <b-row class="border border-dark mt-4 mess">
                       <h4 class="col-12">Bàn: {{item.table}}</h4>
-                        <p class="col-12">Khách hàng: {{item.customerName}}</p>
-                        <p class="col-12">Tổng thành tiền: {{item.totalPrice}}</p>
-                        <p class="col-12" >Chi tiết:</p>
-                        <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
-                        <b-col class="col-6">
-                            <div class="is-left">
-                                <b-button class="btn-danger pull-right ml-3 px-4" @click="cancel(index, item.orderId)">
-                                    Hủy
-                                </b-button>
-                            </div>
-                        </b-col>
-                        <b-col class="col-6">
-                            <div class="text-right">
-                                <b-button class="btn-primary pull-right ml-3 px-4" @click="confirm(index, item.orderId)">
-                                    Xác nhận
-                                </b-button>
-                            </div>
-                        </b-col>
+                      <p class="col-12" v-if="item.type == 'order'">Loại: Order</p>
+                      <p class="col-12" v-if="item.type == 'request'">Loại: Yêu cầu</p>
+                      <p class="col-12">Khách hàng: {{item.customerName}}</p>
+                      <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
+                      <p class="col-12" >Chi tiết:</p>
+                      <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
+                      <b-col class="col-6">
+                          <div class="is-left">
+                              <b-button class="btn-danger pull-right ml-3 px-4" @click="cancel(index, item.orderId)">
+                                  Hủy
+                              </b-button>
+                          </div>
+                      </b-col>
+                      <b-col class="col-6">
+                          <div class="text-right">
+                              <b-button class="btn-primary pull-right ml-3 px-4" @click="confirm(index, item.orderId)">
+                                  Xác nhận
+                              </b-button>
+                          </div>
+                      </b-col>
                     </b-row>
                 </div>
             </b-tab>
@@ -79,7 +81,7 @@ export default {
     let user = JSON.parse(Cookies.get(Constant.APP_USR))
     let storeId = user.storeId
 
-    var socket = new WebSocket('ws://127.0.0.1:8000/join-group/' + storeId)
+    var socket = new WebSocket('ws://127.0.0.1:8000/join-group/admin-' + storeId)
 
     socket.onopen = event => {
         console.log('connected')

@@ -45,6 +45,13 @@ export default {
   },
 
   /**
+   * Customer send request
+   */
+  sendRequest (request) {
+    return session.post(RootAPI + 'customer/send-request', request)
+  },
+
+  /**
    * Get list menu
    */
   getMenu(storeId) {

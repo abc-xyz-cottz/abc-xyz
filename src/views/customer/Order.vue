@@ -4,6 +4,23 @@
       <b-card-body class="welcome-page">
          <!--<b-form>-->
             <b-row>
+              <b-col cols="6">
+                <b-button variant="secondary" class="pull-left px-4" @click="goBack()">
+                  Quay lại
+                </b-button>
+              </b-col>
+              <b-col cols="6">
+                <button class="btn btn-primary pull-right  px-4" @click="confirmOrder()">
+                    Đặt Món
+                </button>
+              </b-col>
+            </b-row>
+
+            <b-row class="mt-3">
+
+            </b-row>
+
+            <b-row>
               <b-col>
                 <b-table 
                 hover
@@ -28,13 +45,7 @@
               </b-col>
             </b-row>
 
-            <b-row>
-              <b-col cols="12" class="mt-3">
-                <button class="btn btn-primary pull-right  px-4" @click="sendOrder">
-                    Đặt Món
-                </button>
-              </b-col>
-            </b-row>
+
          <!--</b-form>-->
       </b-card-body>
       </b-card>
@@ -51,6 +62,41 @@
           > OK</b-button>
       </template>
       </b-modal>
+
+      <!-- Modal confirm order -->
+    <b-modal title="Thông tin đặt món" centered hide-footer
+    id="modal-confirm-order">
+      <b-row>
+        <b-col>
+          <p>Tổng thành tiền: <b>{{totalPrice}}</b></p>
+        </b-col>
+      </b-row>
+        <b-table
+          hover
+          bordered
+          stacked="md"
+          :fields="orderfields"
+          :items="orderItems">
+          </b-table>
+      <b-row>
+
+      </b-row>
+
+      <b-row>
+        <b-col cols="4" class="text-left mt-3">
+          <button class="btn btn-danger px-4" @click="cancelOrder()">
+            Hủy
+          </button>
+        </b-col>
+        <b-col cols="8" class="text-right mt-3">
+          <button class="btn btn-primary px-4" @click="sendOrder()">
+            Xác nhận
+          </button>
+        </b-col>
+      </b-row>
+
+    </b-modal>
+
     </div>
 </template>
 <script>
@@ -90,12 +136,37 @@ export default {
           class: 'actions-cell'
         }
       ],
+      orderfields: [
+        {
+          key: 'stt',
+          label: 'STT'
+        },
+        {
+          key: 'name',
+          label: 'Tên Sản Phẩm'
+        },
+        {
+          key: 'price',
+          label: 'Đơn giá'
+        },
+        {
+          key: 'quantity',
+          label: 'Số Lượng',
+        },
+        {
+          key: 'amount',
+          label: 'Thành tiền',
+        }
+      ],
       items: [
+      ],
+      orderItems: [
       ],
       // socket: null,
       // connected: false
       storeId: null,
-      tableId: null
+      tableId: null,
+      totalPrice: 0
     }
   },
 
@@ -117,14 +188,53 @@ export default {
         }
 
       }).catch(err => {
-
       })
+    },
+
+    /**
+     * Cancel order
+     */
+    cancelOrder() {
+      this.$bvModal.hide('modal-confirm-order')
+    },
+
+    /**
+     * Confirm order
+     */
+    confirmOrder() {
+      // Get list order
+      this.orderItems = []
+      for(var i = 1; i <= this.items.length; i++) {
+        let count = parseInt(document.getElementById(i).textContent)
+        let index = 1
+        if(count > 0) {
+          let order = {}
+          order.stt = index
+          order.name = this.items[i-1].name
+          order.price = this.items[i-1].price
+          order.quantity = count
+          let amount = parseInt(this.items[i-1].price) * parseInt(count)
+          order.amount = amount
+          this.totalPrice = this.totalPrice + amount
+
+          this.orderItems.push(order)
+          index = index + 1
+        }
+      }
+
+      if(this.orderItems.length == 0) {
+        return
+      }
+
+      this.$bvModal.show('modal-confirm-order')
     },
 
     /**
      * Send order
      */
     sendOrder () {
+      // Hide modal
+      this.$bvModal.hide('modal-confirm-order')
 
       // Get customer info
       let customer = Cookies.get(Constant.APP_USR)
@@ -136,19 +246,8 @@ export default {
         customerName = cusTemp.userName + " - " + cusTemp.phoneNumber
       }
 
-      // Get list order
-      let listOrder = []
-      for(var i = 1; i <= this.items.length; i++) {
-        let count = parseInt(document.getElementById(i).textContent)
-        if(count > 0) {
-          let order = this.items[i-1]
-          order.quantity = count
-          listOrder.push(order)
-        }
-      }
-
       // Send order
-      let orderInfo = {"customerId": customerId,"customerName": customerName, "storeId": this.storeId, "tableId": this.tableId, "orders": listOrder}
+      let orderInfo = {"customerId": customerId,"customerName": customerName, "storeId": this.storeId, "tableId": this.tableId, "orders": this.orderItems}
       console.log(JSON.stringify(orderInfo))
       CustomerAPI.sendOrder(orderInfo).then(res => {
         this.$bvModal.msgBoxOk("Món ăn bạn gọi đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé!!!", {
@@ -179,6 +278,13 @@ export default {
     countUp (num) {
       let currentNumber = document.getElementById(num).textContent
       document.getElementById(num).textContent = parseInt(currentNumber) + 1
+    },
+
+    /**
+     * Go back
+     */
+    goBack() {
+      this.$router.push('/store/' + this.storeId + '/table/' + this.tableId)
     }
   }
 }
