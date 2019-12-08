@@ -23,6 +23,7 @@ import PromoDetail from '@/views/customer/PromoDetail'
 import CustomerHome from '@/views/customer/Home'
 import Order from '@/views/customer/Order'
 import Require from '@/views/customer/Require'
+import Notification from '@/views/customer/Notification'
 
 // Staff group
 import HomeStaff from '@/views/staff/Home'
@@ -152,6 +153,12 @@ export default new Router({
       path: '/customer/reward',
       name: 'Reward',
       component: Reward
+    },
+
+    {
+      path: '/customer/notification',
+      name: 'Notification',
+      component: Notification
     },
 
     // Staff group

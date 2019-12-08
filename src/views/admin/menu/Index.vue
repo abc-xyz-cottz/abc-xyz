@@ -37,6 +37,7 @@
                   v-model="menu.price">
                 </b-col>
               </b-row>
+
               <b-row class="form-row" v-if="this.$route.params.id">
                 <b-col md="3" class="mt-2">
                   <label> Trạng thái </label><span class="error-sybol"></span>
@@ -51,19 +52,47 @@
                   v-model="menu.active"></b-form-select>
                 </b-col>
               </b-row>
+
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
                   <label> Hình ảnh </label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="9">
                   <b-form-file
-                  id="status"
-                  type="text"
-                  autocomplete="new-password"
-                  class="form-control"
-                  v-model="menu.image"></b-form-file>
+                    id="status"
+                    type="text"
+                    autocomplete="new-password"
+                    class="form-control"
+                    v-model="menu.image"
+                    ref="file">
+                  </b-form-file>
                 </b-col>
               </b-row>
+
+              <b-row class="form-row">
+                <div v-show="imagePreview" class="preview-box text-center" v-bind:style="{ height: computedWidth }">
+
+                        <vue-cropper
+                          ref="cropper"
+                          :guides="true"
+                          :view-mode="2"
+                          :center="true"
+                          drag-mode="crop"
+                          :auto-crop-area="1"
+                          :background="false"
+                          :rotatable="true"
+                          :src="imagePreview"
+                          :initialAspectRatio="1/1"
+                          :aspectRatio="1/1"
+                          alt="Source Image"
+                          :min-container-width="100"
+                          :min-container-height="100"
+                          v-bind:style="computedImg"
+                        >
+                        </vue-cropper>
+                    </div>
+              </b-row>
+
               <b-row class="text-center mt-3">
                 <b-col>
                   <b-button variant="primary" class="px-4" @click="save">
@@ -83,6 +112,8 @@
 <script>
 import adminAPI from '@/api/admin'
 import Mapper from '@/mapper/menu'
+import VueCropper from 'vue-cropperjs'
+import 'cropperjs/dist/cropper.css'
 
 
 export default {
@@ -98,7 +129,8 @@ export default {
         "price": null,
         "active": null,
         "image": null
-      }
+      },
+      imagePreview: null
     }
   },
   mounted() {
@@ -157,7 +189,27 @@ export default {
           alert("add fail")
         })
       }
-    }
+    },
+
+    /**
+     * Handle upload file
+     */
+    handleFileUpload () {
+      // this.$refs.cropper.rotate(45);
+      this.file = this.$refs.file.files[0]
+
+      // Render image in review
+      let reader  = new FileReader ()
+      reader.addEventListener("load", function () {
+        this.imagePreview = reader.result
+      }.bind(this), false)
+      if( this.file ){
+        reader.readAsDataURL( this.file )
+        this.height = '300px'
+        this.styleImg = {'max-width': '100%', 'max-height': '100%'}
+      }
+    },
+
   }
 }
 </script>

@@ -161,5 +161,12 @@ export default {
    */
   saveSystemConfig(req) {
     return session.post(RootAPI + 'sys-config/add-update', req)
+  },
+
+  /**
+   * Load order history
+   */
+  loadOrderHistory() {
+    return session.get(RootAPI + 'staff/order-his')
   }
 }

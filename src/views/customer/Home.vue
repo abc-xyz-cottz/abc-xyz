@@ -110,62 +110,64 @@
 </template>
 <script>
 import { QrcodeStream } from 'vue-qrcode-reader'
+import Cookies from 'js-cookie'
+import {Constant} from '@/common/constant'
 
 
 export default {
   components: {
     QrcodeStream
   },
-    data() {
-      return {
-        optionsCiti: [
-          {value: '1', text: 'HCM'},
-          {value: '2', text: 'HN'}
-        ],
-        optionsRes: [
-          {value: '1', text: 'Nha hang 1'},
-          {value: '2', text: 'Nha Hang 2'}
-        ],
-        slide: 0,
-        sliding: null,
-        onLogin: false,
-        selected: '',
-        onShowQRCode: false,
-        perPage: '10',
-        currentPage: '1',
-        fields: [
-          {
-            key: 'stt',
-            label: 'STT'
-          },
-          {
-            key: 'name',
-            label: 'Tên'
-          },
-          {
-            key: 'citi',
-            label: 'Tỉnh/ Thành Phố'
-          },
-          {
-            key: 'district',
-            label: 'Quận'
-          },
-          {
-            key: 'address',
-            label: 'Địa Chỉ'
-          },
-          {
-            key: 'actions',
-            label: '',
-            class: 'actions-cell'
-          }
-        ],
-        items: [
-        {stt: '1', name: 'cocacola', citi: 'HN', district: '3', address: 'haha', action: ''},
-        {stt: '1', name: 'cocacola', citi: 'HN', district: '3', address: 'haha', action: ''},
-      ]
-      }
-    },
+  data() {
+    return {
+      optionsCiti: [
+        {value: '1', text: 'HCM'},
+        {value: '2', text: 'HN'}
+      ],
+      optionsRes: [
+        {value: '1', text: 'Nha hang 1'},
+        {value: '2', text: 'Nha Hang 2'}
+      ],
+      slide: 0,
+      sliding: null,
+      onLogin: false,
+      selected: '',
+      onShowQRCode: false,
+      perPage: '10',
+      currentPage: '1',
+      fields: [
+        {
+          key: 'stt',
+          label: 'STT'
+        },
+        {
+          key: 'name',
+          label: 'Tên'
+        },
+        {
+          key: 'citi',
+          label: 'Tỉnh/ Thành Phố'
+        },
+        {
+          key: 'district',
+          label: 'Quận'
+        },
+        {
+          key: 'address',
+          label: 'Địa Chỉ'
+        },
+        {
+          key: 'actions',
+          label: '',
+          class: 'actions-cell'
+        }
+      ],
+      items: [
+      {stt: '1', name: 'cocacola', citi: 'HN', district: '3', address: 'haha', action: ''},
+      {stt: '1', name: 'cocacola', citi: 'HN', district: '3', address: 'haha', action: ''},
+    ]
+    }
+  },
     computed: {
       rows() {
         return this.items.length
