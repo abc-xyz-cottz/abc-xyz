@@ -19,6 +19,7 @@
                   <input
                   id="name"
                   type="text"
+                  autocomplete="new-password"
                   class="form-control"
                   v-model="promo.name"
                   maxlength="100">
@@ -35,6 +36,8 @@
                   <input
                   id="price"
                   type="text"
+                  maxlength="100"
+                  autocomplete="new-password"
                   class="form-control"
                   v-model="promo.cost"
                   @keypress="validateCode">
@@ -51,6 +54,8 @@
                   <input
                   id="expiredDate"
                   type="text"
+                  maxlength="100"
+                  autocomplete="new-password"
                   class="form-control"
                   v-model="promo.expired_on"
                   @keypress="validateCode">
@@ -68,7 +73,9 @@
                   <input
                   id="number"
                   type="text"
+                  autocomplete="new-password"
                   class="form-control"
+                  maxlength="100"
                   v-model="promo.quantity"
                   @keypress="validateCode">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorQuantity">

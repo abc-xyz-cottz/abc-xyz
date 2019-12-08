@@ -20,6 +20,8 @@
                       id="phone"
                       v-model="inputs.phone_number"
                       type="text"
+                      maxlength="20"
+                      autocomplete="new-password"
                       class="form-control"
                       placeholder="Nhập số điện thoại" phoneNumberCheck
                       @keyup="intergerOnly($event.target)"

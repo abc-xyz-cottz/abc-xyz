@@ -19,6 +19,8 @@
                   <input
                   id="name"
                   type="text"
+                  maxlength="100"
+                  autocomplete="new-password"
                   class="form-control">
                 </b-col>
               </b-row>
@@ -30,6 +32,7 @@
                   <input
                   id="price"
                   type="text"
+                  autocomplete="new-password"
                   class="form-control">
                 </b-col>
               </b-row>
@@ -42,6 +45,8 @@
                   :options="options"      
                   id="status"
                   type="text"
+                  maxlength="1"
+                  autocomplete="new-password"
                   class="form-control"></b-form-select>
                 </b-col>
               </b-row>

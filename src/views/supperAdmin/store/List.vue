@@ -122,7 +122,6 @@ export default {
         }
       ],
       items: [],
-      optionsDistrict: [],
       items: [],
       inputs: {
         name: '',

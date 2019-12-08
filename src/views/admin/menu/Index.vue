@@ -19,6 +19,7 @@
                   <input
                   id="name"
                   type="text"
+                  autocomplete="new-password"
                   class="form-control"
                   v-model="menu.name">
                 </b-col>
@@ -31,6 +32,7 @@
                   <input
                   id="price"
                   type="text"
+                  autocomplete="new-password"
                   class="form-control"
                   v-model="menu.price">
                 </b-col>
@@ -44,6 +46,7 @@
                   :options="options"      
                   id="status"
                   type="text"
+                  autocomplete="new-password"
                   class="form-control"
                   v-model="menu.active"></b-form-select>
                 </b-col>
@@ -56,6 +59,7 @@
                   <b-form-file
                   id="status"
                   type="text"
+                  autocomplete="new-password"
                   class="form-control"
                   v-model="menu.image"></b-form-file>
                 </b-col>

@@ -76,7 +76,7 @@ export default {
         }
       ],
       items: [],
-      total_point: null,
+      total_point: '0',
       fieldsPoint: [
         {
           key: 'stt',
@@ -91,11 +91,7 @@ export default {
           label: 'Ngày Hết Hạn'
         }
       ],
-      itemsPoint: [
-        {stt: '1', point: '1500', expiredate: '12/22/2019'},
-        {stt: '2', point: '2500', expiredate: '1/22/2019'},
-        {stt: '3', point: '5500', expiredate: '3/22/2019'},
-      ]
+      itemsPoint: []
     }
   },
   mounted() {

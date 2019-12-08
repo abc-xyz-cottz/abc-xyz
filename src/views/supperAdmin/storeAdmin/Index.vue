@@ -20,7 +20,8 @@
                   id="name"
                   type="text"
                   class="form-control"
-                  v-model="adminStore.name">
+                  v-model="adminStore.name"
+                  maxlength="100">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorName">
                     Vui lòng nhập tên
                   </b-form-invalid-feedback>
@@ -36,7 +37,8 @@
                   type="text"
                   class="form-control"
                   v-model="adminStore.phone_number"
-                  autocomplete="new-password">
+                  autocomplete="new-password"
+                  maxlength="20">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
                     Vui lòng nhập số điện thoại
                   </b-form-invalid-feedback>
@@ -74,9 +76,13 @@
                   type="password"
                   class="form-control"
                   v-model="adminStore.password"
-                  autocomplete="new-password">
+                  autocomplete="new-password"
+                  maxlength="100">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPassword">
                     Vui lòng nhập mật khẩu
+                  </b-form-invalid-feedback>
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorLengthPassword">
+                    Mật khẩu phải ít nhất 6 kí tự
                   </b-form-invalid-feedback>
                 </b-col>
               </b-row>
@@ -97,6 +103,7 @@
 <script>
 import superAdminAPI from '@/api/superAdmin'
 import Mapper from '@/mapper/staff'
+import MapperStore from '@/mapper/store'
 import commonFunc from '@/common/commonFunc'
 export default {
   data () {
@@ -105,13 +112,7 @@ export default {
         {value: '1', text: 'Staff'},
         {value: '2', text: 'Admin'}
       ],
-      optionsStore: [
-        {value: '1', text: 'Store1'},
-        {value: '2', text: 'Store2'},
-        {value: '3', text: 'Store3'},
-        {value: '4', text: 'Store4'},
-        {value: '5', text: 'Store5'},
-      ],
+      optionsStore: [],
       adminStore: {
         name: '',
         phone_number: '',
@@ -123,6 +124,7 @@ export default {
     }
   },
   mounted() {
+    this.getStoreListDB()
     this.getAdminStoreDetail()
   },
   computed: {
@@ -140,14 +142,31 @@ export default {
     },
     errorPassword: function () {
       return this.checkInfo(this.adminStore.password)
-    }
+    },
+    errorLengthPassword () {  
+      if(this.errorPassword || !this.adminStore.password)
+        return false
+      if(this.click)
+        return (this.adminStore.password.length < 6)
+      return false
+    },
   },
   methods: {
     checkInfo (info) {
       return (this.click && (info == null || info.length <= 0))
     },
     checkValidate () {
-      return !(this.errorName || this.errorPhone || this.errorRole || this.errorStore || this.errorPassword)
+      return !(this.errorName || this.errorPhone || this.errorRole || this.errorStore 
+          || this.errorPassword || this.errorLengthPassword)
+    },
+    getStoreListDB () {
+      superAdminAPI.getStoreListDB().then(res => {
+          if(res != null && res.data != null && res.data.data != null) {
+            this.optionsStore = MapperStore.mapStoreModelListToDto(res.data.data)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
     },
     getAdminStoreDetail() {
       let AdminStoreId = this.$route.params.id
@@ -155,7 +174,6 @@ export default {
         superAdminAPI.getAdminStoreDetail(AdminStoreId).then(res => {
           if(res != null && res.data != null && res.data.data != null) {
             this.adminStore = Mapper.mapAdminStoreDetailModelToDto(res.data.data)
-            // this.store.expired_at = commonFunc.calculateMonth(this.store.expired_at)
           }
         }).catch(err => {
           console.log(err)

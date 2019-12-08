@@ -11,7 +11,9 @@
                 id="name"
                 v-model="inputs.name"
                 type="text"
-                class="form-control">
+                autocomplete="new-password"
+                class="form-control"
+                maxlength="100">
                 <b-form-invalid-feedback  class="invalid-feedback" :state="!errorName">
                   Vui lòng nhập tên
                 </b-form-invalid-feedback>
@@ -22,7 +24,10 @@
                 id="phone"
                 v-model="inputs.phone"
                 type="text"
-                class="form-control">
+                autocomplete="new-password"
+                class="form-control"
+                maxlength="15"
+                @keypress="validateCode">
                 <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
                   Vui lòng nhập số điện thoại
                 </b-form-invalid-feedback>
@@ -42,6 +47,7 @@
                 id="birthday"
                 v-model="inputs.birthday"
                 type="text"
+                autocomplete="new-password"
                 class="form-control">
               <b-form-invalid-feedback  class="invalid-feedback" :state="!errorBirthday">
                 Vui lòng nhập ngày sinh
@@ -53,7 +59,9 @@
                   :options="optionsCity"
                   id="city_id"
                   type="text" 
+                  autocomplete="new-password"
                   class="form-control"
+                  maxlength="100"
                   v-model="inputs.city_id"
                   v-on:change="changeCity($event.target)"></b-form-select>
                   <b-form-invalid-feedback class="invalid-feedback" :state="!errorCity">
@@ -66,7 +74,9 @@
                 :options="optionsDistrict"
                 id="district"
                 type="text" 
+                autocomplete="new-password"
                 class="form-control"
+                maxlength="100"
                 v-model="inputs.district_id"></b-form-select>
               <b-form-invalid-feedback  class="invalid-feedback" :state="!errorDistrict">
                 Vui lòng nhập quận
@@ -85,6 +95,7 @@ import CustomerAPI from '@/api/customer'
 import Mapper from '@/mapper/customer'
 import MasterApi from '@/api/master'
 import MasterMapper from '@/mapper/master'
+import commonFunc from '@/common/commonFunc'
 export default {
   name: 'Register',
   data () {
@@ -170,6 +181,12 @@ export default {
         })
       } else {
         this.inputs.district_id = ""
+      }
+    },
+    validateCode (event) {
+      // not number
+      if(!commonFunc.isNumber(event)) {
+        event.preventDefault()
       }
     }
   }

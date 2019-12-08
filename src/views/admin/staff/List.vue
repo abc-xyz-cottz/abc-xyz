@@ -21,6 +21,8 @@
                   <input
                   id="name"
                   type="text"
+                  maxlength="100"
+                  autocomplete="new-password"
                   class="form-control"
                   v-model="inputs.name">
                 </b-col>
@@ -29,6 +31,8 @@
                   <input
                   id="phone"
                   type="text"
+                  maxlength="20"
+                  autocomplete="new-password"
                   class="form-control"
                   v-model="inputs.phone">
                 </b-col>
@@ -38,6 +42,7 @@
                   id="permision"
                   :options="options"
                   type="text"
+                  autocomplete="new-password"
                   class="form-control"
                   v-model="inputs.role"></b-form-select>
                 </b-col>

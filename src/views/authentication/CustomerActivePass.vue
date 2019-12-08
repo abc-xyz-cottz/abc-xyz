@@ -16,6 +16,7 @@
                     <input
                       id="code"
                       type="text"
+                      autocomplete="new-password"
                       class="form-control"
                       placeholder="Nhập số code"
                       v-model="inputs.code"

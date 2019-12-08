@@ -19,6 +19,8 @@
                   <input
                   id="name"
                   type="text"
+                  maxlength="100"
+                  autocomplete="new-password"
                   class="form-control"
                   v-model="table.name">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorName">

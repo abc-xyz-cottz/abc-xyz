@@ -19,6 +19,7 @@
                   <input
                   id="name"
                   type="text"
+                  autocomplete="new-password"
                   class="form-control"
                   v-model="staff.name"
                   maxlength="100">
@@ -54,7 +55,9 @@
                   :options="options"
                   id="permission"
                   type="text"
+                  autocomplete="new-password"
                   class="form-control"
+                  maxlength="100"
                   v-model="staff.role_id"></b-form-select>
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorRole">
                     Vui lòng nhập quyền
@@ -76,9 +79,9 @@
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPassword">
                     Vui lòng nhập mật khẩu
                   </b-form-invalid-feedback>
-                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorLengthPassword">
-                      Mật khẩu phải ít nhất 6 kí tự
-                    </b-form-invalid-feedback>
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorLengthPassword">
+                    Mật khẩu phải ít nhất 6 kí tự
+                  </b-form-invalid-feedback>
                 </b-col>
               </b-row>
               <b-row class="text-center mt-3">

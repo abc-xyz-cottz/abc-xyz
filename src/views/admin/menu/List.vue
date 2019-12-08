@@ -21,6 +21,7 @@
                   <input
                   id="name"
                   type="text"
+                  autocomplete="new-password"
                   class="form-control"
                   v-model="inputs.name">
                 </b-col>
@@ -29,6 +30,7 @@
                   <input
                   id="price"
                   type="text"
+                  autocomplete="new-password"
                   class="form-control"
                   v-model="inputs.price">
                 </b-col>
@@ -38,6 +40,7 @@
                   :options="options"
                   id="status"
                   type="text"
+                  autocomplete="new-password"
                   class="form-control"
                   v-model="inputs.status"></b-form-select>
                 </b-col>

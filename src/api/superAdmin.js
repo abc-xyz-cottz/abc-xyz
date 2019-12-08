@@ -71,4 +71,11 @@ export default {
   addAdminStore(req) {
     return session.post(RootAPI + 'admin-store/add', req)
   },
+
+  /**
+   * Get Store List DB
+   */
+  getStoreListDB () {
+    return session.get(RootAPI + 'store/list')
+  },
 }

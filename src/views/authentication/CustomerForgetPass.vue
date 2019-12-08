@@ -17,6 +17,7 @@
                     </label><span class="error-sybol"></span>
                     <input id="phone"
                       type="text"
+                      autocomplete="new-password"
                       class="form-control"
                       v-model="inputs.phone_number"
                       maxlength="15"

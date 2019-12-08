@@ -25,6 +25,7 @@
               class="form-control"
               size="16"
               type="text"
+              autocomplete="new-password"
               placeholder="What are you looking for?"
             >
             <b-input-group-append>

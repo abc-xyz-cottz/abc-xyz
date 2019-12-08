@@ -127,7 +127,7 @@ export default {
       options: [
         {value: '', text: 'Tất cả'},
         {value: '1', text: 'Staff'},
-        {value: '2', text: 'Admin'}
+        {value: '2', text: 'Admin'},
       ],
       inputs: {
         name: '',

@@ -22,9 +22,12 @@
                   </label>
                   <input id="currentPassword" 
                     v-model="inputs.currentPassword" 
-                    type="text" class="form-control" 
+                    type="text" 
+                    autocomplete="new-password"
+                    class="form-control" 
                     placeholder="input current username ..." 
-                    :class="{ 'is-invalid': onComparePass || missCurrentPass}">
+                    :class="{ 'is-invalid': onComparePass || missCurrentPass}"
+                    maxlength="100">
                   <div class="invalid-feedback">
                     <template v-if="onComparePass == true">
                       {{ errCompare }}
@@ -41,8 +44,11 @@
                   </label>
                   <input id="newPassword" 
                     v-model="inputs.newPassword" 
-                    type="text" class="form-control" 
+                    type="text" 
+                    autocomplete="new-password"
+                    class="form-control" 
                     placeholder="input new password ..." 
+                    maxlength="100"
                     :class="{ 'is-invalid': missNewPassword }">
                   <div class="invalid-feedback">
                     <template v-if="missNewPassword == true">
@@ -58,8 +64,10 @@
                   <input id="confirmPassword" 
                     v-model="inputs.confirmPassword" 
                     type="text" 
+                    autocomplete="new-password"
                     class="form-control" 
                     placeholder="input confirm password ..." 
+                    maxlength="100"
                     :class="{ 'is-invalid':  missConfirmPass || onCompareNewPass}">
                   <div class="invalid-feedback">
                     <template v-if="onCompareNewPass == true">

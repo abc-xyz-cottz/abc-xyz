@@ -20,6 +20,7 @@
                       id="phone"
                       v-model="inputs.phone_number"
                       type="text"
+                      autocomplete="new-password"
                       class="form-control"
                       maxlength="15"
                       @keyup="intergerOnly($event.target)"

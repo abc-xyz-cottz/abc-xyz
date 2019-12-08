@@ -47,6 +47,7 @@
                     id="citi"
                     :options="optionsCiti"
                     type="text"
+                    autocomplete="new-password"
                     class="form-control"></b-form-select>
                 </b-form-group>
               </b-col>
@@ -56,6 +57,7 @@
                     id="restaurant"
                     :options="optionsRes"
                     type="text"
+                    autocomplete="new-password"
                     class="form-control"></b-form-select>
                 </b-form-group>
               </b-col>

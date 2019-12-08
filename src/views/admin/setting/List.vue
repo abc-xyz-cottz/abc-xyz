@@ -23,6 +23,7 @@
                   <input
                   id="pasword"
                   type="text"
+                  autocomplete="new-password"
                   class="form-control"
                   v-model="data.value"
                   @keypress="validateCode"
