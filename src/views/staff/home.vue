@@ -60,7 +60,7 @@
 <script>
 import Cookies from 'js-cookie'
 import {Constant} from '@/common/constant'
-import adminAPI from '@/api/admin'
+import { RootAPI } from '@/api/index'
 
 
 export default {
@@ -78,7 +78,8 @@ export default {
     let user = JSON.parse(Cookies.get(Constant.APP_USR))
     let storeId = user.storeId
 
-    var socket = new WebSocket('ws://127.0.0.1:8000/join-group/staff-' + storeId)
+    let api = RootAPI.replace("http://", "").replace("https://", "").replace("/api/", "")
+    var socket = new WebSocket("ws://" + api + "/join-group/staff-" + storeId)
 
     socket.onopen = event => {
         console.log('connected')

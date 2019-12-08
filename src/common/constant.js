@@ -16,5 +16,8 @@ export const Constant = {
 
   // Order status conts
   ORDER_APPROVED: "approved",
-  ORDER_CANCELED: "canceled"
+  ORDER_CANCELED: "canceled",
+
+  // Number of notify
+  NOTIFY_NUMBER: 'number-of-notification'
 }

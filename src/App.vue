@@ -12,7 +12,7 @@
           <a v-if="this.$route.name != 'StaffLogin' && this.$route.name != 'CustomerLogin'" href="/staff-login" class="pull-left white">Nhân Viên</a>
           <b-navbar-nav class="ml-auto" v-if="this.$route.name != 'StaffLogin' && this.$route.name != 'CustomerLogin'">
             <a href="/customer-login" class="pull-right white">Đăng Nhập &nbsp; </a>
-            <a href="/register" class="pull-right white" v-if="this.$route.name != 'Register'"> | &nbsp; Đăng Ký Tài Khoản</a>
+            <a href="/register" class="pull-right white" v-if="this.$route.name != 'Register'"> | &nbsp; Đăng Ký</a>
           </b-navbar-nav>
         </div>
       </AppHeader>
@@ -33,7 +33,9 @@
           <!-- hiện cho template customer -->
            <HeaderDropdownGift v-if="this.$store.state.user.userType == 'customer'"/>
              <span class="white" v-if="this.$store.state.user.userType == 'customer'">
-               <i class="fa fa-bell fa-2x"></i>
+               <span class="fa-stack" :data-count="notifyNumber">
+                 <a href="/notification"><i class="fa fa-bell fa-2x"></i></a>
+               </span>
              </span>
            <HeaderDropdownCusAcc v-if="this.$store.state.user.userType == 'customer'"/>
           <!-- end -->
@@ -93,27 +95,22 @@
 </template>
 
 <script>
-import { HeaderDropdown as AppHeaderDropdown } from '@coreui/vue'
 import navSpAdmin from '@/navSpAdmin'
 import navAdmin from '@/navAdmin'
-import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFooter, SidebarForm, SidebarHeader, SidebarMinimizer, SidebarNav, Aside as AppAside, AsideToggler, Footer as TheFooter, Breadcrumb } from '@coreui/vue'
+import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFooter, SidebarForm, SidebarHeader, SidebarMinimizer, SidebarNav } from '@coreui/vue'
 import HeaderDropdownCusAcc from '@/components/common/HeaderDropdownCusAcc'
 import HeaderDropdownStaffAcc from '@/components/common/HeaderDropdownStaffAcc'
 import HeaderDropdownGift from '@/components/common/HeaderDropdownGift'
-import DefaultAside from '@/components/common/DefaultAside'
-import QrcodeVue from 'qrcode.vue'
 import {Constant} from '@/common/constant'
+import Cookies from 'js-cookie'
+import { RootAPI } from '@/api/index'
 
 
 export default {
   name: 'App',
   components: {
-    AsideToggler,
     AppHeader,
     AppSidebar,
-    AppAside,
-    TheFooter,
-    Breadcrumb,
     SidebarForm,
     SidebarFooter,
     SidebarToggler,
@@ -122,10 +119,7 @@ export default {
     SidebarMinimizer,
     HeaderDropdownCusAcc,
     HeaderDropdownStaffAcc,
-    HeaderDropdownGift,
-    DefaultAside,
-    QrcodeVue,
-    AppHeaderDropdown
+    HeaderDropdownGift
   },
   data () {
     return {
@@ -133,13 +127,47 @@ export default {
       navSpAdmin: navSpAdmin.items,
       navAdmin: navAdmin.items,
       fullName: '',
-      value: 'https://www.facebook.com/tanarmy77',
       size: 40,
       roleAdmin: Constant.ROLE_ADMIN,
-      roleSpAdmin: Constant.ROLE_SP_ADMIN
+      roleSpAdmin: Constant.ROLE_SP_ADMIN,
+      notifyNumber: 0
     }
   },
   mounted (){
+    let numberOfNotify = Cookies.get(Constant.NOTIFY_NUMBER)
+    this.notifyNumber = numberOfNotify
+
+    let user = JSON.parse(Cookies.get(Constant.APP_USR))
+    if(user && user.userType == "customer") {
+      let phoneNumber = user.phoneNumber
+      let cityId = user.cityId
+
+      let api = RootAPI.replace("http://", "").replace("https://", "").replace("/api/", "")
+      var socket = new WebSocket("ws://" + api + "/join-group/cus-" + phoneNumber + "-" + cityId)
+
+      socket.onopen = event => {
+          console.log('connected')
+          this.connected = true
+          socket.send({})
+      }
+
+      socket.onmessage = event => {
+        var json_data = JSON.parse(event.data)
+        console.log(json_data)
+        alert(JSON.stringify(json_data))
+        let numberOfNotification = json_data.text.numberOfNotification
+        alert(numberOfNotification)
+        Cookies.set(Constant.NOTIFY_NUMBER, numberOfNotification)
+
+        this.notifyNumber = numberOfNotification
+
+      }
+
+      socket.onclose = event => {
+        this.connected = false
+      }
+    }
+
   },
   activated () {
     this.mounted()
@@ -167,4 +195,20 @@ export default {
   @import '~bootstrap-vue/dist/bootstrap-vue';
   @import 'assets/scss/style';
   @import 'assets/scss/rsw';
+
+  .fa-stack[data-count]:after{
+    position:absolute;
+    right:0%;
+    top:1%;
+    content: attr(data-count);
+    font-size:50%;
+    padding:.6em;
+    border-radius:999px;
+    line-height:.75em;
+    color: white;
+    background:rgba(255,0,0,.85);
+    text-align:center;
+    min-width:2em;
+    font-weight:bold;
+  }
 </style>

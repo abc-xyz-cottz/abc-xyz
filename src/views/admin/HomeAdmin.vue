@@ -16,6 +16,7 @@
                       <p class="col-12" v-if="item.type == 'order'">Loại: Order</p>
                       <p class="col-12" v-if="item.type == 'request'">Loại: Yêu cầu</p>
                       <p class="col-12">Khách hàng: {{item.customerName}}</p>
+                      <p class="col-12">Thời gian : {{item.time}}</p>
                       <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
                       <p class="col-12" >Chi tiết:</p>
                       <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
@@ -28,7 +29,7 @@
                       </b-col>
                       <b-col class="col-6">
                           <div class="text-right">
-                              <b-button class="btn-primary pull-right ml-3 px-4" @click="confirm(index, item.orderId)">
+                              <b-button class="btn-primary pull-right ml-3 px-4" @click="confirm(index, item.orderId, item.customerName)">
                                   Xác nhận
                               </b-button>
                           </div>
@@ -39,20 +40,32 @@
 
             <!-- Second tab -->
             <b-tab title="Đã xác nhận">
-                <div  v-for="item in approved" :key="item.table">
+                <div  v-for="(item, index) in approved" :key="item.table + index">
                     <b-row class="border border-dark mt-4 mess">
-                        <h4>{{item.table}}</h4>
-                        <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
+                      <h4 class="col-12">Bàn: {{item.table}}</h4>
+                      <p class="col-12" v-if="item.type == 'order'">Loại: Order</p>
+                      <p class="col-12" v-if="item.type == 'request'">Loại: Yêu cầu</p>
+                      <p class="col-12">Khách hàng: {{item.customerName}}</p>
+                      <p class="col-12">Thời gian : {{item.time}}</p>
+                      <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
+                      <p class="col-12" >Chi tiết:</p>
+                      <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
                     </b-row>
                 </div>
             </b-tab>
 
             <!-- Third tab -->
             <b-tab title="Đã hủy">
-                <div  v-for="item in canceled" :key="item.table">
+                <div  v-for="(item, index) in canceled" :key="item.table + index">
                     <b-row class="border border-dark mt-4 mess">
-                        <h4>{{item.table}}</h4>
-                        <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
+                      <h4 class="col-12">Bàn: {{item.table}}</h4>
+                      <p class="col-12" v-if="item.type == 'order'">Loại: Order</p>
+                      <p class="col-12" v-if="item.type == 'request'">Loại: Yêu cầu</p>
+                      <p class="col-12">Khách hàng: {{item.customerName}}</p>
+                      <p class="col-12">Thời gian : {{item.time}}</p>
+                      <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
+                      <p class="col-12" >Chi tiết:</p>
+                      <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
                     </b-row>
                 </div>
             </b-tab>
@@ -64,13 +77,13 @@
 import Cookies from 'js-cookie'
 import {Constant} from '@/common/constant'
 import adminAPI from '@/api/admin'
+import { RootAPI } from '@/api/index'
 
 
 export default {
   data () {
     return {
-      created: [
-      ],
+      created: [],
       approved: [],
       canceled: []
     }
@@ -78,10 +91,16 @@ export default {
   computed: {
   },
   mounted() {
+
+    // Load order history
+    this.loadOrderHistory()
+
+    // Define socket
     let user = JSON.parse(Cookies.get(Constant.APP_USR))
     let storeId = user.storeId
 
-    var socket = new WebSocket('ws://127.0.0.1:8000/join-group/admin-' + storeId)
+    let api = RootAPI.replace("http://", "").replace("https://", "").replace("/api/", "")
+    var socket = new WebSocket("ws://" + api + "/join-group/admin-" + storeId)
 
     socket.onopen = event => {
         console.log('connected')
@@ -91,9 +110,9 @@ export default {
 
     socket.onmessage = event => {
       var json_data = JSON.parse(event.data)
-      this.dataSet = json_data.text
-      console.log(json_data.text)
-      this.created.push(json_data.text)
+      // this.dataSet = json_data.text
+      // console.log(json_data.text)
+      this.created = [json_data.text].concat(this.created)
       // alert(JSON.stringify(json_data.text))
     }
 
@@ -105,12 +124,17 @@ export default {
      /**
      * Confirm
      */
-    confirm(index, orderId) {
-      this.approved.push(this.created[index])
+    confirm(index, orderId, customerInfo) {
+      this.approved = [this.created[index]].concat(this.approved)
       this.created.splice(index, 1)
 
+       let phoneNumber = null
+       if(customerInfo) {
+         phoneNumber = customerInfo.split("-")[1]
+       }
+
        // Update order status to db
-       let orderInfo = {"id": orderId, "status": Constant.ORDER_APPROVED}
+       let orderInfo = {"id": orderId, "status": Constant.ORDER_APPROVED, "phoneNumber": phoneNumber}
       adminAPI.updateOrderStatus(orderInfo).then(res => {
         alert("ok")
       }).catch(err => {
@@ -122,13 +146,34 @@ export default {
      * Cancel
      */
     cancel(index, orderId) {
-      this.canceled.push(this.created[index])
+      this.canceled = [this.created[index]].concat(this.canceled)
       this.created.splice(index, 1)
 
       // Update order status to db
       let orderInfo = {"id": orderId, "status": Constant.ORDER_CANCELED}
       adminAPI.updateOrderStatus(orderInfo).then(res => {
         alert("ok")
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    /**
+     * Load orders history
+     */
+    loadOrderHistory() {
+      adminAPI.loadOrderHistory().then(res => {
+        // Load orders created
+        let orders_created = res.data.data.orders_created
+        this.created.push.apply(this.created, orders_created)
+
+        // Load orders approved
+        let orders_approved = res.data.data.orders_approved
+        this.approved.push.apply(this.approved, orders_approved)
+
+        // Load orders canceled
+        let orders_canceled = res.data.data.orders_canceled
+        this.canceled.push.apply(this.canceled, orders_canceled)
       }).catch(err => {
         console.log(err)
       })

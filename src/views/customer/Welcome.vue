@@ -149,7 +149,7 @@ export default {
         "storeId": this.storeId,
         "customerId": customerId,
         "customerName": customerName,
-        "request": this.request
+        "orders": this.request
       }
 
       CustomerAPI.sendRequest(requestInfo).then(res => {
