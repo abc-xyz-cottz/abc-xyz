@@ -140,6 +140,8 @@ export default {
     errorLengthPassword () {
       if(!this.staff.password || this.errorPassword)
         return false
+      if(!this.click)
+        return false
       return (this.staff.password.length < 6) 
     },
   },

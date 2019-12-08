@@ -34,7 +34,8 @@
                   maxlength="20"
                   autocomplete="new-password"
                   class="form-control"
-                  v-model="inputs.phone">
+                  v-model="inputs.phone"
+                  @keypress="validateCode">
                 </b-col>
                 <b-col md="4">
                   <label> Quyền </label>
@@ -240,6 +241,12 @@ export default {
           this.onSearch = false
           this.loading = false
       })
+    },
+    validateCode (event) {
+      // not number
+      if(!commonFunc.isNumber(event)) {
+        event.preventDefault()
+      }
     }
   }
 }
