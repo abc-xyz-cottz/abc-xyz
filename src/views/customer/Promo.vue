@@ -9,9 +9,9 @@
                 bordered
                 stacked="md"
                 :fields="fields"
-                :items="items">
+                :items="AvailablePromo">
                 <template v-slot:cell(stt)="dataId">
-                  <span class="promo-tabs-link" @click="showDetail(dataId.value, 'available')">
+                  <span class="promo-tabs-link" @click="showDetail(dataId.item.id, 'available')">
                     {{ dataId.value }}
                   </span>
                 </template>
@@ -23,9 +23,9 @@
                 bordered
                 stacked="md"
                 :fields="fields"
-                :items="items">
+                :items="ExpiredPromo">
                 <template v-slot:cell(stt)="dataId">
-                  <span class="promo-tabs-link" @click="showDetail(dataId.value, 'expired')">
+                  <span class="promo-tabs-link" @click="showDetail(dataId.item.id, 'expired')">
                     {{ dataId.value }}
                   </span>
                 </template>
@@ -37,10 +37,10 @@
                 bordered
                 stacked="md"
                 :fields="fields"
-                :items="items">
+                :items="UsedPromo">
                 <template v-slot:cell(stt)="dataId">
                   <b-list-group horizontal>
-                    <span class="promo-tabs-link" @click="showDetail(dataId.value, 'used')">
+                    <span class="promo-tabs-link" @click="showDetail(dataId.item.id, 'used')">
                       {{ dataId.value }}
                     </span>
                   </b-list-group>
@@ -53,6 +53,8 @@
   </div>
 </template>
 <script>
+import customerAPI from '@/api/customer'
+import Mapper from '@/mapper/promotion'
 export default {
   data () {
     return {
@@ -73,18 +75,41 @@ export default {
           label: 'Ngày Hết Hạn'
         }
       ],
-      items: [
-        {stt: '1', name: 'cocacola', expiredate: '12/22/2019'},
-        {stt: '2', name: 'cocacola', expiredate: '12/22/2019'},
-        {stt: '3', name: 'cocacola', expiredate: '12/22/2019'},
-        {stt: '4', name: 'cocacola', expiredate: '12/22/2019'},
-        {stt: '5', name: 'cocacola', expiredate: '12/22/2019'}
-      ]
+      AvailablePromo: [],
+      ExpiredPromo: [],
+      UsedPromo: []
     }
+  },
+  mounted() {
+    this.getAvailablePromo()
+    this.getExpiredPromo()
+    this.getUsedPromo()
   },
   methods: {
     showDetail (id, tabName) {
       this.$router.push('/promo-detail/'+ tabName + '/' + id)
+    },
+    getAvailablePromo() {
+      customerAPI.getAvailablePromo().then(res => {
+        if(res != null && res.data != null && res.data.data != null) {
+          console.log(res.data.data)
+          this.AvailablePromo = Mapper.mapPromoCustomerModelToDto(res.data.data)
+        }
+      })
+    },
+    getExpiredPromo() {
+      customerAPI.getExpiredPromo().then(res => {
+        if(res != null && res.data != null && res.data.data != null) {
+          this.ExpiredPromo = Mapper.mapPromoCustomerModelToDto(res.data.data)
+        }
+      })
+    },
+    getUsedPromo() {
+      customerAPI.getUsedPromo().then(res => {
+        if(res != null && res.data != null && res.data.data != null) {
+          this.UsedPromo = Mapper.mapPromoCustomerModelToDto(res.data.data)
+        }
+      })
     }
   }
 }

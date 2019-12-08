@@ -28,7 +28,7 @@
                   v-model="data.value"
                   @keypress="validateCode"
                   maxlength="30">
-                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorExpireDay">
+                  <b-form-invalid-feedback class="invalid-feedback" :state="!errorExpireDay">
                     Vui lòng nhập số ngày
                   </b-form-invalid-feedback>
                 </b-col>
@@ -51,7 +51,7 @@ export default {
     return {
       data: {
         "id" : null,
-        "expired_point" : null,
+        "code" : "expired_point",
         "value": null
       },
       click: false,
@@ -75,7 +75,7 @@ export default {
     save () {
       this.click = true
       let result = this.checkValidate()
-      if(result) { 
+      if(result) {
         adminAPI.saveSystemConfig(this.data).then(res => {
           if(res != null && res.data != null){
             let message = ""

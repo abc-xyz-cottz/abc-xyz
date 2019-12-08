@@ -71,4 +71,25 @@ export default {
   getPointDetailList (store_id) {
     return session.get(RootAPI + 'customer/point-detail/' + store_id)
   },
+
+  /**
+   * get available promo customer
+   */
+  getAvailablePromo () {
+    return session.get(RootAPI + 'customer/pmt/owned')
+  },
+
+  /**
+   * get expired promo customer
+   */
+  getExpiredPromo () {
+    return session.get(RootAPI + 'customer/pmt/expired')
+  },
+
+  /**
+   * get used promo customer
+   */
+  getUsedPromo () {
+    return session.get(RootAPI + 'customer/pmt/used')
+  },
 }
