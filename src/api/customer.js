@@ -92,4 +92,11 @@ export default {
   getUsedPromo () {
     return session.get(RootAPI + 'customer/pmt/used')
   },
+
+  /**
+   * Load notification
+   */
+  getNotification() {
+    return session.get(RootAPI + 'customer/notification')
+  }
 }

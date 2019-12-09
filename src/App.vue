@@ -152,6 +152,7 @@ export default {
       }
 
       socket.onmessage = event => {
+
         var json_data = JSON.parse(event.data)
         console.log(json_data)
         alert(JSON.stringify(json_data))

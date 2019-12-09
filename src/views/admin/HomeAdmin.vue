@@ -22,14 +22,14 @@
                       <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
                       <b-col class="col-6">
                           <div class="is-left">
-                              <b-button class="btn-danger pull-right ml-3 px-4" @click="cancel(index, item.orderId)">
+                              <b-button class="btn-danger pull-right ml-3 px-4" @click="cancel(index, item.orderId, item.customerName, item.type)">
                                   Hủy
                               </b-button>
                           </div>
                       </b-col>
                       <b-col class="col-6">
                           <div class="text-right">
-                              <b-button class="btn-primary pull-right ml-3 px-4" @click="confirm(index, item.orderId, item.customerName)">
+                              <b-button class="btn-primary pull-right ml-3 px-4" @click="confirm(index, item.orderId, item.customerName, item.type)">
                                   Xác nhận
                               </b-button>
                           </div>
@@ -124,7 +124,7 @@ export default {
      /**
      * Confirm
      */
-    confirm(index, orderId, customerInfo) {
+    confirm(index, orderId, customerInfo, type) {
       this.approved = [this.created[index]].concat(this.approved)
       this.created.splice(index, 1)
 
@@ -134,7 +134,7 @@ export default {
        }
 
        // Update order status to db
-       let orderInfo = {"id": orderId, "status": Constant.ORDER_APPROVED, "phoneNumber": phoneNumber}
+       let orderInfo = {"id": orderId, "status": Constant.ORDER_APPROVED, "phoneNumber": phoneNumber, "type": type}
       adminAPI.updateOrderStatus(orderInfo).then(res => {
         alert("ok")
       }).catch(err => {
@@ -145,12 +145,17 @@ export default {
     /**
      * Cancel
      */
-    cancel(index, orderId) {
+    cancel(index, orderId, customerInfo, type) {
       this.canceled = [this.created[index]].concat(this.canceled)
       this.created.splice(index, 1)
 
+      let phoneNumber = null
+       if(customerInfo) {
+         phoneNumber = customerInfo.split("-")[1]
+       }
+
       // Update order status to db
-      let orderInfo = {"id": orderId, "status": Constant.ORDER_CANCELED}
+      let orderInfo = {"id": orderId, "status": Constant.ORDER_CANCELED, "phoneNumber": phoneNumber, "type": type}
       adminAPI.updateOrderStatus(orderInfo).then(res => {
         alert("ok")
       }).catch(err => {

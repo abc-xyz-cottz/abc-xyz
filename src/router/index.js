@@ -156,7 +156,7 @@ export default new Router({
     },
 
     {
-      path: '/customer/notification',
+      path: '/notification',
       name: 'Notification',
       component: Notification
     },
