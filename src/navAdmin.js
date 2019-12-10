@@ -2,6 +2,11 @@ export default {
     items: [
       // admin
       {
+        name: 'Quản lý order',
+        url: '/home-admin',
+        icon: 'fa fa-home'
+      },
+      {
         name: 'Topping',
         url: '/topping/list',
         icon: 'fa fa-home'

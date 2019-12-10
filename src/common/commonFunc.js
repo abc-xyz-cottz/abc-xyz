@@ -74,4 +74,16 @@ export default {
     let day = new Date(result.getTime() - now.getTime())
     return Math.floor(day / (1000 * 60 * 60 * 24 * 30))
   },
+
+  /**
+   * Make toast with title
+   */
+  makeToast(variant = null, title="Success!!!", content="Thao tác thành công!!!") {
+    this.$bvToast.toast(content, {
+      title: title,
+      variant: variant,
+      solid: true,
+      autoHideDelay: 5000
+    })
+  },
 }

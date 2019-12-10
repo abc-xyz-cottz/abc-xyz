@@ -96,7 +96,21 @@ export default {
   /**
    * Load notification
    */
-  getNotification() {
-    return session.get(RootAPI + 'customer/notification')
+  getNotification(params) {
+    return session.post(RootAPI + 'customer/notification', params)
+  },
+
+  /**
+   * Count notification is not read
+   */
+  countNotificationNotRead() {
+    return session.get(RootAPI + 'customer/count-noti')
+  },
+
+  /**
+   * Update notification is read
+   */
+  updateNotificationIsRead() {
+    return session.get(RootAPI + 'customer/update-noti-is-read')
   }
 }

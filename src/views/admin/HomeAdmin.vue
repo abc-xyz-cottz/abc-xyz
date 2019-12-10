@@ -121,6 +121,17 @@ export default {
     }
   },
   methods: {
+    /**
+   * Make toast without title
+   */
+  popToast(variant, content) {
+    this.$bvToast.toast(content, {
+      toastClass: 'my-toast',
+      noCloseButton: true,
+      variant: variant,
+      autoHideDelay: 5000
+    })
+  },
      /**
      * Confirm
      */
@@ -136,9 +147,9 @@ export default {
        // Update order status to db
        let orderInfo = {"id": orderId, "status": Constant.ORDER_APPROVED, "phoneNumber": phoneNumber, "type": type}
       adminAPI.updateOrderStatus(orderInfo).then(res => {
-        alert("ok")
+        this.popToast('success', 'Thao tác thành công!!! ')
       }).catch(err => {
-        console.log(err)
+        this.popToast('danger', 'Thao tác thất bại!!! ')
       })
     },
 
@@ -157,9 +168,9 @@ export default {
       // Update order status to db
       let orderInfo = {"id": orderId, "status": Constant.ORDER_CANCELED, "phoneNumber": phoneNumber, "type": type}
       adminAPI.updateOrderStatus(orderInfo).then(res => {
-        alert("ok")
+        this.popToast('success', 'Thao tác thành công!!! ')
       }).catch(err => {
-        console.log(err)
+        this.popToast('danger', 'Thao tác thất bại!!! ')
       })
     },
 
