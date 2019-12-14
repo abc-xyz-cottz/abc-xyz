@@ -14,7 +14,7 @@ export default {
    */
   intergerOnly(valueInput) {
     if (valueInput != '') {
-      valueInput = valueInput.replace(/[^0-9-]+/g,'');
+      valueInput = valueInput.replace(/[^0-9]+/g,'');
     }
     return valueInput
   },

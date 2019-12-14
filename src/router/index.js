@@ -23,7 +23,6 @@ import PromoDetail from '@/views/customer/PromoDetail'
 import CustomerHome from '@/views/customer/Home'
 import Order from '@/views/customer/Order'
 import Require from '@/views/customer/Require'
-import Notification from '@/views/customer/Notification'
 
 // Staff group
 import HomeStaff from '@/views/staff/Home'
@@ -42,6 +41,7 @@ import Table from '@/views/admin/table/List'
 import TableAdd from '@/views/admin/table/Index'
 import Setting from '@/views/admin/setting/List'
 import PrintQrCode from '@/views/admin/qrCode/PrintQrCode'
+import Notification from '@/views/admin/notification/Index'
 
 // Super admin group
 import HomeSPAdmin from '@/views/supperAdmin/HomeSPAdmin'
@@ -180,8 +180,13 @@ export default new Router({
       component: Topping
     },
     {
-      path: '/topping/index',
+      path: '/topping/add',
       name: 'ToppingAdd',
+      component: ToppingAdd
+    },
+    {
+      path: '/topping/edit/:id',
+      name: 'ToppingEdit',
       component: ToppingAdd
     },
     {
@@ -259,6 +264,12 @@ export default new Router({
       name: 'PrintQrCode',
       component: PrintQrCode
     },
+    {
+      path: '/notification',
+      name: 'Notification',
+      component: Notification
+    },
+
 
     // Super admin group
     {

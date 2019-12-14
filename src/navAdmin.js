@@ -17,27 +17,32 @@ export default {
         icon: 'fa fa-home'
       },
       {
-        name: 'Staff',
+        name: 'Nhân viên',
         url: '/staff/list',
         icon: 'fa fa-home'
       },
       {
-        name: 'Promo',
-        url: '/promo/list',
-        icon: 'fa fa-home'
-      },
-      {
-        name: 'Table',
+        name: 'Bàn ăn',
         url: '/table/list',
         icon: 'fa fa-home'
       },
       {
-        name: 'Setting',
+        name: 'Khuyến mãi',
+        url: '/promo/list',
+        icon: 'fa fa-home'
+      },
+      {
+        name: 'Đăng thông báo',
+        url: '/notification',
+        icon: 'fa fa-home'
+      },
+      {
+        name: 'Cài đặt',
         url: '/setting',
         icon: 'fa fa-home'
       },
       {
-        name: 'QACode',
+        name: 'In QR code',
         url: '/print-qr-code',
         icon: 'fa fa-home'
       }

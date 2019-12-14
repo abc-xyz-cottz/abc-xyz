@@ -139,9 +139,6 @@ export default {
     }
   },
   computed: {
-    rows() {
-      return this.items.length
-    }
   },
   mounted() {
     window.addEventListener('scroll', this.onScroll)
