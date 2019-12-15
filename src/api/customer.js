@@ -115,6 +115,13 @@ export default {
   },
 
   /**
+   * Update info customer
+   */
+  updateInfo(req) {
+    return session.post(RootAPI + 'customer/update-info', req)
+  },
+  
+  /** 
    * Get store by city
    */
   getStoreByCity(cityId) {

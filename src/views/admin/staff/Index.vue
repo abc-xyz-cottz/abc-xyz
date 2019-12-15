@@ -40,9 +40,13 @@
                   v-model="staff.phone_number"
                   @keypress="validateCode"
                   autocomplete="new-password"
-                  maxlength="20">
-                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
+                  maxlength="20"
+                  v-on:change="checkPhoneNumberFormat($event.target)">
+                  <b-form-invalid-feedback class="invalid-feedback" :state="!errorPhone">
                     Vui lòng nhập số điện thoại
+                  </b-form-invalid-feedback>
+                  <b-form-invalid-feedback class="invalid-feedback" :state="phoneNumberCheckFlag">
+                    Số điện thoại không đúng
                   </b-form-invalid-feedback>
                 </b-col>
               </b-row>
@@ -76,10 +80,10 @@
                   v-model="staff.password"
                   autocomplete="new-password"
                   maxlength="100">
-                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPassword">
+                  <b-form-invalid-feedback class="invalid-feedback" :state="!errorPassword">
                     Vui lòng nhập mật khẩu
                   </b-form-invalid-feedback>
-                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorLengthPassword">
+                  <b-form-invalid-feedback class="invalid-feedback" :state="!errorLengthPassword">
                     Mật khẩu phải ít nhất 6 kí tự
                   </b-form-invalid-feedback>
                 </b-col>
@@ -116,6 +120,7 @@ export default {
         "password": null
       },
       click: false,
+      phoneNumberCheckFlag: null,
     }
   },
   mounted() {
@@ -150,7 +155,8 @@ export default {
       return (this.click && (info == null || info.length <= 0))
     },
     checkValidate () {
-      return !(this.errorName || this.errorPhone || this.errorRole || this.errorPassword || this.errorLengthPassword)
+      return !(this.errorName || this.errorPhone || this.errorRole || this.errorPassword 
+            || this.errorLengthPassword || !this.phoneNumberCheckFlag)
     },
     getStaffDetail() {
       let staffId = this.$route.params.id
@@ -246,7 +252,22 @@ export default {
       if(!commonFunc.isNumber(event)) {
         event.preventDefault()
       }
-    }
+    },
+    /**
+     * Check phone number
+     */
+    checkPhoneNumberFormat(item) {
+      let valueInput = item.value
+      if (valueInput != null && valueInput != "") {
+        if (commonFunc.phoneNumberCheck(valueInput)) {
+          this.phoneNumberCheckFlag = true
+        } else {
+          this.phoneNumberCheckFlag = false
+        }
+      } else {
+        this.phoneNumberCheckFlag = true
+      }
+    },
   }
 }
 </script>

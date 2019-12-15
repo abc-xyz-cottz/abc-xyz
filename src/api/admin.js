@@ -47,8 +47,8 @@ export default {
   /**
    * Search staff
    */
-  searchStaff(req) {
-    return session.post(RootAPI + 'staff/search/?limit=10&offset=0', req)
+  searchStaff(req, param) {
+    return session.post(RootAPI + 'staff/search/?limit=10&offset=' + param,  req)
   },
 
   /**
