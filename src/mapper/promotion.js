@@ -43,5 +43,28 @@ export default {
         result.push(promoTemp)
       }
       return result
+    },
+    mapPromoSearchModelToDto (promotions, offset) {
+        let result = []
+
+        var stt = offset
+        for (var index in promotions) {
+          stt = stt + 1
+
+          let promoTemp = {
+            stt: stt,
+            name: promotions[index].fields.name,
+            storeName: promotions[index].fields.store_name,
+            cityName: promotions[index].fields.city_name,
+            districtName: promotions[index].fields.district_name,
+            price: promotions[index].fields.price,
+            quantity: promotions[index].fields.quantity,
+            expiredAt: commonFunc.formatDate(promotions[index].fields.expired_at),
+            id: promotions[index].pk,
+            action: promotions[index].pk
+          }
+          result.push(promoTemp)
+        }
+        return result
     }
   }

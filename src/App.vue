@@ -141,8 +141,9 @@ export default {
     }
     this.notifyNumber = numberOfNotify
 
-    let user = JSON.parse(Cookies.get(Constant.APP_USR))
+    let user = Cookies.get(Constant.APP_USR)
     if(user && user.userType == "customer") {
+      user = JSON.parse(user)
       let phoneNumber = user.phoneNumber
       let cityId = user.cityId
 

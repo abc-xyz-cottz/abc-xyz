@@ -119,5 +119,26 @@ export default {
    */
   getStoreByCity(cityId) {
     return session.get(RootAPI + 'store/get-by-city/' + cityId)
-  }
+  },
+
+  /**
+   * Search pmt
+   */
+  searchPmt(inputs) {
+    return session.post(RootAPI + 'customer/search-pmt',inputs)
+  },
+
+  /**
+   * Check point to buy pmt
+   */
+  checkPoint(pmtId) {
+    return session.get(RootAPI + 'customer/check-point/' + pmtId)
+  },
+
+  /**
+   * Buy pmt
+   */
+  buyPmt(pmtId) {
+    return session.get(RootAPI + 'customer/buy-pmt/' + pmtId)
+  },
 }

@@ -216,7 +216,7 @@ export default new Router({
     },
     {
       path: '/staff/index/:id',
-      name: 'StaffAdd',
+      name: 'StaffEdit',
       component: StaffAdd
     },
     {
@@ -236,7 +236,7 @@ export default new Router({
     },
     {
       path: '/promo/index/:id',
-      name: 'PromoAdd',
+      name: 'PromoEdit',
       component: PromoAdd
     },
     {
@@ -251,7 +251,7 @@ export default new Router({
     },
     {
       path: '/table/index/:id',
-      name: 'TableAdd',
+      name: 'TableEdit',
       component: TableAdd
     },
     {
@@ -289,7 +289,7 @@ export default new Router({
     },
     {
       path: '/store/index/:id',
-      name: 'StoreAdd',
+      name: 'StoreEdit',
       component: StoreAdd
     },
     {
@@ -304,7 +304,7 @@ export default new Router({
     },
     {
       path: '/admin-store/index/:id',
-      name: 'StoreAdminAdd',
+      name: 'StoreAdminEdit',
       component: StoreAdminAdd
     },
 
