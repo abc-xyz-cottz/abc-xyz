@@ -119,5 +119,12 @@ export default {
    */
   updateInfo(req) {
     return session.post(RootAPI + 'customer/update-info', req)
+  },
+  
+  /** 
+   * Get store by city
+   */
+  getStoreByCity(cityId) {
+    return session.get(RootAPI + 'store/get-by-city/' + cityId)
   }
 }
