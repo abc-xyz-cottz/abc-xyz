@@ -44,18 +44,22 @@
               <b-col md="6">
                 <b-form-group label-cols="4" label="Tỉnh/ Thành Phố" class="mb-2">
                   <b-form-select 
-                    id="citi"
-                    :options="optionsCiti"
+                    id="city"
+                    :options="optionsCity"
+                    v-model="inputs.cityId"
                     type="text"
                     autocomplete="new-password"
-                    class="form-control"></b-form-select>
+                    class="form-control"
+                  @change="getStoreByCity"></b-form-select>
                 </b-form-group>
               </b-col>
               <b-col md="6">
                 <b-form-group label-cols="4" label="Nhà Hàng" class="mb-2">
                   <b-form-select 
                     id="restaurant"
-                    :options="optionsRes"
+                    :options="optionsStore"
+                    v-model="inputs.storeId"
+                    :disabled="!inputs.cityId"
                     type="text"
                     autocomplete="new-password"
                     class="form-control"></b-form-select>
@@ -112,6 +116,10 @@
 import { QrcodeStream } from 'vue-qrcode-reader'
 import Cookies from 'js-cookie'
 import {Constant} from '@/common/constant'
+import MasterApi from '@/api/master'
+import MasterMapper from '@/mapper/master'
+import CusApi from '@/api/customer'
+import StoreMapper from '@/mapper/store'
 
 
 export default {
@@ -120,14 +128,6 @@ export default {
   },
   data() {
     return {
-      optionsCiti: [
-        {value: '1', text: 'HCM'},
-        {value: '2', text: 'HN'}
-      ],
-      optionsRes: [
-        {value: '1', text: 'Nha hang 1'},
-        {value: '2', text: 'Nha Hang 2'}
-      ],
       slide: 0,
       sliding: null,
       onLogin: false,
@@ -163,10 +163,27 @@ export default {
         }
       ],
       items: [
-      {stt: '1', name: 'cocacola', citi: 'HN', district: '3', address: 'haha', action: ''},
-      {stt: '1', name: 'cocacola', citi: 'HN', district: '3', address: 'haha', action: ''},
-    ]
+        {stt: '1', name: 'cocacola', citi: 'HN', district: '3', address: 'haha', action: ''},
+        {stt: '1', name: 'cocacola', citi: 'HN', district: '3', address: 'haha', action: ''},
+      ],
+      optionsCity: [],
+      optionsStore: [],
+      inputs: {
+        cityId: null,
+        storeId: null
+      },
+
     }
+  },
+  mounted () {
+    this.getOptionCity()
+
+    // Choose city by account
+    this.selectCity()
+
+    // Load store by city
+    this.getStoreByCity()
+
   },
     computed: {
       rows() {
@@ -217,6 +234,40 @@ export default {
         this.onShowQRCode = false
         this.$bvModal.hide('modal-scan')
       },
+
+      /**
+     * Get city options
+     */
+      getOptionCity() {
+        MasterApi.getCityOptions().then(res => {
+          this.optionsCity = MasterMapper.mapCityModelToDto(res.data.data)
+        })
+      },
+
+      /**
+       * Select city by account
+       */
+      selectCity() {
+        // Get customer info
+        let customer = Cookies.get(Constant.APP_USR)
+        if(customer) {
+          let cusTemp = JSON.parse(customer)
+          this.inputs.cityId = cusTemp.cityId
+        } else {
+          this.inputs.cityId = ""
+        }
+      },
+
+      /**
+       * Get store list by city
+       */
+      getStoreByCity() {
+        if(this.inputs.cityId) {
+          CusApi.getStoreByCity(this.inputs.cityId).then(res => {
+            this.optionsStore = StoreMapper.mapStoreModelListToDto(res.data.data)
+          })
+        }
+      }
     }
   }
 </script>

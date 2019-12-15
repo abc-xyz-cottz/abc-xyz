@@ -112,5 +112,12 @@ export default {
    */
   updateNotificationIsRead() {
     return session.get(RootAPI + 'customer/update-noti-is-read')
+  },
+
+  /**
+   * Get store by city
+   */
+  getStoreByCity(cityId) {
+    return session.get(RootAPI + 'store/get-by-city/' + cityId)
   }
 }
