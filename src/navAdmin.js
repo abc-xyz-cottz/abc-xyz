@@ -33,7 +33,7 @@ export default {
       },
       {
         name: 'Đăng thông báo',
-        url: '/notification',
+        url: '/man-notification',
         icon: 'fa fa-home'
       },
       {

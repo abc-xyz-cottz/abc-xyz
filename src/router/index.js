@@ -23,6 +23,7 @@ import PromoDetail from '@/views/customer/PromoDetail'
 import CustomerHome from '@/views/customer/Home'
 import Order from '@/views/customer/Order'
 import Require from '@/views/customer/Require'
+import Notification from '@/views/customer/Notification'
 
 // Staff group
 import HomeStaff from '@/views/staff/Home'
@@ -32,7 +33,7 @@ import HomeAdmin from '@/views/admin/HomeAdmin'
 import Topping from '@/views/admin/topping/List'
 import ToppingAdd from '@/views/admin/topping/Index'
 import Menu from '@/views/admin/menu/List'
-import MenuAdd from '@/views/admin/menu/Index'
+import MenuAdd from '@/views/admin/menu/MenuIndex'
 import Staff from '@/views/admin/staff/List'
 import StaffAdd from '@/views/admin/staff/Index'
 import Promo from '@/views/admin/promo/List'
@@ -41,7 +42,7 @@ import Table from '@/views/admin/table/List'
 import TableAdd from '@/views/admin/table/Index'
 import Setting from '@/views/admin/setting/List'
 import PrintQrCode from '@/views/admin/qrCode/PrintQrCode'
-import Notification from '@/views/admin/notification/Index'
+import ManNotification from '@/views/admin/notification/Index'
 
 // Super admin group
 import HomeSPAdmin from '@/views/supperAdmin/HomeSPAdmin'
@@ -154,7 +155,6 @@ export default new Router({
       name: 'Reward',
       component: Reward
     },
-
     {
       path: '/notification',
       name: 'Notification',
@@ -265,9 +265,9 @@ export default new Router({
       component: PrintQrCode
     },
     {
-      path: '/notification',
-      name: 'Notification',
-      component: Notification
+      path: '/man-notification',
+      name: 'ManNotification',
+      component: ManNotification
     },
 
 
