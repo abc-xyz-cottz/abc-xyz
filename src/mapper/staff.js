@@ -8,6 +8,7 @@ export default {
       roleId: staff.fields.role_id,
       role: staff.fields.role_name,
       storeId: staff.fields.store_id,
+      cityId: staff.fields.city_id,
       userType: "staff",
     }
   },

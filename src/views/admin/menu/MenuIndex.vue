@@ -64,14 +64,15 @@
                     autocomplete="new-password"
                     class="form-control"
                     v-model="menu.image"
-                    ref="file">
+                    ref="file"
+                  @change="handleFileUpload">
                   </b-form-file>
                 </b-col>
               </b-row>
 
               <b-row class="form-row">
-                <div v-show="imagePreview" class="preview-box text-center" v-bind:style="{ height: computedWidth }">
-
+                <div v-show="imagePreview" class="preview-box text-center" >
+                <!--v-bind:style="{ height: computedWidth }"  v-bind:style="computedImg"-->
                         <vue-cropper
                           ref="cropper"
                           :guides="true"
@@ -87,7 +88,7 @@
                           alt="Source Image"
                           :min-container-width="100"
                           :min-container-height="100"
-                          v-bind:style="computedImg"
+
                         >
                         </vue-cropper>
                     </div>
@@ -117,6 +118,9 @@ import 'cropperjs/dist/cropper.css'
 
 
 export default {
+  components: {
+    VueCropper
+  },
   data () {
     return {
       options: [
@@ -130,7 +134,8 @@ export default {
         "active": null,
         "image": null
       },
-      imagePreview: null
+      imagePreview: null,
+      file: null
     }
   },
   mounted() {

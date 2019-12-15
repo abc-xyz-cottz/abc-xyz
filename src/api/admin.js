@@ -168,5 +168,48 @@ export default {
    */
   loadOrderHistory() {
     return session.get(RootAPI + 'staff/order-his')
-  }
+  },
+
+  /**
+   * Save notification
+   */
+  saveNotification(noti) {
+    return session.post(RootAPI + 'staff/add-notification', noti)
+  },
+
+  /**
+   * Search topping
+   */
+  searchTopping() {
+    return session.get(RootAPI + 'topping/list')
+  },
+
+  /**
+   * Add topping
+   */
+  addTopping(topping) {
+    return session.post(RootAPI + 'topping/add', topping)
+  },
+
+  /**
+   * Get topping detail
+   */
+  getToppingDetail(toppingId) {
+    return session.get(RootAPI + 'topping/' + toppingId)
+  },
+
+  /**
+   * Update topping
+   */
+  updateTopping(topping) {
+    return session.post(RootAPI + 'topping/update', topping)
+  },
+
+  /**
+   * Delete topping
+   */
+  deleteTopping(toppingId) {
+    return session.get(RootAPI + 'topping/delete/' + toppingId)
+  },
+
 }

@@ -14,7 +14,7 @@ export default {
    */
   intergerOnly(valueInput) {
     if (valueInput != '') {
-      valueInput = valueInput.replace(/[^0-9-]+/g,'');
+      valueInput = valueInput.replace(/[^0-9]+/g,'');
     }
     return valueInput
   },
@@ -73,5 +73,17 @@ export default {
     let now = new Date()
     let day = new Date(result.getTime() - now.getTime())
     return Math.floor(day / (1000 * 60 * 60 * 24 * 30))
+  },
+
+  /**
+   * Make toast with title
+   */
+  makeToast(variant = null, title="Success!!!", content="Thao tác thành công!!!") {
+    this.$bvToast.toast(content, {
+      title: title,
+      variant: variant,
+      solid: true,
+      autoHideDelay: 5000
+    })
   },
 }

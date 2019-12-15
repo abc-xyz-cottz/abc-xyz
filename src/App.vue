@@ -104,6 +104,7 @@ import HeaderDropdownGift from '@/components/common/HeaderDropdownGift'
 import {Constant} from '@/common/constant'
 import Cookies from 'js-cookie'
 import { RootAPI } from '@/api/index'
+import customerAPI from '@/api/customer'
 
 
 export default {
@@ -135,6 +136,9 @@ export default {
   },
   mounted (){
     let numberOfNotify = Cookies.get(Constant.NOTIFY_NUMBER)
+    if(!numberOfNotify) {
+      this.countNotificationNotRead()
+    }
     this.notifyNumber = numberOfNotify
 
     let user = JSON.parse(Cookies.get(Constant.APP_USR))
@@ -152,11 +156,11 @@ export default {
       }
 
       socket.onmessage = event => {
+
         var json_data = JSON.parse(event.data)
         console.log(json_data)
         alert(JSON.stringify(json_data))
         let numberOfNotification = json_data.text.numberOfNotification
-        alert(numberOfNotification)
         Cookies.set(Constant.NOTIFY_NUMBER, numberOfNotification)
 
         this.notifyNumber = numberOfNotification
@@ -183,6 +187,20 @@ export default {
   created () {
   },
   methods: {
+    /**
+     * Load notification
+     */
+      countNotificationNotRead() {
+
+        customerAPI.countNotificationNotRead().then(res => {
+          let numberOfNotification = res.data.data
+          this.notifyNumber = numberOfNotification
+          Cookies.set(Constant.NOTIFY_NUMBER, numberOfNotification)
+
+        }).catch(err => {
+          console.log(err)
+        })
+      }
   }
 }
 </script>

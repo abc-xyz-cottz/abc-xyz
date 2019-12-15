@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div class="container-fluid">
     <b-row>
       <b-col>
@@ -26,25 +26,24 @@
               <b-list-group-item v-b-tooltip.hover title="Edit" @click="edit(dataId.value)">
                 <i class="fa fa-edit" />
               </b-list-group-item>
-              <b-list-group-item v-b-tooltip.hover title="Delete" @click="deleted(dataId.value)">
+              <b-list-group-item v-b-tooltip.hover title="Delete" @click="deleted(dataId.value, dataId.item.name, dataId.item.stt)">
                 <i class="fa fa-trash" />
               </b-list-group-item>
             </b-list-group>
           </template>
           </b-table>
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="rows"
-            :per-page="perPage"
-            aria-controls="my-table"
-            size="sm"
-          ></b-pagination>
+
         </b-card>
       </b-col>
     </b-row>
   </div>
 </template>
 <script>
+import adminAPI from '@/api/admin'
+import Mapper from '@/mapper/topping'
+import {Constant} from '@/common/constant'
+import commonFunc from '@/common/commonFunc'
+
 export default {
   data () {
     return {
@@ -73,36 +72,104 @@ export default {
           class: 'actions-cell'
         }
       ],
-      items: [
-        {stt: '1', name: 'cocacola', price: '30000', status: 'Mở', action: ''},
-        {stt: '2',name: '7 up', price: '20000', status: 'Đóng', action: ''}
-      ]
+      items: [],
+      listIdDeleted: []
     }
   },
   computed: {
-    rows() {
-      return this.items.length
-    }
+  },
+  mounted() {
+    // Load list when load page
+    this.search()
   },
   methods: {
-    deleted (id) {
-      this.$bvModal.msgBoxConfirm('Bạn có muốn xóa sản phẩm này không?', {
+
+    /**
+   * Make toast without title
+   */
+  popToast(variant, content) {
+    this.$bvToast.toast(content, {
+      toastClass: 'my-toast',
+      noCloseButton: true,
+      variant: variant,
+      autoHideDelay: 5000
+    })
+  },
+
+    /**
+   * Make toast with title
+   */
+  makeToast(variant = null, title, content) {
+    this.$bvToast.toast(content, {
+      title: title,
+      variant: variant,
+      solid: true,
+      autoHideDelay: 5000
+    })
+  },
+
+    /**
+     *  Delete
+     */
+    deleted (id, name, rowIndex) {
+
+      this.$bvModal.msgBoxConfirm('Xóa ' + name + ". Bạn có chắc không?", {
         title: false,
         buttonSize: 'sm',
         centered: true, size: 'sm',
         footerClass: 'p-2'
       }).then(res => {
         if(res){
-          alert('đã xóa')
+          adminAPI.deleteTopping(id).then(res => {
+
+            // Remove item in list
+            let indexTemp = commonFunc.updateIndex(rowIndex - 1, this.listIdDeleted)
+            this.items.splice(indexTemp, 1)
+            this.listIdDeleted.push(rowIndex - 1)
+
+            this.popToast('success', 'Xóa topping thành công!!!')
+          }).catch(err => {
+            let message = ""
+            if(err.response.data.status == 500) {
+              message = "Lỗi hệ thống, chúng tôi rất tiếc về sự cố này, bạn thử lại sau vài phút nhé"
+            } else {
+              message = err.response.data.mess
+            }
+            this.makeToast('danger', 'Cập nhật topping thất bại!!!', message)
+          })
         }
       })
     },
+
+    /**
+     *  Go to edit
+     */
     edit (id) {
-      this.$router.push('/topping/index/' + id)
+      this.$router.push('/topping/edit/' + id)
     },
+
+    /**
+     *  Go to add
+     */
     goToAdd () {
-      this.$router.push('/topping/index/')
-    }
+      this.$router.push('/topping/add')
+    },
+
+    /**
+     *  Search
+     */
+    search() {
+      // Search
+      adminAPI.searchTopping().then(res => {
+        if(res != null && res.data != null && res.data.data != null) {
+          this.items = Mapper.mapToppingModelToDto(res.data.data)
+        }
+
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
   }
 }
 </script>

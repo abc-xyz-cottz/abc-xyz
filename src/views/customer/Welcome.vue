@@ -107,6 +107,18 @@ export default {
   },
 
   methods: {
+  /**
+   * Make toast with title
+   */
+  makeToast(variant = null, title, content) {
+    this.$bvToast.toast(content, {
+      title: title,
+      variant: variant,
+      solid: true,
+      autoHideDelay: 5000
+    })
+  },
+
     /**
      * Go to menu
      */
@@ -153,15 +165,15 @@ export default {
       }
 
       CustomerAPI.sendRequest(requestInfo).then(res => {
-        this.$bvModal.msgBoxOk("Yêu cầu của bạn đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé!!!", {
-          title: "Gửi yêu cầu thành công!!! ",
-          buttonSize: 'sm',
-          centered: true, size: 'sm',
-          footerClass: 'p-2'
-        })
+        // this.$bvModal.msgBoxOk("Yêu cầu của bạn đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé!!!", {
+        //   title: "Gửi yêu cầu thành công!!! ",
+        //   buttonSize: 'sm',
+        //   centered: true, size: 'sm',
+        //   footerClass: 'p-2'
+        // })
+        this.makeToast('success', 'Gửi yêu cầu thành công!!!', 'Yêu cầu của bạn đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé.' )
       }).catch(err => {
-        console.log(err)
-
+        this.makeToast('danger', 'Gửi yêu cầu thất bại!!!', 'Đã có lỗi xảy ra, bạn thử lại nhé.')
       })
       this.request = ""
     },

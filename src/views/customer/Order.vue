@@ -178,6 +178,18 @@ export default {
   },
 
   methods: {
+  /**
+   * Make toast with title
+   */
+  makeToast(variant = null, title="Success!!!", content="Thao tác thành công!!!") {
+    this.$bvToast.toast(content, {
+      title: title,
+      variant: variant,
+      solid: true,
+      autoHideDelay: 5000
+    })
+  },
+
     /**
      * Get menu
      */
@@ -250,15 +262,15 @@ export default {
       let orderInfo = {"customerId": customerId,"customerName": customerName, "storeId": this.storeId, "tableId": this.tableId, "orders": this.orderItems}
       console.log(JSON.stringify(orderInfo))
       CustomerAPI.sendOrder(orderInfo).then(res => {
-        this.$bvModal.msgBoxOk("Món ăn bạn gọi đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé!!!", {
-          title: "Đặt món thành công!!! ",
-          buttonSize: 'sm',
-          centered: true, size: 'sm',
-          footerClass: 'p-2'
-        })
+        // this.$bvModal.msgBoxOk("Món ăn bạn gọi đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé!!!", {
+        //   title: "Đặt món thành công!!! ",
+        //   buttonSize: 'sm',
+        //   centered: true, size: 'sm',
+        //   footerClass: 'p-2'
+        // })
+        this.makeToast('success', 'Đặt món thành công!!!', 'Món ăn bạn gọi đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé.')
       }).catch(err => {
-        console.log(err)
-
+        this.makeToast('danger', 'Đặt món thất bại!!!', 'Đã có lỗi xảy ra, bạn thử lại nhé.')
       })
     },
 

@@ -33,7 +33,7 @@ import HomeAdmin from '@/views/admin/HomeAdmin'
 import Topping from '@/views/admin/topping/List'
 import ToppingAdd from '@/views/admin/topping/Index'
 import Menu from '@/views/admin/menu/List'
-import MenuAdd from '@/views/admin/menu/Index'
+import MenuAdd from '@/views/admin/menu/MenuIndex'
 import Staff from '@/views/admin/staff/List'
 import StaffAdd from '@/views/admin/staff/Index'
 import Promo from '@/views/admin/promo/List'
@@ -42,6 +42,7 @@ import Table from '@/views/admin/table/List'
 import TableAdd from '@/views/admin/table/Index'
 import Setting from '@/views/admin/setting/List'
 import PrintQrCode from '@/views/admin/qrCode/PrintQrCode'
+import ManNotification from '@/views/admin/notification/Index'
 
 // Super admin group
 import HomeSPAdmin from '@/views/supperAdmin/HomeSPAdmin'
@@ -154,9 +155,8 @@ export default new Router({
       name: 'Reward',
       component: Reward
     },
-
     {
-      path: '/customer/notification',
+      path: '/notification',
       name: 'Notification',
       component: Notification
     },
@@ -180,8 +180,13 @@ export default new Router({
       component: Topping
     },
     {
-      path: '/topping/index',
+      path: '/topping/add',
       name: 'ToppingAdd',
+      component: ToppingAdd
+    },
+    {
+      path: '/topping/edit/:id',
+      name: 'ToppingEdit',
       component: ToppingAdd
     },
     {
@@ -259,6 +264,12 @@ export default new Router({
       name: 'PrintQrCode',
       component: PrintQrCode
     },
+    {
+      path: '/man-notification',
+      name: 'ManNotification',
+      component: ManNotification
+    },
+
 
     // Super admin group
     {
