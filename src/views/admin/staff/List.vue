@@ -157,9 +157,10 @@ export default {
       var html = document.documentElement
       if (window.pageYOffset + window.innerHeight +1 > Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)) {
         if(this.hasNext) {
+          console.log(this.offset)
           this.offset = this.offset + 10
           this.loadByScroll = true
-          this.search ()
+          this.search()
         }
       }
     },
@@ -210,10 +211,12 @@ export default {
         "name": this.inputs.name,
         "phone_number": this.inputs.phone,
         "role_id": this.inputs.role,
-        "store_name": "store ".concat(this.$store.state.user.storeId)
+        "store_name": "store ".concat(this.$store.state.user.storeId),
+        "limit": this.pageLimit,
+        "offset": this.offset
       }
       
-      adminAPI.searchStaff(req).then(res => {
+      adminAPI.searchStaff(req, this.offset).then(res => {
         if (res != null && res.data != null && res.data.data != null) {
           let it = Mapper.mapStaffModelSearchToDto(res.data.data.staffs, this.offset)
 
