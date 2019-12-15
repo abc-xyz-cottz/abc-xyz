@@ -41,9 +41,13 @@
                 class="form-control"
                 maxlength="15"
                 @keypress="validateCode"
-                :disabled="!onEdit">
-                <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
+                :disabled="!onEdit"
+                v-on:change="checkPhoneNumberFormat($event.target)">
+                <b-form-invalid-feedback class="invalid-feedback" :state="!phoneNumberCheckFlag || !errorPhone">
                   Vui lòng nhập số điện thoại
+                </b-form-invalid-feedback>
+                <b-form-invalid-feedback class="invalid-feedback" :state="phoneNumberCheckFlag">
+                  Số điện thoại không đúng
                 </b-form-invalid-feedback>
             </div>
 
@@ -97,7 +101,7 @@
                 v-model="inputs.district_id"
                 :disabled="!onEdit">
               </b-form-select>
-              <b-form-invalid-feedback  class="invalid-feedback" :state="!errorDistrict">
+              <b-form-invalid-feedback class="invalid-feedback" :state="!errorDistrict">
                 Vui lòng nhập quận
               </b-form-invalid-feedback>
             </div>
@@ -135,6 +139,7 @@ export default {
       optionsDistrict: [],
       click: false,
       onEdit: false,
+      phoneNumberCheckFlag: true,
     }
   },
   computed: {
@@ -165,7 +170,8 @@ export default {
       return (this.click && (info == null || info.length <= 0))
     },
     checkValidate () {
-      return !(this.errorName || this.errorCiti || this.errorDistrict || this.errorAddress || this.errorMonth)
+      return !(this.errorName || this.errorCity || this.errorDistrict || this.errorPhone
+            || this.errorGender || this.errorBirthday || !this.phoneNumberCheckFlag)
     },
     getCustomerInfo () {
       let cusId = this.$store.state.user.id
@@ -196,6 +202,9 @@ export default {
       if(cityId != "" && cityId != undefined) {
         MasterApi.getDistrictOptions(cityId).then(res => {
           this.optionsDistrict = MasterMapper.mapCityModelToDto(res.data.data)
+          if(this.onEdit) {
+            this.inputs.district_id = ""
+          }
         })
       } else {
         this.inputs.district_id = ""
@@ -211,8 +220,58 @@ export default {
       this.onEdit = true
     },
     save() {
-
-    }
+      this.click = true
+      let result = this.checkValidate()
+      if(result) {
+         CustomerAPI.updateInfo(this.inputs).then(res => {
+          if(res != null && res.data != null) {
+            if (res.data.status == 200) {
+              let message = ""
+              // show popup success
+              this.$bvModal.msgBoxOk("Cập nhật thành công", {
+                title: "Cập Nhật Thông Tin",
+                centered: true, 
+                size: 'sm',
+                headerClass: 'bg-success',
+              }).then(res => {
+                this.onEdit = false
+              })
+            }
+          }
+        }).catch(err => {
+          console.log(err)
+          let message = ""
+          if(err.response.data.status == 422) {
+            message = err.response.data.mess
+          } else {
+            message = "Lỗi hệ thống"
+          }
+          this.$bvModal.msgBoxOk(message, {
+            title: "Cập Nhật Thông Tin",
+            centered: true, 
+            size: 'sm',
+            headerClass: 'bg-danger',
+          })
+        })
+      }
+    },
+    /**
+     * Check phone number
+     */
+    checkPhoneNumberFormat(item) {
+      let valueInput = item.value
+      if (valueInput != null && valueInput != "") {
+        if (commonFunc.phoneNumberCheck(valueInput)) {
+          this.phoneNumberCheckFlag = true
+        } else {
+          this.phoneNumberCheckFlag = false
+        }
+      } else if(this.errorPhone) {
+          this.phoneNumberCheckFlag = false
+      } else {
+        this.phoneNumberCheckFlag = true
+      }
+    },
   }
 }
 </script>

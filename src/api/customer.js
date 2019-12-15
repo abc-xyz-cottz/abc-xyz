@@ -112,5 +112,12 @@ export default {
    */
   updateNotificationIsRead() {
     return session.get(RootAPI + 'customer/update-noti-is-read')
+  },
+
+  /**
+   * Update info customer
+   */
+  updateInfo(req) {
+    return session.post(RootAPI + 'customer/update-info', req)
   }
 }
