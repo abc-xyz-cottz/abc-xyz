@@ -5,8 +5,8 @@ export default {
   /**
    * Get Store List
    */
-  getStoreList (req) {
-    return session.post(RootAPI + 'store/search/?limit=10&offset=0', req)
+  getStoreList (req, param) {
+    return session.post(RootAPI + 'store/search/?limit=10&offset=' + param, req)
   },
 
   /**
@@ -47,8 +47,8 @@ export default {
   /**
    * search admin store
    */
-  searchAdminStore(req) {
-    return session.post(RootAPI + 'admin-store/search/?limit=10&offset=0', req)
+  searchAdminStore(req, param) {
+    return session.post(RootAPI + 'admin-store/search/?limit=10&offset=' + param, req)
   },
 
     /**

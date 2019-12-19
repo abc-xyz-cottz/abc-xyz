@@ -214,10 +214,12 @@ export default {
         "name": this.inputs.name,
         "phone_number": this.inputs.phone_number,
         "role_id": this.inputs.role_id,
-        "store_name": this.inputs.store_name
+        "store_name": this.inputs.store_name,
+        "limit": this.pageLimit,
+        "offset": this.offset
       }
       
-      superAdminAPI.searchAdminStore(req).then(res => {
+      superAdminAPI.searchAdminStore(req, this.offset).then(res => {
         if (res != null && res.data != null && res.data.data != null) {
           let it = Mapper.mapAdminStoreToDto(res.data.data.staffs, this.offset)
           // Update items

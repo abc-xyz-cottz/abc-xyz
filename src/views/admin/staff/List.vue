@@ -157,7 +157,6 @@ export default {
       var html = document.documentElement
       if (window.pageYOffset + window.innerHeight +1 > Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)) {
         if(this.hasNext) {
-          console.log(this.offset)
           this.offset = this.offset + 10
           this.loadByScroll = true
           this.search()

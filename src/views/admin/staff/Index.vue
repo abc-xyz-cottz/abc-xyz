@@ -41,7 +41,7 @@
                   @keypress="validateCode"
                   autocomplete="new-password"
                   maxlength="20"
-                  v-on:change="checkPhoneNumberFormat($event.target)">
+                  v-on:change="checkPhoneNumberFormat($event.target.value)">
                   <b-form-invalid-feedback class="invalid-feedback" :state="!errorPhone">
                     Vui lòng nhập số điện thoại
                   </b-form-invalid-feedback>
@@ -172,6 +172,7 @@ export default {
     },
     save () {
       this.click = true
+      this.checkPhoneNumberFormat(this.staff.phone_number)
       let result = this.checkValidate()
       if(result) { 
         let staffId = this.$route.params.id
@@ -257,7 +258,7 @@ export default {
      * Check phone number
      */
     checkPhoneNumberFormat(item) {
-      let valueInput = item.value
+      let valueInput = item
       if (valueInput != null && valueInput != "") {
         if (commonFunc.phoneNumberCheck(valueInput)) {
           this.phoneNumberCheckFlag = true

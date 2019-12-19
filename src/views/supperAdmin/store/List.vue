@@ -208,7 +208,7 @@ export default {
       
       this.inputs.city_id = this.inputs.city_id.toString()
       this.inputs.district_id = this.inputs.district_id.toString()
-      superAdminAPI.getStoreList(this.inputs).then(res => {
+      superAdminAPI.getStoreList(this.inputs, this.offset).then(res => {
         if (res != null && res.data != null && res.data.data != null) {
           let it = Mapper.mapStoreModelSearchToDto(res.data.data.stores, this.offset)
 
