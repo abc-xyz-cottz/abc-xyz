@@ -66,7 +66,7 @@
                     <b-col
                       cols="12"
                       class="mb-2 align-self-center">
-                      <a href="/cus-forgetpass" class="pull-left pt-2">Quên Mật Khẩu</a>
+                      <a href="/cus-forget-password" class="pull-left pt-2">Quên Mật Khẩu</a>
                     </b-col>
                   </b-row>
                 </b-form>

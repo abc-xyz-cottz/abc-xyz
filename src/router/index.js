@@ -1,20 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// Authenticate group
-import CustomerLogin from '@/views/authentication/CustomerLogin'
-import StaffLogin from '@/views/authentication/StaffLogin'
-import Register from '@/views/authentication/Register'
-import ActiveAccount from '@/views/authentication/ActiveAccount'
-import CustomerChangePass from '@/views/authentication/CustomerChangePass'
-import StaffChangePass from '@/views/authentication/StaffChangePass'
-import StaffActivePass from '@/views/authentication/StaffActivePass'
-import StaffForgetPass from '@/views/authentication/StaffForgetPass'
-import CustomerForgetPass from '@/views/authentication/CustomerForgetPass'
-import CustomerActivePass from '@/views/authentication/CustomerActivePass'
-
 // Customer group
-import InfoUser from '@/components/author/InfoUser'
+import InfoUser from '@/views/customer/InfoUser'
 import Welcome from '@/views/customer/Welcome'
 import Reward from '@/views/customer/Reward'
 import Point from '@/views/customer/Point'
@@ -24,9 +12,19 @@ import CustomerHome from '@/views/customer/Home'
 import Order from '@/views/customer/Order'
 import Require from '@/views/customer/Require'
 import Notification from '@/views/customer/Notification'
+import CustomerLogin from '@/views/customer/CustomerLogin'
+import Register from '@/views/customer/Register'
+import ActiveAccount from '@/views/customer/ActiveAccount'
+import CustomerChangePass from '@/views/customer/CustomerChangePass'
+import CustomerForgetPass from '@/views/customer/CustomerForgetPass'
+import CustomerActivePass from '@/views/customer/CustomerActivePass'
 
 // Staff group
 import HomeStaff from '@/views/staff/Home'
+import StaffLogin from '@/views/staff/StaffLogin'
+import StaffChangePass from '@/views/staff/StaffChangePass'
+import StaffActivePass from '@/views/staff/StaffActivePass'
+import StaffForgetPass from '@/views/staff/StaffForgetPass'
 
 // Admin group
 import HomeAdmin from '@/views/admin/HomeAdmin'
@@ -51,9 +49,11 @@ import StoreAdd from '@/views/supperAdmin/store/Index'
 import StoreAdmin from '@/views/supperAdmin/storeAdmin/List'
 import StoreAdminAdd from '@/views/supperAdmin/storeAdmin/Index'
 
-// Error group
-import Page404 from '@/views/Page404'
-import Page500 from '@/views/Page500'
+// Common
+import Page404 from '@/views/common/Page404'
+import Page500 from '@/views/common/Page500'
+import Contact from '@/views/common/contact'
+import AboutUs from '@/views/common/aboutUs'
 
 Vue.use(Router)
 
@@ -79,22 +79,22 @@ export default new Router({
       component: Register
     },
     {
-      path: '/activeaccount',
+      path: '/active-account',
       name: 'ActiveAccount',
       component: ActiveAccount
     },
     {
-      path: '/cus-changepass',
+      path: '/cus-change-password',
       name: 'CustomerChangePass',
       component: CustomerChangePass
     },
     {
-      path: '/staff-changepass',
+      path: '/staff-change-password',
       name: 'StaffChangePass',
       component: StaffChangePass
     },
     {
-      path: '/cus-forgetpass',
+      path: '/cus-forget-password',
       name: 'CustomerForgetPass',
       component: CustomerForgetPass
     },
@@ -116,7 +116,7 @@ export default new Router({
 
     // Customer group
     {
-      path: '/infoUser',
+      path: '/user-info',
       name: 'InfoUser',
       component: InfoUser
     },
@@ -308,10 +308,11 @@ export default new Router({
       component: StoreAdminAdd
     },
 
-    // Error group
-
+    // Common
     { path: '/404', name: 'Page404', component: Page404 },
     { path: '/500', name: 'Page500', component: Page500 },
+    { path: '/contact', name: 'Contact', component: Contact },
+    { path: '/about-us', name: 'AboutUs', component: AboutUs },
   ]
 })
 

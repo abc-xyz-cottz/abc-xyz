@@ -16,8 +16,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 
 // Global components
-import LazyImage from '@/components/common/LazyImage'
-Vue.component('lazy-img', LazyImage)
+// import LazyImage from '@/components/common/LazyImage'
+// Vue.component('lazy-img', LazyImage)
 
 // Import Global Filters
 import '@/filters'

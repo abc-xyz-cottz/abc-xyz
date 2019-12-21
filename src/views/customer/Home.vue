@@ -22,7 +22,7 @@
             <b-carousel-slide img-src="../../static/img/quang-cao/5.jpg"></b-carousel-slide>
           </b-carousel>
           <b-row>
-            <b-col>
+            <b-col class="text-center">
               <b-button
                 class="mt-2"
                 @click="showPopupQRCode()">

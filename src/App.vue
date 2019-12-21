@@ -9,11 +9,14 @@
               <i class="fa fa-home fa-2x" />
             </span>
           </b-link>
-          <a v-if="this.$route.name != 'StaffLogin' && this.$route.name != 'CustomerLogin'" href="/staff-login" class="pull-left white">Nhân Viên</a>
-          <b-navbar-nav class="ml-auto" v-if="this.$route.name != 'StaffLogin' && this.$route.name != 'CustomerLogin'">
-            <a href="/customer-login" class="pull-right white">Đăng Nhập &nbsp; </a>
-            <a href="/register" class="pull-right white" v-if="this.$route.name != 'Register'"> | &nbsp; Đăng Ký</a>
+
+          <b-navbar-nav>
+            <!-- hiện cho template customer -->
+             <HeaderDropdownContact class="text-left"/>
+             <HeaderDropdownLogin />
+            <!-- end -->
           </b-navbar-nav>
+
         </div>
       </AppHeader>
 
@@ -30,6 +33,7 @@
         </b-link>
 
         <b-navbar-nav>
+          <HeaderDropdownContact class="text-left ml-3"/>
           <!-- hiện cho template customer -->
            <HeaderDropdownGift v-if="this.$store.state.user.userType == 'customer'"/>
              <span class="white" v-if="this.$store.state.user.userType == 'customer'">
@@ -101,6 +105,8 @@ import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFoot
 import HeaderDropdownCusAcc from '@/components/common/HeaderDropdownCusAcc'
 import HeaderDropdownStaffAcc from '@/components/common/HeaderDropdownStaffAcc'
 import HeaderDropdownGift from '@/components/common/HeaderDropdownGift'
+import HeaderDropdownContact from '@/components/common/HeaderDropdownContact'
+import HeaderDropdownLogin from '@/components/common/HeaderDropdownLogin'
 import {Constant} from '@/common/constant'
 import Cookies from 'js-cookie'
 import { RootAPI } from '@/api/index'
@@ -120,7 +126,9 @@ export default {
     SidebarMinimizer,
     HeaderDropdownCusAcc,
     HeaderDropdownStaffAcc,
-    HeaderDropdownGift
+    HeaderDropdownGift,
+    HeaderDropdownContact,
+    HeaderDropdownLogin
   },
   data () {
     return {
@@ -135,14 +143,16 @@ export default {
     }
   },
   mounted (){
-    let numberOfNotify = Cookies.get(Constant.NOTIFY_NUMBER)
-    if(!numberOfNotify) {
-      this.countNotificationNotRead()
-    }
-    this.notifyNumber = numberOfNotify
 
     let user = Cookies.get(Constant.APP_USR)
     if(user && user.userType == "customer") {
+
+      let numberOfNotify = Cookies.get(Constant.NOTIFY_NUMBER)
+      if(!numberOfNotify) {
+        this.countNotificationNotRead()
+      }
+      this.notifyNumber = numberOfNotify
+
       user = JSON.parse(user)
       let phoneNumber = user.phoneNumber
       let cityId = user.cityId

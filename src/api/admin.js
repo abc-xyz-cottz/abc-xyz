@@ -1,5 +1,6 @@
 import session from './session'
 import { RootAPI } from './index'
+import upload from './uploadFile'
 
 export default {
   /**
@@ -27,14 +28,16 @@ export default {
    * Add menu
    */
   addMenu (params) {
-    return session.post(RootAPI + 'menu/add', params)
+    // return session.post(RootAPI + 'menu/add', params)
+    return upload.post(RootAPI + 'menu/add', params)
   },
 
   /**
    * Edit menu
    */
   editMenu (params) {
-    return session.post(RootAPI + 'menu/update', params)
+    // return session.post(RootAPI + 'menu/update', params)
+    return upload.post(RootAPI + 'menu/update', params)
   },
 
   /**

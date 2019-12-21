@@ -9,19 +9,21 @@
       </span>
     </template>
     <template slot="dropdown">
-      <b-dropdown-item href="/user-info">Thông tin cá nhân
+      <b-dropdown-item href="/customer-login">Đăng nhập
       </b-dropdown-item>
-      <b-dropdown-item @click.prevent="goToChangePass">Đổi Mật Khẩu
+      <b-dropdown-item href="/register">Đăng ký
       </b-dropdown-item>
-      <b-dropdown-item @click.prevent="logOut">Thoát</b-dropdown-item>
+      <b-dropdown-item href="/staff-login">Nhân viên
+      </b-dropdown-item>
     </template>
   </AppHeaderDropdown>
 </template>
 
+
 <script>
 import { HeaderDropdown as AppHeaderDropdown } from '@coreui/vue'
-import Cookies from 'js-cookie'
-var jwtDecode = require('jwt-decode')
+
+
 export default {
   name: 'DefaultHeaderDropdownAccnt',
   components: {
@@ -29,17 +31,9 @@ export default {
   },
   data: function() {
     return{
-
     }
   },
   methods: {
-    logOut () {
-      this.$store.commit('removeToken');
-      this.$router.push("/")
-    },
-    goToChangePass () {
-      this.$router.push("/cus-change-password")
-    }
   }
 }
 </script>

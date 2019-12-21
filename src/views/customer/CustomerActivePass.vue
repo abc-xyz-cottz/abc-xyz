@@ -9,7 +9,7 @@
               <b-card-body>
                 <b-form @submit.prevent="logIn">
                   <h1 class="text-center">
-                  Kích Hoạt Mật khẩu mới
+                  Kích Hoạt Mật khẩu Mới
                   </h1>
                   <div class="form-group">
                     <label>Code</label><span class="error-sybol"></span>
@@ -83,13 +83,14 @@ export default {
         this.onConfirm = true
         setTimeout(() => {
           AuthenticationAPI.CustomerActivePass(this.inputs).then(res => {
-            if(res && res.data) {
+            if (res != null && res.data != null) {
+              console.log(res)
               let message = ""
               if (res.data.status == 200) {
                 // show popup success
-                message = lang_vn.register.activeAccountSuccess
+                message = "Cập nhật mới thành công"
                 this.$bvModal.msgBoxOk(message, {
-                  title: lang_vn.register.registerSuccess,
+                  title: "Thành công!!!",
                   centered: true,
                   size: 'sm',
                   headerClass: 'bg-success',
@@ -101,15 +102,14 @@ export default {
               }
             }
           }).catch(err => {
-            console.log(err)
             let message = ""
-            if(err.response.data.status == 422) {
-              message = err.response.data.mess
+            if(err.response.data.status == 500) {
+              message = "Lỗi hệ thống, chúng tôi rất tiếc về sự cố này, bạn thử lại sau vài phút nhé"
             } else {
-              message = lang_vn.commons.systemError
+              message = err.response.data.mess
             }
             this.$bvModal.msgBoxOk(message, {
-              title: lang_vn.commons.updateFailed,
+              title: "Thất bại",
               centered: true,
               size: 'sm',
               headerClass: 'bg-danger',

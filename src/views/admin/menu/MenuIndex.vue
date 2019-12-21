@@ -6,10 +6,19 @@
           <b-card-body class="p-4">
             <b-form @submit="save">
               <b-row class="form-row">
+                <b-col md='12' class="text-right">
+                  <b-button variant="primary" class="px-4" @click="save">
+                    Lưu
+                  </b-button>
+                </b-col>
+              </b-row>
+              <b-row class="form-row">
                 <b-col md='12'>
                   <h4 class="mt-2">Menu</h4>
                 </b-col>
+
               </b-row>
+
               <hr/>
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
@@ -65,42 +74,33 @@
                     class="form-control"
                     v-model="menu.image"
                     ref="file"
-                  @change="handleFileUpload">
+                    @change="handleFileUpload($event)">
                   </b-form-file>
                 </b-col>
               </b-row>
 
               <b-row class="form-row">
-                <div v-show="imagePreview" class="preview-box text-center" >
-                <!--v-bind:style="{ height: computedWidth }"  v-bind:style="computedImg"-->
-                        <vue-cropper
-                          ref="cropper"
-                          :guides="true"
-                          :view-mode="2"
-                          :center="true"
-                          drag-mode="crop"
-                          :auto-crop-area="1"
-                          :background="false"
-                          :rotatable="true"
-                          :src="imagePreview"
-                          :initialAspectRatio="1/1"
-                          :aspectRatio="1/1"
-                          alt="Source Image"
-                          :min-container-width="100"
-                          :min-container-height="100"
-
-                        >
-                        </vue-cropper>
-                    </div>
+                <div v-if="imagePreview" class="preview-box text-center"  :style="{height: computedWidth, width: '100%'}">
+                    <vue-cropper
+                      ref="cropper"
+                      :guides="true"
+                      :view-mode="2"
+                      :center="true"
+                      drag-mode="crop"
+                      :auto-crop-area="1"
+                      :background="true"
+                      :rotatable="true"
+                      :src="imagePreview"
+                      :initialAspectRatio="1/1"
+                      :aspectRatio="1/1"
+                      alt="Source Image"
+                      :style="computedImg"
+                    >
+                    </vue-cropper>
+                </div>
               </b-row>
 
-              <b-row class="text-center mt-3">
-                <b-col>
-                  <b-button variant="primary" class="px-4" @click="save">
-                    Lưu
-                  </b-button>
-                </b-col>
-              </b-row>
+
             </b-form>
           </b-card-body>
         </b-card>
@@ -135,11 +135,21 @@ export default {
         "image": null
       },
       imagePreview: null,
-      file: null
+      file: null,
+      height: '100px',
+      styleImg: {}
     }
   },
   mounted() {
     this.getMenuDetail()
+  },
+  computed: {
+    computedWidth() {
+      return this.height
+    },
+    computedImg() {
+      return this.styleImg
+    },
   },
   methods: {
     /**
@@ -199,9 +209,8 @@ export default {
     /**
      * Handle upload file
      */
-    handleFileUpload () {
-      // this.$refs.cropper.rotate(45);
-      this.file = this.$refs.file.files[0]
+    handleFileUpload (event) {
+      this.file = event.target.files[0] //this.$refs.file.files[0]
 
       // Render image in review
       let reader  = new FileReader ()
@@ -214,6 +223,55 @@ export default {
         this.styleImg = {'max-width': '100%', 'max-height': '100%'}
       }
     },
+
+    crop() {
+      this.$refs.cropper
+        .getCroppedCanvas({
+          width: 300,
+          height: 300
+        })
+        .toBlob(blob => {
+          const formData = new FormData();
+          formData.append("file", blob, 'menu.png')
+          formData.append("menu", this.menu)
+          this.uploadImage(formData);
+        });
+    },
+    uploadImage(formData) {
+      let menuId = this.$route.params.id
+      if(menuId){
+        // Edit
+        adminAPI.editMenu(formData).then(res => {
+          if(res != null && res.data != null){
+            // Show notify edit success: TODO
+            alert("ok")
+          }else{
+            // Show notify edit fail: TODO
+            alert("fail")
+          }
+        }).catch(err => {
+          console.log(err)
+          // Show notify edit fail: TODO
+          alert("fail")
+        })
+      } else {
+        // Add
+        adminAPI.addMenu(formData).then(res => {
+          if(res != null && res.data != null){
+            // Go to list
+            this.$router.push('/menu/list')
+          }else{
+            // Show notify add fail: TODO
+            alert("add fail")
+          }
+        }).catch(err => {
+          console.log(err)
+          // Show notify add fail: TODO
+          alert("add fail")
+        })
+      }
+    }
+
 
   }
 }

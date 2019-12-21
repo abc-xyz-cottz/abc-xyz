@@ -58,6 +58,13 @@ export default {
   },
 
   /**
+   * Customer active password when forget pass
+   */
+  CustomerActiveForgetPass (req) {
+    return session.post(RootAPI + 'customer/active-forget-pass', req)
+  },
+
+  /**
    * Confirm code to update password
    */
   staffActivePass (req) {
