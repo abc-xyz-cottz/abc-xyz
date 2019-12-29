@@ -36,7 +36,8 @@ export default {
       "name": menu.fields.name,
       "price": menu.fields.price,
       "active": menu.fields.active,
-      "image": menu.fields.image
+      "image": menu.fields.image,
+      "imagePreview": menu.fields.image_preview
     }
   },
 

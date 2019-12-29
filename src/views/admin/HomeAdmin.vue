@@ -6,6 +6,29 @@
           <h4 class="mt-2">Quản lý order</h4>
         </b-col>
       </b-row>
+
+      <b-row class="form-row text-right">
+        <b-col md="9">
+          <label> Lọc theo mốc thời gian </label>
+        </b-col>
+        <b-col md='2'>
+          <b-form-select
+          :options="options"
+          id="status"
+          type="text"
+          autocomplete="new-password"
+          class="form-control"
+          >
+            <!--v-model="inputs.status"-->
+          </b-form-select>
+        </b-col>
+        <b-col md='1'>
+          <b-button variant="primary" class="px-4">
+            Lọc
+          </b-button>
+        </b-col>
+      </b-row>
+
       <hr/>
         <b-tabs content-class="mt-3">
             <!-- First tab -->
@@ -85,7 +108,12 @@ export default {
     return {
       created: [],
       approved: [],
-      canceled: []
+      canceled: [],
+      options: [
+        {value: 1, text: '1 ngày'},
+        {value: 7, text: '1 tuần'},
+        {value: 30, text: '1 tháng'}
+      ],
     }
   },
   computed: {

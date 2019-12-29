@@ -7,7 +7,7 @@
             <b-form @submit="save">
               <b-row class="form-row">
                 <b-col md='12' class="text-right">
-                  <b-button variant="primary" class="px-4" @click="save">
+                  <b-button variant="primary" class="px-4" @click="crop">
                     Lưu
                   </b-button>
                 </b-col>
@@ -64,23 +64,28 @@
 
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
-                  <label> Hình ảnh </label><span class="error-sybol"></span>
+                  <label> Hình ảnh </label>
+                  <!--<span class="error-sybol"></span>-->
                 </b-col>
                 <b-col md="9">
-                  <b-form-file
-                    id="status"
-                    type="text"
-                    autocomplete="new-password"
-                    class="form-control"
-                    v-model="menu.image"
-                    ref="file"
-                    @change="handleFileUpload($event)">
-                  </b-form-file>
+                  <!--<b-form-file-->
+                    <!--id="status"-->
+                    <!--type="text"-->
+                    <!--autocomplete="new-password"-->
+                    <!--class="form-control"-->
+                    <!--v-model="menu.image"-->
+                    <!--ref="file"-->
+                    <!--@change="handleFileUpload($event)">-->
+                  <!--</b-form-file>-->
+                  <b-input-group @click="$refs.file.click()" append="Browse" class="pointer">
+                    <b-input v-model="menu.image"></b-input>
+                  </b-input-group>
+                  <input class="d-none" type="file" id="file" ref="file" accept="image/*" v-on:change="handleFileUpload($event)"/>
                 </b-col>
               </b-row>
 
               <b-row class="form-row">
-                <div v-if="imagePreview" class="preview-box text-center"  :style="{height: computedWidth, width: '100%'}">
+                <div v-if="menu.imagePreview" class="preview-box text-center"  :style="{height: computedWidth, width: '100%'}">
                     <vue-cropper
                       ref="cropper"
                       :guides="true"
@@ -90,11 +95,12 @@
                       :auto-crop-area="1"
                       :background="true"
                       :rotatable="true"
-                      :src="imagePreview"
+                      :src="menu.imagePreview"
                       :initialAspectRatio="1/1"
                       :aspectRatio="1/1"
                       alt="Source Image"
                       :style="computedImg"
+                      :crop="cropImage"
                     >
                     </vue-cropper>
                 </div>
@@ -132,9 +138,9 @@ export default {
         "name": null,
         "price": null,
         "active": null,
-        "image": null
+        "image": null,
+        imagePreview: null,
       },
-      imagePreview: null,
       file: null,
       height: '100px',
       styleImg: {}
@@ -160,6 +166,7 @@ export default {
       if(menuId){
         adminAPI.getMenuDetail(menuId).then(res => {
           this.menu = Mapper.mapMenuDetailModelToDto(res.data.data)
+          this.file = this.menu.imagePreview
         }).catch(err => {
           console.log(err)
         })
@@ -173,7 +180,6 @@ export default {
       let menuId = this.$route.params.id
       if(menuId){
         // Edit
-        this.menu.image = "abc.jpg"
         adminAPI.editMenu(this.menu).then(res => {
           if(res != null && res.data != null){
             // Show notify edit success: TODO
@@ -211,11 +217,13 @@ export default {
      */
     handleFileUpload (event) {
       this.file = event.target.files[0] //this.$refs.file.files[0]
+      this.menu.image = this.file.name
 
       // Render image in review
       let reader  = new FileReader ()
       reader.addEventListener("load", function () {
-        this.imagePreview = reader.result
+        this.$refs.cropper.image = reader.result
+        this.menu.imagePreview = reader.result
       }.bind(this), false)
       if( this.file ){
         reader.readAsDataURL( this.file )
@@ -232,8 +240,9 @@ export default {
         })
         .toBlob(blob => {
           const formData = new FormData();
-          formData.append("file", blob, 'menu.png')
-          formData.append("menu", this.menu)
+          formData.append("file", blob, this.menu.image)
+          formData.append("name", this.menu.name)
+          formData.append("price", this.menu.price)
           this.uploadImage(formData);
         });
     },
@@ -270,6 +279,10 @@ export default {
           alert("add fail")
         })
       }
+    },
+
+    cropImage() {
+      alert("crop")
     }
 
 
