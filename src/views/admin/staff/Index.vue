@@ -4,7 +4,20 @@
       <b-col>
         <b-card>
           <b-card-body class="p-4">
-            <b-form @submit="save">
+
+            <b-row>
+              <b-col cols="6">
+                <b-button variant="secondary" class="pull-left px-4" @click="back">
+                  Quay lại
+                </b-button>
+              </b-col>
+              <b-col cols="6">
+                <button class="btn btn-primary pull-right  px-4" @click="save" :disabled="saving">
+                    Lưu
+                </button>
+              </b-col>
+            </b-row>
+
               <b-row class="form-row">
                 <b-col md='12'>
                   <h4 class="mt-2">Staff</h4>
@@ -88,14 +101,6 @@
                   </b-form-invalid-feedback>
                 </b-col>
               </b-row>
-              <b-row class="text-center mt-3">
-                <b-col>
-                  <b-button variant="primary" class="px-4" @click="save">
-                    Lưu
-                  </b-button>
-                </b-col>
-              </b-row>
-            </b-form>
           </b-card-body>
         </b-card>
       </b-col>
@@ -121,6 +126,7 @@ export default {
       },
       click: false,
       phoneNumberCheckFlag: null,
+      saving: false
     }
   },
   mounted() {
@@ -172,6 +178,7 @@ export default {
     },
     save () {
       this.click = true
+      this.saving = true
       this.checkPhoneNumberFormat(this.staff.phone_number)
       let result = this.checkValidate()
       if(result) { 
@@ -182,6 +189,7 @@ export default {
           // Edit
           this.staff = staff
           adminAPI.editStaff(staff).then(res => {
+            this.saving = false
             if(res != null && res.data != null){
               let message = ""
               if (res.data.status == 200) {
@@ -197,6 +205,7 @@ export default {
               }
             }
           }).catch(err => {
+            this.saving = false
             console.log(err)
             // Show notify edit fail: TODO
             let message = ""
@@ -215,7 +224,9 @@ export default {
         } else {
           // Add
           adminAPI.addStaff(this.staff).then(res => {
+            this.saving = false
             if(res != null && res.data != null){
+
               let message = ""
               if (res.data.status == 200) {
                 // show popup success
@@ -230,6 +241,7 @@ export default {
               }
             }
           }).catch(err => {
+            this.saving = false
             console.log(err)
             let message = ""
               if(err.response.data.status == 422) {
@@ -245,6 +257,8 @@ export default {
               })
           })
         }
+      } else {
+        this.saving = false
       }
       
     },
@@ -254,6 +268,7 @@ export default {
         event.preventDefault()
       }
     },
+
     /**
      * Check phone number
      */
@@ -269,6 +284,14 @@ export default {
         this.phoneNumberCheckFlag = true
       }
     },
+
+    /**
+     * Back to list
+     */
+    back() {
+      // Go to list
+      this.$router.push("/staff/list")
+    }
   }
 }
 </script>

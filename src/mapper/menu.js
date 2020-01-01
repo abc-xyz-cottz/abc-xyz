@@ -16,7 +16,6 @@ export default {
 
       let menuTemp = {
         stt: stt
-        , image: menus[index].fields.image
         , name: menus[index].fields.name
         , price: menus[index].fields.price
         , status: active

@@ -48,7 +48,7 @@
               <hr>
             <b-row class="pull-right mb-3">
               <b-col>
-                <b-button variant="primary" class="px-4" :disable="onSearch" @click.prevent="prepareToSearch">
+                <b-button variant="primary" class="px-4" :disabled="onSearch" @click.prevent="prepareToSearch">
                   Tìm Kiếm
                 </b-button>
               </b-col>
@@ -100,10 +100,6 @@ export default {
         {
           key: 'stt',
           label: 'STT'
-        },
-        {
-          key: 'image',
-          label: 'Hình Ảnh'
         },
         {
           key: 'name',

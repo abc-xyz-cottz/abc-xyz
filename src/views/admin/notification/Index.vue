@@ -53,7 +53,7 @@
 
               <b-row class="text-center mt-3">
                 <b-col>
-                  <b-button variant="primary" class="px-4" @click="save">
+                  <b-button variant="primary" class="px-4" @click="save" :disabled="saving">
                     Đăng
                   </b-button>
                 </b-col>
@@ -84,6 +84,7 @@ export default {
         content: null
       },
       click: false,
+      saving: false
     }
   },
   mounted () {
@@ -143,15 +144,18 @@ export default {
      */
     save() {
       this.click = true
+      this.saving = true
       let result = this.checkValidate()
       if(result) {
         adminAPI.saveNotification(this.noti).then(res => {
+          this.saving = false
           if(res != null && res.data != null){
             this.makeToast('success', 'Đăng thông báo thành công!!!', 'Thông báo của bạn sẽ được gửi tới tất cả khách hàng trong thành phố trên')
           }else{
             this.makeToast('danger', 'Đăng thông báo thất bại!!!', 'Có gì đó không đúng, bạn thử lại nhé')
           }
         }).catch(err => {
+          this.saving = false
           let message = ""
           if(err.response.data.status == 500) {
             message = "Lỗi hệ thống, chúng tôi rất tiếc về sự cố này, bạn thử lại sau vài phút nhé"
@@ -160,6 +164,8 @@ export default {
           }
           this.makeToast('danger', 'Đăng thông báo thất bại!!!', message)
         })
+      } else {
+        this.saving = false
       }
     }
   }

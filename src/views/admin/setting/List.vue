@@ -8,7 +8,7 @@
               <h4 class="mt-2">Setting</h4>
             </b-col>
             <b-col md='6'>
-              <b-button variant="primary" class="pull-right px-4" @click="save()">
+              <b-button variant="primary" class="pull-right px-4" @click="save()" :disabled="saving">
                 Lưu
               </b-button>
             </b-col>
@@ -55,6 +55,7 @@ export default {
         "value": null
       },
       click: false,
+      saving: false
     }
   },
   mounted () {
@@ -74,9 +75,11 @@ export default {
     },
     save () {
       this.click = true
+      this.saving = true
       let result = this.checkValidate()
       if(result) {
         adminAPI.saveSystemConfig(this.data).then(res => {
+          this.saving = false
           if(res != null && res.data != null){
             let message = ""
             if (res.data.status == 200) {
@@ -90,6 +93,7 @@ export default {
             }
           }
         }).catch(err => {
+          this.saving = false
           console.log(err)
           let message = "Lỗi hệ thống"
           this.$bvModal.msgBoxOk(message, {
@@ -99,6 +103,8 @@ export default {
             headerClass: 'bg-danger',
           })
         })
+      } else {
+        this.saving = false
       }
     },
     getSystemConfig () {

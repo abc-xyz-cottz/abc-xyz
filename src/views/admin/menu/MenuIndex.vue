@@ -4,14 +4,19 @@
       <b-col>
         <b-card>
           <b-card-body class="p-4">
-            <b-form @submit="save">
-              <b-row class="form-row">
-                <b-col md='12' class="text-right">
-                  <b-button variant="primary" class="px-4" @click="crop">
+            <b-row>
+              <b-col cols="6">
+                <b-button variant="secondary" class="pull-left px-4" @click="back">
+                  Quay lại
+                </b-button>
+              </b-col>
+              <b-col cols="6">
+                <button class="btn btn-primary pull-right  px-4" @click="save" :disabled="saving">
                     Lưu
-                  </b-button>
-                </b-col>
-              </b-row>
+                </button>
+              </b-col>
+            </b-row>
+
               <b-row class="form-row">
                 <b-col md='12'>
                   <h4 class="mt-2">Menu</h4>
@@ -31,6 +36,9 @@
                   autocomplete="new-password"
                   class="form-control"
                   v-model="menu.name">
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorName">
+                    Đây là mục bắt buộc nhập
+                  </b-form-invalid-feedback>
                 </b-col>
               </b-row>
               <b-row class="form-row">
@@ -44,6 +52,9 @@
                   autocomplete="new-password"
                   class="form-control"
                   v-model="menu.price">
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPrice">
+                    Đây là mục bắt buộc nhập
+                  </b-form-invalid-feedback>
                 </b-col>
               </b-row>
 
@@ -65,22 +76,12 @@
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
                   <label> Hình ảnh </label>
-                  <!--<span class="error-sybol"></span>-->
                 </b-col>
                 <b-col md="9">
-                  <!--<b-form-file-->
-                    <!--id="status"-->
-                    <!--type="text"-->
-                    <!--autocomplete="new-password"-->
-                    <!--class="form-control"-->
-                    <!--v-model="menu.image"-->
-                    <!--ref="file"-->
-                    <!--@change="handleFileUpload($event)">-->
-                  <!--</b-form-file>-->
                   <b-input-group @click="$refs.file.click()" append="Browse" class="pointer">
                     <b-input v-model="menu.image"></b-input>
                   </b-input-group>
-                  <input class="d-none" type="file" id="file" ref="file" accept="image/*" v-on:change="handleFileUpload($event)"/>
+                  <input class="d-none" type="file" id="file" ref="file" accept="image/*" v-on:change="handleFileUpload"/>
                 </b-col>
               </b-row>
 
@@ -105,9 +106,6 @@
                     </vue-cropper>
                 </div>
               </b-row>
-
-
-            </b-form>
           </b-card-body>
         </b-card>
       </b-col>
@@ -143,7 +141,9 @@ export default {
       },
       file: null,
       height: '100px',
-      styleImg: {}
+      styleImg: {},
+      saving: false,
+      click: false
     }
   },
   mounted() {
@@ -156,8 +156,33 @@ export default {
     computedImg() {
       return this.styleImg
     },
+    errorName: function () {
+      return this.checkInfo(this.menu.name)
+    },
+    errorPrice: function () {
+      return this.checkInfo(this.menu.price)
+    },
   },
   methods: {
+    checkInfo (info) {
+      return (this.click && (info == null || info.length <= 0))
+    },
+    checkValidate () {
+      return !(this.errorName || this.errorPrice)
+    },
+
+    /**
+   * Make toast without title
+   */
+    popToast(variant, content) {
+      this.$bvToast.toast(content, {
+        toastClass: 'my-toast',
+        noCloseButton: true,
+        variant: variant,
+        autoHideDelay: 3000
+      })
+    },
+
     /**
      * Get menu detail
      */
@@ -174,55 +199,17 @@ export default {
     },
 
     /**
-     * Save
-     */
-    save() {
-      let menuId = this.$route.params.id
-      if(menuId){
-        // Edit
-        adminAPI.editMenu(this.menu).then(res => {
-          if(res != null && res.data != null){
-            // Show notify edit success: TODO
-            alert("ok")
-          }else{
-            // Show notify edit fail: TODO
-            alert("fail")
-          }
-        }).catch(err => {
-          console.log(err)
-          // Show notify edit fail: TODO
-          alert("fail")
-        })
-      } else {
-        // Add
-        this.menu.image = "abc.jpg"
-        adminAPI.addMenu(this.menu).then(res => {
-          if(res != null && res.data != null){
-            // Go to list
-            this.$router.push('/menu/list')
-          }else{
-            // Show notify add fail: TODO
-            alert("add fail")
-          }
-        }).catch(err => {
-          console.log(err)
-          // Show notify add fail: TODO
-          alert("add fail")
-        })
-      }
-    },
-
-    /**
      * Handle upload file
      */
-    handleFileUpload (event) {
-      this.file = event.target.files[0] //this.$refs.file.files[0]
+    handleFileUpload () { // event
+      this.menu.imagePreview = null
+      this.file = this.$refs.file.files[0]//event.target.files[0]
       this.menu.image = this.file.name
 
       // Render image in review
       let reader  = new FileReader ()
       reader.addEventListener("load", function () {
-        this.$refs.cropper.image = reader.result
+        // this.$refs.cropper.image = reader.result
         this.menu.imagePreview = reader.result
       }.bind(this), false)
       if( this.file ){
@@ -232,60 +219,93 @@ export default {
       }
     },
 
-    crop() {
-      this.$refs.cropper
-        .getCroppedCanvas({
-          width: 300,
-          height: 300
-        })
-        .toBlob(blob => {
-          const formData = new FormData();
-          formData.append("file", blob, this.menu.image)
-          formData.append("name", this.menu.name)
-          formData.append("price", this.menu.price)
-          this.uploadImage(formData);
-        });
+    /**
+     * Prepare info to save
+     */
+    save() {
+      this.saving = true
+      this.click = true
+      let result = this.checkValidate()
+      if(result) {
+
+        this.$refs.cropper
+          .getCroppedCanvas({
+            width: 300,
+            height: 300
+          })
+          .toBlob(blob => {
+            const formData = new FormData();
+            formData.append("file", blob, this.menu.image)
+            formData.append("name", this.menu.name)
+            formData.append("price", this.menu.price)
+
+            this.doSave(formData);
+          });
+      } else {
+        this.saving = false
+      }
     },
-    uploadImage(formData) {
+
+    /**
+     * Call api, save data
+     * @param formData
+     */
+    doSave(formData) {
       let menuId = this.$route.params.id
       if(menuId){
         // Edit
+        formData.append("active", this.menu.active)
+        formData.append("id", menuId)
+
         adminAPI.editMenu(formData).then(res => {
+          this.saving = false
           if(res != null && res.data != null){
-            // Show notify edit success: TODO
-            alert("ok")
+            // Show notify edit success
+            this.popToast('success', 'Lưu menu thành công!!! ')
           }else{
-            // Show notify edit fail: TODO
-            alert("fail")
+            // Show notify edit fail
+            this.popToast('danger', 'Lưu menu thất bại!!! ')
           }
         }).catch(err => {
+          this.saving = false
           console.log(err)
-          // Show notify edit fail: TODO
-          alert("fail")
+          // Show notify edit fail
+          this.popToast('danger', 'Lưu menu thất bại!!! ')
         })
       } else {
         // Add
         adminAPI.addMenu(formData).then(res => {
+          this.saving = false
           if(res != null && res.data != null){
             // Go to list
             this.$router.push('/menu/list')
           }else{
-            // Show notify add fail: TODO
-            alert("add fail")
+            // Show notify add fail
+            this.popToast('danger', 'Lưu menu thất bại!!! ')
           }
         }).catch(err => {
+          this.saving = false
           console.log(err)
-          // Show notify add fail: TODO
-          alert("add fail")
+          // Show notify add fail
+          this.popToast('danger', 'Lưu menu thất bại!!! ')
         })
       }
     },
 
+    /**
+     * Event crop image
+     */
     cropImage() {
-      alert("crop")
+      // Use to check reupload image when edit
+    },
+
+    /**
+     * Back to list
+     */
+    back() {
+      // Go to list
+      this.$router.push('/menu/list')
     }
-
-
   }
 }
 </script>

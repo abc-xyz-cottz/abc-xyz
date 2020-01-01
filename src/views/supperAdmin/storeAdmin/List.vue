@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div class="container-fluid">
     <b-row>
       <b-col>
@@ -55,7 +55,7 @@
               </div>
             </div>
             <hr>
-            <b-button variant="primary" class="mb-3 pull-right px-4" :disable="onSearch" @click.prevent="prepareToSearch">
+            <b-button variant="primary" class="mb-3 pull-right px-4" :disabled="onSearch" @click.prevent="prepareToSearch">
               Tìm Kiếm
             </b-button>
           </b-form>

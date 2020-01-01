@@ -4,7 +4,20 @@
       <b-col>
         <b-card>
           <b-card-body class="p-4">
-            <b-form @submit="save">
+
+            <b-row>
+              <b-col cols="6">
+                <b-button variant="secondary" class="pull-left px-4" @click="back">
+                  Quay lại
+                </b-button>
+              </b-col>
+              <b-col cols="6">
+                <button class="btn btn-primary pull-right  px-4" @click="save" :disabled="saving">
+                    Lưu
+                </button>
+              </b-col>
+            </b-row>
+
               <b-row class="form-row">
                 <b-col md='12'>
                   <h4 class="mt-2">Promotion</h4>
@@ -83,14 +96,7 @@
                   </b-form-invalid-feedback>
                 </b-col>
               </b-row>
-              <b-row class="text-center mt-3">
-              <b-col>
-                <b-button variant="primary" class="px-4" @click="save">
-                  Lưu
-                </b-button>
-              </b-col>
-            </b-row>
-            </b-form>
+
           </b-card-body>
         </b-card>
       </b-col>
@@ -111,6 +117,7 @@ export default {
         "quantity": null
       },
       click: false,
+      saving: false
     }
   },
   mounted() {
@@ -137,6 +144,10 @@ export default {
     checkValidate () {
       return !(this.errorName || this.errorCost || this.errorExpiredOn || this.errorQuantity)
     },
+
+    /**
+     * Get detail
+     */
     getPromoDetail() {
       let promoId = this.$route.params.id
       if(promoId){
@@ -150,8 +161,13 @@ export default {
         })
       }
     },
+
+    /**
+     * Save promotion
+     */
     save () {
       this.click = true
+      this.saving = true
       let result = this.checkValidate()
       if(result) { 
         let promoId = this.$route.params.id
@@ -160,6 +176,7 @@ export default {
           let promo = this.promo
           promo.id = promoId
           adminAPI.editPromo(promo).then(res => {
+            this.saving = false
             if(res != null && res.data != null){
               let message = ""
               if (res.data.status == 200) {
@@ -175,6 +192,7 @@ export default {
               }
             }
           }).catch(err => {
+            this.saving = false
             console.log(err)
             // Show notify edit fail: TODO
             let message = ""
@@ -193,6 +211,7 @@ export default {
         } else {
           // Add
           adminAPI.addPromo(this.promo).then(res => {
+            this.saving = false
             if(res != null && res.data != null){
               let message = ""
               if (res.data.status == 200) {
@@ -208,6 +227,7 @@ export default {
               }
             }
           }).catch(err => {
+            this.saving = false
             console.log(err)
             let message = ""
               if(err.response.data.status == 422) {
@@ -223,13 +243,27 @@ export default {
               })
           })
         }
-      }    
+      } else {
+        this.saving = false
+      }
     },
+
+    /**
+     * Validate code
+     */
     validateCode (event) {
       // not number
       if(!commonFunc.isNumber(event)) {
         event.preventDefault()
       }
+    },
+
+    /**
+     * Back to list
+     */
+    back() {
+      // Go to list
+      this.$router.push("/promo/list")
     }
   }
 }

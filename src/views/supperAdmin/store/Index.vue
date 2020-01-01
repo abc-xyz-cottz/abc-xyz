@@ -4,7 +4,6 @@
       <b-col>
         <b-card>
           <b-card-body class="p-4">
-            <b-form @submit="save">
               <b-row class="form-row">
                 <b-col md='12'>
                   <h4 class="mt-2">Store</h4>
@@ -94,14 +93,19 @@
                 </b-col>
                 <b-col md="3"> <label class="mt-1">Tháng</label></b-col>
               </b-row>
-              <b-row class="text-center mt-3">
-                <b-col>
-                    <b-button variant="primary" class="px-4" @click="save">
-                    Lưu
-                    </b-button>
+
+              <b-row class="mt-3">
+                <b-col cols="6">
+                  <b-button variant="secondary" class="pull-left px-4" @click="back">
+                    Quay lại
+                  </b-button>
                 </b-col>
-                </b-row>
-            </b-form>
+                <b-col cols="6">
+                  <button class="btn btn-primary pull-left  px-4" :disabled="saving" @click="save" >
+                      Lưu
+                  </button>
+                </b-col>
+              </b-row>
           </b-card-body>
         </b-card>
       </b-col>
@@ -126,7 +130,7 @@ export default {
         "district_id": '',
         "expired_at": ''
       },
-      click: false,
+      saving: false,
     }
   },
   mounted() {
@@ -152,7 +156,7 @@ export default {
   },
   methods: {
     checkInfo (info) {
-      return (this.click && (info == null || info.length <= 0))
+      return (this.saving && (info == null || info.length <= 0))
     },
     checkValidate () {
       return !(this.errorName || this.errorCiti || this.errorDistrict || this.errorAddress || this.errorMonth)
@@ -172,7 +176,7 @@ export default {
       }
     },
     save () {
-      this.click = true
+      this.saving = true
       let result = this.checkValidate()
       if(result) { 
         let storeId = this.$route.params.id
@@ -181,6 +185,7 @@ export default {
           let store = this.store
           store.id = storeId
           superAdminAPI.editStore(store).then(res => {
+            this.saving = false
             if(res != null && res.data != null){
               let message = ""
               if (res.data.status == 200) {
@@ -196,6 +201,7 @@ export default {
               }
             }
           }).catch(err => {
+            this.saving = false
             console.log(err)
             // Show notify edit fail: TODO
             let message = ""
@@ -214,6 +220,7 @@ export default {
         } else {
           // Add
           superAdminAPI.addStore(this.store).then(res => {
+            this.saving = false
             if(res != null && res.data != null){
               let message = ""
               if (res.data.status == 200) {
@@ -227,8 +234,10 @@ export default {
                   this.$router.push("/store/list")
                 })
               }
+
             }
           }).catch(err => {
+            this.saving = false
             console.log(err)
             let message = ""
               if(err.response.data.status == 422) {
@@ -244,7 +253,10 @@ export default {
               })
           })
         }
-      }    
+      } else {
+        this.saving = false
+      }
+
     },
     validateCode (event) {
       // not number
@@ -278,6 +290,14 @@ export default {
       } else {
         this.store.district_id = ""
       }
+    },
+
+    /**
+     * Back to list
+     */
+    back() {
+      // Go to list
+      this.$router.push("/store/list")
     }
   }
 }

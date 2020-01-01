@@ -4,7 +4,18 @@
       <b-col>
         <b-card>
           <b-card-body class="p-4">
-            <b-form @submit="save">
+            <b-row>
+              <b-col cols="6">
+                <b-button variant="secondary" class="pull-left px-4" @click="back">
+                  Quay lại
+                </b-button>
+              </b-col>
+              <b-col cols="6">
+                <button class="btn btn-primary pull-right  px-4" @click="save" :disabled="saving">
+                    Lưu
+                </button>
+              </b-col>
+            </b-row>
               <b-row class="form-row">
                 <b-col md='12'>
                   <h4 class="mt-2">Topping</h4>
@@ -24,7 +35,7 @@
                   class="form-control"
                   v-model="topping.name">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorName">
-                    Vui lòng nhập tên
+                    Đây là mục bắt buộc nhập
                   </b-form-invalid-feedback>
                 </b-col>
               </b-row>
@@ -41,7 +52,7 @@
                   v-model="topping.price"
                   @keyup="intergerOnly($event.target)">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPrice">
-                    Vui lòng nhập giá
+                    Đây là mục bắt buộc nhập
                   </b-form-invalid-feedback>
                 </b-col>
               </b-row>
@@ -61,15 +72,6 @@
                   </b-form-select>
                 </b-col>
               </b-row>
-
-              <b-row class="text-center mt-3">
-                <b-col>
-                  <b-button variant="primary" class="px-4" @click="save">
-                    Lưu
-                  </b-button>
-                </b-col>
-              </b-row>
-            </b-form>
           </b-card-body>
         </b-card>
       </b-col>
@@ -97,7 +99,8 @@ export default {
         "price": null,
         "status": null
       },
-      click: false
+      click: false,
+      saving: false
     }
   },
   mounted() {
@@ -161,6 +164,7 @@ export default {
      * Save
      */
     save() {
+      this.saving = true
       this.click = true
       let result = this.checkValidate()
       if(result) {
@@ -168,12 +172,14 @@ export default {
         if (toppingId) {
           // Edit
           adminAPI.updateTopping(this.topping).then(res => {
+            this.saving = false
             if (res != null && res.data != null) {
               this.popToast('success', 'Cập nhật topping thành công!!!')
             } else {
               this.makeToast('danger', 'Cập nhật topping thất bại!!!', 'Có lỗi xảy ra, bạn thử lại sau nhé')
             }
           }).catch(err => {
+            this.saving = false
             let message = ""
             if(err.response.data.status == 500) {
               message = "Lỗi hệ thống, chúng tôi rất tiếc về sự cố này, bạn thử lại sau vài phút nhé"
@@ -185,6 +191,7 @@ export default {
         } else {
           // Add
           adminAPI.addTopping(this.topping).then(res => {
+            this.saving = false
             if (res != null && res.data != null) {
               // Go to list
               this.$router.push('/topping/list')
@@ -192,6 +199,7 @@ export default {
               this.makeToast('danger', 'Thêm topping thất bại!!!', 'Có lỗi xảy ra, bạn thử lại nhé')
             }
           }).catch(err => {
+            this.saving = false
             let message = ""
             if(err.response.data.status == 500) {
               message = "Lỗi hệ thống, chúng tôi rất tiếc về sự cố này, bạn thử lại sau vài phút nhé"
@@ -201,6 +209,8 @@ export default {
             this.makeToast('danger', 'Thêm topping thất bại!!!', message)
           })
         }
+      } else {
+        this.saving = false
       }
     },
 
@@ -212,6 +222,14 @@ export default {
       let result = commonFunc.intergerOnly(valueInput)
       item.value = result
     },
+
+    /**
+     * Back to list
+     */
+    back() {
+      // Go to list
+      this.$router.push('/topping/list')
+    }
   }
 }
 </script>

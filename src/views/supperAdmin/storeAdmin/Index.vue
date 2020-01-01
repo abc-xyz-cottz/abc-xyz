@@ -4,7 +4,6 @@
       <b-col>
         <b-card>
           <b-card-body class="p-4">
-            <b-form @submit="save">
               <b-row class="form-row">
                 <b-col md='12'>
                   <h4 class="mt-2">Admin store</h4>
@@ -86,14 +85,19 @@
                   </b-form-invalid-feedback>
                 </b-col>
               </b-row>
-              <b-row class="text-center mt-3">
-                <b-col>
-                  <b-button variant="primary" class="px-4" @click="save">
-                  Lưu
+
+              <b-row class="mt-3">
+                <b-col cols="6">
+                  <b-button variant="secondary" class="pull-left px-4" @click="back">
+                    Quay lại
                   </b-button>
                 </b-col>
-                </b-row>
-            </b-form>
+                <b-col cols="6">
+                  <button class="btn btn-primary pull-left  px-4" :disabled="saving" @click="save">
+                      Lưu
+                  </button>
+                </b-col>
+              </b-row>
           </b-card-body>
         </b-card>
       </b-col>
@@ -104,7 +108,8 @@
 import superAdminAPI from '@/api/superAdmin'
 import Mapper from '@/mapper/staff'
 import MapperStore from '@/mapper/store'
-import commonFunc from '@/common/commonFunc'
+
+
 export default {
   data () {
     return {
@@ -120,7 +125,7 @@ export default {
         role_id: '',
         store_id: ''
       },
-      click: false,
+      saving: false,
     }
   },
   mounted() {
@@ -153,12 +158,16 @@ export default {
   },
   methods: {
     checkInfo (info) {
-      return (this.click && (info == null || info.length <= 0))
+      return (this.saving && (info == null || info.length <= 0))
     },
     checkValidate () {
       return !(this.errorName || this.errorPhone || this.errorRole || this.errorStore 
           || this.errorPassword || this.errorLengthPassword)
     },
+
+    /**
+     *  Get store options
+     */
     getStoreListDB () {
       superAdminAPI.getStoreListDB().then(res => {
           if(res != null && res.data != null && res.data.data != null) {
@@ -168,6 +177,10 @@ export default {
           console.log(err)
         })
     },
+
+    /**
+     * Get detail
+     */
     getAdminStoreDetail() {
       let AdminStoreId = this.$route.params.id
       if(AdminStoreId){
@@ -180,8 +193,12 @@ export default {
         })
       }
     },
+
+    /**
+     * Save
+     */
     save () {
-      this.click = true
+      this.saving = true
       let result = this.checkValidate()
       if(result) { 
         let adminStoreId = this.$route.params.id
@@ -190,6 +207,7 @@ export default {
           let adminStore = this.adminStore
           adminStore.id = adminStoreId
           superAdminAPI.editAdminStore(adminStore).then(res => {
+            this.saving = false
             if(res != null && res.data != null){
               let message = ""
               if (res.data.status == 200) {
@@ -205,6 +223,7 @@ export default {
               }
             }
           }).catch(err => {
+            this.saving = false
             console.log(err)
             // Show notify edit fail: TODO
             let message = ""
@@ -223,6 +242,7 @@ export default {
         } else {
           // Add
           superAdminAPI.addAdminStore(this.adminStore).then(res => {
+            this.saving = false
             if(res != null && res.data != null){
               let message = ""
               if (res.data.status == 200) {
@@ -238,6 +258,7 @@ export default {
               }
             }
           }).catch(err => {
+            this.saving = false
             console.log(err)
             let message = ""
               if(err.response.data.status == 422) {
@@ -253,7 +274,17 @@ export default {
               })
           })
         }
-      }    
+      } else {
+        this.saving = false
+      }
+    },
+
+    /**
+     * Back to list
+     */
+    back() {
+      // Go to list
+      this.$router.push("/admin-store/list")
     }
   }
 }

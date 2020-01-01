@@ -30,7 +30,7 @@
               </b-row>
               <b-row class="text-center mt-3">
                 <b-col>
-                  <b-button variant="primary" class="px-4" @click="save">
+                  <b-button variant="primary" class="px-4" @click="save" :disabled="saving">
                     Lưu
                   </b-button>
                 </b-col>
@@ -52,6 +52,7 @@ export default {
         "name": null,
       },
       click: false,
+      saving: false
     }
   },
   mounted() {
@@ -83,6 +84,7 @@ export default {
     },
     save () {
       this.click = true
+      this.saving = true
       let result = this.checkValidate()
       if(result) {  
         let tableId = this.$route.params.id
@@ -91,6 +93,7 @@ export default {
           let table = this.table
           table.id = tableId
           adminAPI.editTable(table).then(res => {
+            this.saving = false
             if(res != null && res.data != null){
               let message = ""
               if (res.data.status == 200) {
@@ -106,6 +109,7 @@ export default {
               }
             }
           }).catch(err => {
+            this.saving = false
             console.log(err)
             let message = ""
             if(err.response.data.status == 422) {
@@ -123,6 +127,7 @@ export default {
         } else {
           // Add
           adminAPI.addTable(this.table).then(res => {
+            this.saving = false
             if(res != null && res.data != null){
               let message = ""
               if (res.data.status == 200) {
@@ -138,6 +143,7 @@ export default {
               }
             }
           }).catch(err => {
+            this.saving = false
             console.log(err)
             let message = ""
               if(err.response.data.status == 422) {
@@ -153,6 +159,8 @@ export default {
               })
           })
         }
+      } else {
+        this.saving = false
       }
     }
   }
