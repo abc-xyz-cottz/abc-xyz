@@ -71,7 +71,8 @@
                 <b-button
                   variant="primary"
                   class="px-4 pull-right"
-                  @click="prepareToSearch">
+                  @click="prepareToSearch"
+                  :disabled="onSearch">
                   Tìm Kiếm
                 </b-button>
               </b-col>
@@ -237,10 +238,7 @@ export default {
           class: 'actions-cell'
         }
       ],
-      items: [
-        {stt: '1', name: 'Giảm giá 30% cho tất cả các món ăn', store: "Store 1", city: 'HN', district: '3', price: 3000, quantity: 10, expiredAt: '30/12/2019', action: ''},
-        {stt: '1', name: 'Giảm 50k cho hóa đơn trên 1000k trong ngày 24/12/2019', store: "Store 2", city: 'HN', district: '3', price: 3000, quantity: 10, expiredAt: '30/12/2019', action: ''},
-      ],
+      items: [],
       optionsCity: [],
       optionsStore: [],
       inputs: {
@@ -319,7 +317,7 @@ export default {
        */
       onDecode (result) {
         this.onShowQRCode = false
-        let url = result.replace("http://localhost:8088", "")
+        let url = result.replace(window.location.host, "")
         this.$router.push(url)
       },
 

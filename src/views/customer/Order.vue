@@ -28,6 +28,10 @@
                 stacked="md"
                 :fields="fields" 
                 :items="items">
+                <template v-slot:cell(image)="data">
+                  <!--{{image}}-->
+                  <img :src="data.item.image" :style="{width: 100 + 'px', height: 100 + 'px'}"/>
+                </template>
                 <template v-slot:cell(action)="dataId">
                   <b-list-group horizontal>
                     <b-list-group-item @click="countDown(dataId.value)">

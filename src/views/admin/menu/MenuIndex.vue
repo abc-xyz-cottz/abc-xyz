@@ -227,20 +227,28 @@ export default {
       this.click = true
       let result = this.checkValidate()
       if(result) {
+        if(this.menu.imagePreview) {
+          this.$refs.cropper
+            .getCroppedCanvas({
+              width: 300,
+              height: 300
+            })
+            .toBlob(blob => {
+              const formData = new FormData();
+              formData.append("file", blob, this.menu.image)
+              formData.append("name", this.menu.name)
+              formData.append("price", this.menu.price)
 
-        this.$refs.cropper
-          .getCroppedCanvas({
-            width: 300,
-            height: 300
-          })
-          .toBlob(blob => {
-            const formData = new FormData();
-            formData.append("file", blob, this.menu.image)
-            formData.append("name", this.menu.name)
-            formData.append("price", this.menu.price)
+              this.doSave(formData);
+            });
+        } else {
+          const formData = new FormData();
+          formData.append("file", null)
+          formData.append("name", this.menu.name)
+          formData.append("price", this.menu.price)
 
-            this.doSave(formData);
-          });
+          this.doSave(formData);
+        }
       } else {
         this.saving = false
       }

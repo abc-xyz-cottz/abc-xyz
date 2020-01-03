@@ -14,7 +14,7 @@
             </b-col>
           </b-row>
           <hr>
-          <b-form @submit.prevent="search">
+          <b-form>
               <b-row class="form-row">
                 <b-col md="4">
                   <label> Tên </label>

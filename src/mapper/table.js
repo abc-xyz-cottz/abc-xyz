@@ -16,8 +16,21 @@ export default {
       return result
     },
     mapTableDetailModelToDto (table) {
-        return {
-            "name": table.fields.name
-        }
+      return {
+          "name": table.fields.name
       }
+    },
+    mapTableModelToOption (tables) {
+      let result = [{value:null, text: ""}]
+
+      for (var index in tables) {
+        let tableTemp = {
+          value: tables[index].pk,
+          text: tables[index].fields.name
+        }
+        result.push(tableTemp)
+      }
+      return result
+    }
+
   }

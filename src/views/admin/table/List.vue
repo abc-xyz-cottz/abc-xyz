@@ -31,13 +31,6 @@
             </b-list-group>
           </template>
           </b-table>
-          <!-- <b-pagination
-            v-model="currentPage"
-            :total-rows="rows"
-            :per-page="perPage"
-            aria-controls="my-table"
-            size="sm"
-          ></b-pagination> -->
         </b-card>
       </b-col>
     </b-row>
