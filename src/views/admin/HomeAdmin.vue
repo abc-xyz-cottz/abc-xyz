@@ -101,6 +101,7 @@ import Cookies from 'js-cookie'
 import {Constant} from '@/common/constant'
 import adminAPI from '@/api/admin'
 import { RootAPI } from '@/api/index'
+import commonFunc from '@/common/commonFunc'
 
 
 export default {
@@ -219,7 +220,9 @@ export default {
         let orders_canceled = res.data.data.orders_canceled
         this.canceled.push.apply(this.canceled, orders_canceled)
       }).catch(err => {
-        console.log(err)
+        // Handle error
+        let errorMess = commonFunc.handleStaffError(err)
+        this.popToast('danger', errorMess)
       })
     }
   }

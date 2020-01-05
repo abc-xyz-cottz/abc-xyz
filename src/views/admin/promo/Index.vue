@@ -107,6 +107,8 @@
 import adminAPI from '@/api/admin'
 import Mapper from '@/mapper/promotion'
 import commonFunc from '@/common/commonFunc'
+
+
 export default {
   data () {
     return {
@@ -145,6 +147,18 @@ export default {
       return !(this.errorName || this.errorCost || this.errorExpiredOn || this.errorQuantity)
     },
 
+   /**
+   * Make toast without title
+   */
+    popToast(variant, content) {
+      this.$bvToast.toast(content, {
+        toastClass: 'my-toast',
+        noCloseButton: true,
+        variant: variant,
+        autoHideDelay: 5000
+      })
+    },
+
     /**
      * Get detail
      */
@@ -157,7 +171,9 @@ export default {
             this.promo.expired_on = commonFunc.calculateDate(this.promo.expired_on)
           }
         }).catch(err => {
-          console.log(err)
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
         })
       }
     },

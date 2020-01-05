@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div class="container-fluid">
     <b-row>
       <b-col>
@@ -39,8 +39,9 @@
 <script>
 import adminAPI from '@/api/admin'
 import Mapper from '@/mapper/promotion'
-import {Constant} from '@/common/constant'
 import commonFunc from '@/common/commonFunc'
+
+
 export default {
   data () {
     return {
@@ -86,6 +87,24 @@ export default {
     this.getPromoList()
   },
   methods: {
+    /**
+   * Make toast without title
+   */
+    popToast(variant, content) {
+      this.$bvToast.toast(content, {
+        toastClass: 'my-toast',
+        noCloseButton: true,
+        variant: variant,
+        autoHideDelay: 5000
+      })
+    },
+
+    /**
+     * Delete
+     * @param id
+     * @param name
+     * @param rowIndex
+     */
     deleted (id, name, rowIndex) {
       this.$bvModal.msgBoxConfirm('Xóa ' + name + ". Bạn có chắc không?", {
         title: false,
@@ -105,17 +124,34 @@ export default {
         }
       })
     },
+
+    /**
+     * Go to edit
+     * @param id
+     */
     edit (id) {
       this.$router.push('/promo/index/' + id)
     },
+
+    /**
+     * Go to add
+     */
     goToAdd () {
       this.$router.push('/promo/index/')
     },
+
+    /**
+     * Get list
+     */
     getPromoList () {
       adminAPI.getPromoList().then(res => {
         if(res != null && res.data != null && res.data.data != null) {
           this.items = Mapper.mapPromoModelToDto(res.data.data)
         }
+      }).catch(err => {
+        // Handle error
+        let errorMess = commonFunc.handleStaffError(err)
+        this.popToast('danger', errorMess)
       })
     }
   }

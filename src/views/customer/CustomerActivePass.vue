@@ -96,7 +96,7 @@ export default {
                   headerClass: 'bg-success',
                 }).then(res => {
                   if(res) {
-                    this.$router.push('/customer-login')
+                    this.$router.push('/login')
                   }
                 })
               }

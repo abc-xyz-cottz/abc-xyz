@@ -58,6 +58,24 @@
                 </b-col>
               </b-row>
 
+              <b-row class="form-row">
+                <b-col md="3" class="mt-2">
+                  <label> Topping </label><span class="error-sybol"></span>
+                </b-col>
+                <b-col md="9">
+                  <b-form-select
+                  :options="toppings"
+                  type="text"
+                  autocomplete="new-password"
+                  class="form-control"
+                  v-model="menu.topping">
+                  </b-form-select>
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorTopping">
+                    Đây là mục bắt buộc nhập
+                  </b-form-invalid-feedback>
+                </b-col>
+              </b-row>
+
               <b-row class="form-row" v-if="this.$route.params.id">
                 <b-col md="3" class="mt-2">
                   <label> Trạng thái </label><span class="error-sybol"></span>
@@ -119,6 +137,7 @@ import adminAPI from '@/api/admin'
 import Mapper from '@/mapper/menu'
 import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
+import commonFunc from '@/common/commonFunc'
 
 
 export default {
@@ -131,11 +150,16 @@ export default {
         {value: 'true', text: 'Mở'},
         {value: 'false', text: 'Đóng'}
       ],
+      toppings: [
+        {value: 'true', text: 'Có'},
+        {value: 'false', text: 'Không'}
+      ],
       menu: {
         "id": null,
         "name": null,
         "price": null,
         "active": null,
+        "topping": null,
         "image": null,
         imagePreview: null,
       },
@@ -162,13 +186,16 @@ export default {
     errorPrice: function () {
       return this.checkInfo(this.menu.price)
     },
+    errorTopping: function () {
+      return this.checkInfo(this.menu.topping)
+    },
   },
   methods: {
     checkInfo (info) {
       return (this.click && (info == null || info.length <= 0))
     },
     checkValidate () {
-      return !(this.errorName || this.errorPrice)
+      return !(this.errorName || this.errorPrice || this.errorTopping)
     },
 
     /**
@@ -193,7 +220,9 @@ export default {
           this.menu = Mapper.mapMenuDetailModelToDto(res.data.data)
           this.file = this.menu.imagePreview
         }).catch(err => {
-          console.log(err)
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
         })
       }
     },
@@ -238,6 +267,7 @@ export default {
               formData.append("file", blob, this.menu.image)
               formData.append("name", this.menu.name)
               formData.append("price", this.menu.price)
+              formData.append("topping", this.menu.topping)
 
               this.doSave(formData);
             });
@@ -246,6 +276,7 @@ export default {
           formData.append("file", null)
           formData.append("name", this.menu.name)
           formData.append("price", this.menu.price)
+          formData.append("topping", this.menu.topping)
 
           this.doSave(formData);
         }

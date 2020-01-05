@@ -148,4 +148,11 @@ export default {
   buyPmt(pmtId) {
     return session.get(RootAPI + 'customer/buy-pmt/' + pmtId)
   },
+
+  /**
+   * Get topping
+   */
+  getTopping(storeId) {
+    return session.get(RootAPI + 'topping/store/' + storeId)
+  },
 }

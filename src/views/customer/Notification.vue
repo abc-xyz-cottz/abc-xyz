@@ -24,7 +24,7 @@
 <script>
 import customerAPI from '@/api/customer'
 import {Constant} from '@/common/constant'
-import Cookies from 'js-cookie'
+import commonFunc from '@/common/commonFunc'
 
 export default {
   components: {
@@ -57,6 +57,18 @@ export default {
     this.updateNotificationIsRead()
   },
   methods: {
+
+    /**
+   * Make toast without title
+   */
+    popToast(variant, content) {
+      this.$bvToast.toast(content, {
+        toastClass: 'my-toast',
+        noCloseButton: true,
+        variant: variant,
+        autoHideDelay: 3000
+      })
+    },
 
     /**
      *  Processing on scroll: use for paging
@@ -101,7 +113,9 @@ export default {
           this.onLoad = false
           this.loading = false
         }).catch(err => {
-          console.log(err)
+          // Handle error
+          let errorMess = commonFunc.handleCusError(err)
+          this.popToast('danger', errorMess)
         })
       },
 

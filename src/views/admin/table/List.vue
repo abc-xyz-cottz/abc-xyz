@@ -40,6 +40,8 @@
 import adminAPI from '@/api/admin'
 import Mapper from '@/mapper/table'
 import commonFunc from '@/common/commonFunc'
+
+
 export default {
   data () {
     return {
@@ -73,13 +75,40 @@ export default {
     this.getTableList()
   },
   methods: {
+
+    /**
+   * Make toast without title
+   */
+  popToast(variant, content) {
+    this.$bvToast.toast(content, {
+      toastClass: 'my-toast',
+      noCloseButton: true,
+      variant: variant,
+      autoHideDelay: 5000
+    })
+  },
+
+    /**
+     * Load list
+     */
     getTableList () {
       adminAPI.getTableList().then(res => {
         if(res != null && res.data != null && res.data.data != null) {
           this.items = Mapper.mapTableModelToDto(res.data.data)
         }
+      }).catch(err => {
+        // Handle error
+        let errorMess = commonFunc.handleStaffError(err)
+        this.popToast('danger', errorMess)
       })
     },
+
+    /**
+     * Delete
+     * @param id
+     * @param name
+     * @param rowIndex
+     */
     deleted (id, name, rowIndex) {
       this.$bvModal.msgBoxConfirm('Xóa ' + name + ". Bạn có chắc không?", {
         title: false,
@@ -99,9 +128,18 @@ export default {
         }
       })
     },
+
+    /**
+     * Go to edit
+     * @param id
+     */
     edit (id) {
       this.$router.push('/table/index/' + id)
     },
+
+    /**
+     * Go to add
+     */
     goToAdd () {
       this.$router.push('/table/index/')
     }

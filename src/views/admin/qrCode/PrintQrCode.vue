@@ -20,12 +20,12 @@
               </b-form-select>
             </b-col>
             <b-col md="3">
-              <b-button variant="primary" class="px-4" :disabled="!tableId">
+              <b-button variant="primary" class="px-4" :disabled="!tableId" @click="print">
                 In
               </b-button>
             </b-col>
             <b-col md="3">
-              <b-button variant="primary" class="px-4" :disabled="!tableId">
+              <b-button variant="primary" class="px-4" :disabled="!tableId" @click="createPDF">
                 Xuất file pdf
               </b-button>
             </b-col>
@@ -36,7 +36,7 @@
 
     <b-row v-show="tableId">
       <b-col>
-        <b-card>
+        <b-card class="a4" id="printAble">
           <b-card-body class="p-4">
               <b-row>
                 <b-col md="10" class="text-right"><p>Bàn: </p></b-col>
@@ -105,9 +105,11 @@ Vue.component(VueQrcode.name, VueQrcode)
 
 import adminAPI from '@/api/admin'
 import Mapper from '@/mapper/table'
-import { RootAPI } from '@/api/index'
 import {Constant} from '@/common/constant'
 import Cookies from 'js-cookie'
+import jsPDF from 'jspdf'
+import html2canvas from "html2canvas"
+import commonFunc from '@/common/commonFunc'
 
 export default {
 
@@ -127,6 +129,19 @@ export default {
     this.getTableList()
   },
   methods: {
+
+     /**
+   * Make toast without title
+   */
+  popToast(variant, content) {
+    this.$bvToast.toast(content, {
+      toastClass: 'my-toast',
+      noCloseButton: true,
+      variant: variant,
+      autoHideDelay: 5000
+    })
+  },
+
     /**
      * Load list option table
      */
@@ -135,6 +150,10 @@ export default {
         if(res != null && res.data != null && res.data.data != null) {
           this.tables = Mapper.mapTableModelToOption(res.data.data)
         }
+      }).catch(err => {
+        // Handle error
+        let errorMess = commonFunc.handleStaffError(err)
+        this.popToast('danger', errorMess)
       })
     },
 
@@ -148,7 +167,79 @@ export default {
         let url = window.location.host + "/store/" + user.storeId + "/table/" + this.tableId
         this.qr_code = url
       }
+    },
+
+    /**
+     * Print
+     */
+    print() {
+
+      // Get HTML to print from element
+      const prtHtml = document.getElementById('printAble').innerHTML;
+
+      // Get all stylesheets HTML
+      let stylesHtml = '';
+      for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
+        stylesHtml += node.outerHTML;
+      }
+
+      // Open the print window
+      const WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+
+      WinPrint.document.write(`<!DOCTYPE html>
+      <html>
+        <head>
+          ${stylesHtml}
+        </head>
+        <body>
+          ${prtHtml}
+        </body>
+      </html>`);
+
+      WinPrint.document.close();
+      WinPrint.focus();
+      WinPrint.print();
+      WinPrint.close();
+      return
+    },
+
+    /**
+     * Gen pdf file
+     */
+    createPDF () {
+      const prtHtml = document.getElementById('printAble')
+      var doc = new jsPDF("p", "mm", "a4");
+      html2canvas(prtHtml).then(function(canvas){
+        var imgData = canvas.toDataURL('image/png');
+        // var pageHeight = 295;
+
+        var imgWidth = 200 //(canvas.width * 50) / 210 ;
+        var imgHeight = canvas.height * imgWidth / canvas.width;
+
+        // var heightLeft = imgHeight;
+        var position = 15;
+
+        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        // heightLeft -= pageHeight;
+
+        // while (heightLeft >= 0) {
+        //     position = heightLeft - imgHeight;
+        //     doc.addPage();
+        //     doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        //     heightLeft -= pageHeight;
+        // }
+        doc.save(Date.now() +'.pdf');
+      });
     }
   }
 }
 </script>
+
+<style lang="css" scoped>
+  .a4 {
+    width: 793px;
+    height: 1133px;
+    max-height: 1133px;
+    max-width: 793px;
+  }
+</style>

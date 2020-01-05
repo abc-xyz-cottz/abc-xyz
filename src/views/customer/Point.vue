@@ -48,8 +48,7 @@
 <script>
 import customerAPI from '@/api/customer'
 import Mapper from '@/mapper/point'
-// import {Constant} from '@/common/constant'
-// import commonFunc from '@/common/commonFunc'
+import commonFunc from '@/common/commonFunc'
 export default {
   data () {
     return {
@@ -98,6 +97,22 @@ export default {
     this.getPointList()
   },
   methods: {
+    /**
+   * Make toast without title
+   */
+    popToast(variant, content) {
+      this.$bvToast.toast(content, {
+        toastClass: 'my-toast',
+        noCloseButton: true,
+        variant: variant,
+        autoHideDelay: 3000
+      })
+    },
+
+    /**
+     * Show detail
+     * @param store_id
+     */
     showDetail (store_id) {
       customerAPI.getPointDetailList(store_id).then(res => {
         if(res != null && res.data != null && res.data.data != null) {
@@ -106,12 +121,20 @@ export default {
       })
       this.$bvModal.show('modal-point')
     },
+
+    /**
+     * Get point list
+     */
     getPointList () {
       customerAPI.getPointList().then(res => {
         if(res != null && res.data != null && res.data.data != null) {
           this.items = Mapper.mapPointModelToDto(res.data.data.point_list)
           this.total_point = res.data.data.total_point
         }
+      }).catch(err => {
+        // Handle error
+          let errorMess = commonFunc.handleCusError(err)
+          this.popToast('danger', errorMess)
       })
     }
   }

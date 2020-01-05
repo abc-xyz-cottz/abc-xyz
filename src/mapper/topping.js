@@ -31,5 +31,22 @@ export default {
           , "price": topping.fields.price
           , "status": topping.fields.status
         }
+    },
+    mapToppingCusModelToDto (toppings) {
+      let result = []
+
+      var stt = 0
+      for (var index in toppings) {
+        stt = stt + 1
+
+        let toppingTemp = {
+          stt: stt
+          , name: toppings[index].fields.name
+          , price: toppings[index].fields.price
+          , actions: toppings[index].pk
+        }
+        result.push(toppingTemp)
       }
+      return result
+    },
   }

@@ -166,7 +166,9 @@ export default {
         }
 
       }).catch(err => {
-        console.log(err)
+        // Handle error
+        let errorMess = commonFunc.handleStaffError(err)
+        this.popToast('danger', errorMess)
       })
     },
 

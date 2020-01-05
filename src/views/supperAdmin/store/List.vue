@@ -149,6 +149,22 @@ export default {
     this.search()
   },
   methods: {
+
+    /**
+   * Make toast without title
+   */
+  popToast(variant, content) {
+    this.$bvToast.toast(content, {
+      toastClass: 'my-toast',
+      noCloseButton: true,
+      variant: variant,
+      autoHideDelay: 5000
+    })
+  },
+
+    /**
+     * Scroll event
+     */
     onScroll (event) {
       if(this.onSearch) {
         return
@@ -164,6 +180,7 @@ export default {
         }
       }
     },
+
     /**
      * Prepare to search
      */
@@ -174,6 +191,10 @@ export default {
 
       this.search()
     },
+
+    /**
+     * Delete
+     */
     deleted (id, name, rowIndex) {
       this.$bvModal.msgBoxConfirm('Xóa ' + name + ". Bạn có chắc không?", {
         title: false,
@@ -193,12 +214,24 @@ export default {
         }
       })
     },
+
+    /**
+     *  Go to edit
+     */
     edit (id) {
       this.$router.push('/store/index/' + id)
     },
+
+    /**
+     *  Go to add
+     */
     gotoAdd () {
       this.$router.push('/store/index/')
     },
+
+    /**
+     * Search
+     */
     search () {
       if (this.loading) { return }
 
@@ -231,17 +264,25 @@ export default {
           this.onSearch = false
           this.loading = false
         }).catch(err => {
-          console.log(err)
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
+
           this.onSearch = false
           this.loading = false
       })
     },
+
     /**
      * Get city options
      */
     getOptionCity() {
       MasterApi.getCityOptions().then(res => {
         this.optionsCity = MasterMapper.mapCityModelToDto(res.data.data)
+      }).catch(err => {
+        // Handle error
+        let errorMess = commonFunc.handleStaffError(err)
+        this.popToast('danger', errorMess)
       })
     },
 

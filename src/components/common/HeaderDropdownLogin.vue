@@ -9,7 +9,7 @@
       </span>
     </template>
     <template slot="dropdown">
-      <b-dropdown-item href="/customer-login">Đăng nhập
+      <b-dropdown-item href="/login">Đăng nhập
       </b-dropdown-item>
       <b-dropdown-item href="/register">Đăng ký
       </b-dropdown-item>

@@ -29,8 +29,12 @@
                 :fields="fields" 
                 :items="items">
                 <template v-slot:cell(image)="data">
-                  <!--{{image}}-->
                   <img :src="data.item.image" :style="{width: 100 + 'px', height: 100 + 'px'}"/>
+                </template>
+                <template v-slot:cell(topping)="data">
+                  <b-button variant="primary" class="pull-right px-4" v-if="data.item.topping" @click="showTopping">
+                    Thêm topping
+                  </b-button>
                 </template>
                 <template v-slot:cell(action)="dataId">
                   <b-list-group horizontal>
@@ -101,6 +105,52 @@
 
     </b-modal>
 
+      <!-- Modal show topping-->
+    <b-modal title="Topping" centered hide-footer id="modal-choose-topping">
+
+        <b-row>
+              <b-col>
+                <b-table
+                hover
+                bordered
+                stacked="md"
+                :fields="toppingFields"
+                :items="listTopping">
+                <template v-slot:cell(action)="dataId">
+                  <b-list-group horizontal>
+                    <b-list-group-item @click="countDownTopping(dataId.item.actions)">
+                      <i class="fa fa-minus" />
+                    </b-list-group-item>
+                    <b-list-group-item @click="countUpTopping(dataId.item.actions)">
+                      <i class="fa fa-plus" />
+                    </b-list-group-item>
+                    <b-list-group-item>
+                      <span :id="'topping_' + `${dataId.item.actions}`">0</span>
+                    </b-list-group-item>
+                  </b-list-group>
+                </template>
+                </b-table>
+              </b-col>
+            </b-row>
+      <b-row>
+
+      </b-row>
+
+      <b-row>
+        <b-col cols="4" class="text-left mt-3">
+          <button class="btn btn-danger px-4" @click="cancelOrder()">
+            Hủy
+          </button>
+        </b-col>
+        <b-col cols="8" class="text-right mt-3">
+          <button class="btn btn-primary px-4" @click="sendOrder()">
+            Xác nhận
+          </button>
+        </b-col>
+      </b-row>
+
+    </b-modal>
+
     </div>
 </template>
 <script>
@@ -109,6 +159,7 @@ import Cookies from 'js-cookie'
 import {Constant} from '@/common/constant'
 import CustomerApi from '@/api/customer'
 import MenuMapper from '@/mapper/menu'
+import ToppingMapper from '@/mapper/topping'
 
 export default {
   data () {
@@ -129,6 +180,10 @@ export default {
         {
           key: 'name',
           label: 'Tên Sản Phẩm'
+        },
+        {
+          key: 'Topping',
+          label: 'topping'
         },
         {
           key: 'price',
@@ -166,11 +221,29 @@ export default {
       ],
       orderItems: [
       ],
-      // socket: null,
-      // connected: false
       storeId: null,
       tableId: null,
-      totalPrice: 0
+      totalPrice: 0,
+      listTopping: [],
+      toppingFields: [
+        {
+          key: 'stt',
+          label: 'STT'
+        },
+        {
+          key: 'name',
+          label: 'Topping'
+        },
+        {
+          key: 'price',
+          label: 'Giá'
+        },
+        {
+          key: 'action',
+          label: '',
+          class: 'actions-cell'
+        }
+      ],
     }
   },
 
@@ -179,6 +252,8 @@ export default {
     this.tableId = Cookies.get(Constant.TABLE_ID)
 
     this.getMenu()
+
+    this.getTopping()
   },
 
   methods: {
@@ -301,7 +376,46 @@ export default {
      */
     goBack() {
       this.$router.push('/store/' + this.storeId + '/table/' + this.tableId)
-    }
+    },
+
+    /**
+     * Show topping
+     */
+    showTopping () {
+      this.$bvModal.show('modal-choose-topping')
+    },
+
+    /**
+     * Get topping
+     */
+    getTopping() {
+      CustomerApi.getTopping(this.storeId).then(res => {
+        if(res && res.data && res.data.data) {
+          this.listTopping = ToppingMapper.mapToppingCusModelToDto(res.data.data)
+          console.log(this.listTopping)
+        }
+
+      }).catch(err => {
+      })
+    },
+
+    /**
+     * Count down number of topping
+     */
+    countDownTopping (num) {
+      let currentNumber = parseInt(document.getElementById('topping_' + num).textContent)
+      if(currentNumber > 0) {
+        document.getElementById('topping_' + num).textContent = currentNumber - 1
+      }
+    },
+
+    /**
+     * Count up number of topping
+     */
+    countUpTopping (num) {
+      let currentNumber = document.getElementById('topping_' + num).textContent
+      document.getElementById('topping_' + num).textContent = parseInt(currentNumber) + 1
+    },
   }
 }
 </script>

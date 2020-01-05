@@ -110,6 +110,10 @@ export default {
           label: 'Giá'
         },
         {
+          key: 'topping',
+          label: 'Topping'
+        },
+        {
           key: 'status',
           label: 'Trạng Thái'
         },
@@ -145,6 +149,18 @@ export default {
     this.search()
   },
   methods: {
+
+    /**
+   * Make toast without title
+   */
+  popToast(variant, content) {
+    this.$bvToast.toast(content, {
+      toastClass: 'my-toast',
+      noCloseButton: true,
+      variant: variant,
+      autoHideDelay: 5000
+    })
+  },
 
     /**
      *  Processing on scroll: use for paging
@@ -219,7 +235,10 @@ export default {
         this.onSearch = false
         this.loading = false
       }).catch(err => {
-        console.log(err)
+        // Handle error
+        let errorMess = commonFunc.handleStaffError(err)
+        this.popToast('danger', errorMess)
+
         this.onSearch = false
         this.loading = false
       })

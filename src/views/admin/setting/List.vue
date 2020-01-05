@@ -46,6 +46,8 @@
 import adminAPI from '@/api/admin'
 import Mapper from '@/mapper/setting'
 import commonFunc from '@/common/commonFunc'
+
+
 export default {
   data () {
     return {
@@ -73,6 +75,22 @@ export default {
     checkValidate () {
       return !(this.errorExpireDay)
     },
+
+    /**
+   * Make toast without title
+   */
+  popToast(variant, content) {
+    this.$bvToast.toast(content, {
+      toastClass: 'my-toast',
+      noCloseButton: true,
+      variant: variant,
+      autoHideDelay: 5000
+    })
+  },
+
+    /**
+     * Save
+     */
     save () {
       this.click = true
       this.saving = true
@@ -107,13 +125,26 @@ export default {
         this.saving = false
       }
     },
+
+    /**
+     * Get old
+     */
     getSystemConfig () {
       adminAPI.getSystemConfig().then(res => {
         if(res != null && res.data != null && res.data.data != null) {
           this.data = Mapper.mapSysCfgModelToDto(res.data.data)
         }
+      }).catch(err => {
+        // Handle error
+        let errorMess = commonFunc.handleStaffError(err)
+        this.popToast('danger', errorMess)
       })
     },
+
+    /**
+     * Validate code
+     * @param event
+     */
     validateCode (event) {
       // not number
       if(!commonFunc.isNumber(event)) {

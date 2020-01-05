@@ -1,3 +1,6 @@
+import Cookies from "js-cookie";
+import {Constant} from "./constant";
+
 export default {
 
   /**
@@ -86,4 +89,57 @@ export default {
       autoHideDelay: 5000
     })
   },
+
+  /**
+     * Handle staff error
+     */
+  handleStaffError(err) {
+      let message = ""
+      if(!err.response) {
+          message = "Lỗi hệ thống"
+      } else {
+          if (err.response.data.status == 403) {
+            const TOKEN_NAME = Constant.TOKEN_NAME;
+            const APP_USR = Constant.APP_USR
+            // Removes token
+            Cookies.remove(TOKEN_NAME);
+            // Removes user
+            Cookies.remove(APP_USR);
+            window.location.href = '/staff-login'
+          }
+          if (err.response.data.status == 500) {
+            message = "system error"
+          } else {
+            message = err.response.data.mess
+          }
+      }
+
+      return message
+  },
+
+  /**
+   * Handle customer error
+   */
+  handleCusError(err) {
+      let message = ""
+      if(!err.response) {
+          message = "Lỗi hệ thống"
+      } else {
+          if (err.response.data.status == 403) {
+            const TOKEN_NAME = Constant.TOKEN_NAME;
+            const APP_USR = Constant.APP_USR
+            // Removes token
+            Cookies.remove(TOKEN_NAME);
+            // Removes user
+            Cookies.remove(APP_USR);
+            window.location.href = '/login'
+          }
+          if (err.response.data.status == 500) {
+            message = "system error"
+          } else {
+            message = err.response.data.mess
+          }
+      }
+      return message
+  }
 }

@@ -64,7 +64,7 @@ export default new Router({
 
     // Authenticate group
     {
-      path: '/customer-login',
+      path: '/login',
       name: 'CustomerLogin',
       component: CustomerLogin
     },

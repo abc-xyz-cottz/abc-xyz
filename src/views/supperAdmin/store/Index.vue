@@ -135,7 +135,6 @@ export default {
   },
   mounted() {
     this.getStoreDetail()
-    this.getOptionCity()
   },
   computed: {
     errorName: function () {
@@ -161,6 +160,22 @@ export default {
     checkValidate () {
       return !(this.errorName || this.errorCiti || this.errorDistrict || this.errorAddress || this.errorMonth)
     },
+
+    /**
+   * Make toast without title
+   */
+  popToast(variant, content) {
+    this.$bvToast.toast(content, {
+      toastClass: 'my-toast',
+      noCloseButton: true,
+      variant: variant,
+      autoHideDelay: 5000
+    })
+  },
+
+    /**
+     * Get detail
+     */
     getStoreDetail() {
       let storeId = this.$route.params.id
       if(storeId){
@@ -171,10 +186,16 @@ export default {
             this.getOptionCity()
           }
         }).catch(err => {
-          console.log(err)
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
         })
       }
     },
+
+    /**
+     * Save
+     */
     save () {
       this.saving = true
       let result = this.checkValidate()
@@ -258,12 +279,17 @@ export default {
       }
 
     },
+
+    /**
+     * Validate
+     */
     validateCode (event) {
       // not number
       if(!commonFunc.isNumber(event)) {
         event.preventDefault()
       }
     },
+
     /**
      * Get city options
      */
@@ -272,7 +298,9 @@ export default {
         this.optionsCity = MasterMapper.mapCityModelToDto(res.data.data)
         this.changeCity()
       }).catch(err => {
-        console.log(err)
+        // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
       })
     },
 

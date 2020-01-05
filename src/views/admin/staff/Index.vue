@@ -157,6 +157,19 @@ export default {
     },
   },
   methods: {
+
+    /**
+   * Make toast without title
+   */
+  popToast(variant, content) {
+    this.$bvToast.toast(content, {
+      toastClass: 'my-toast',
+      noCloseButton: true,
+      variant: variant,
+      autoHideDelay: 5000
+    })
+  },
+
     checkInfo (info) {
       return (this.click && (info == null || info.length <= 0))
     },
@@ -164,6 +177,10 @@ export default {
       return !(this.errorName || this.errorPhone || this.errorRole || this.errorPassword 
             || this.errorLengthPassword || !this.phoneNumberCheckFlag)
     },
+
+    /**
+     *  Get detail
+     */
     getStaffDetail() {
       let staffId = this.$route.params.id
       if(staffId){
@@ -172,10 +189,16 @@ export default {
             this.staff = Mapper.mapStaffDetailModelToDto(res.data.data)
           }
         }).catch(err => {
-          console.log(err)
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
         })
       }
     },
+
+    /**
+     *  Save
+     */
     save () {
       this.click = true
       this.saving = true
@@ -262,6 +285,10 @@ export default {
       }
       
     },
+
+    /**
+     *  Validate
+     */
     validateCode (event) {
       // not number
       if(!commonFunc.isNumber(event)) {

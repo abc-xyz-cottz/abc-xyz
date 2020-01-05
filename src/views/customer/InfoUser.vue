@@ -113,12 +113,13 @@
 </template>
 
 <script>
-import AuthenticationAPI from '@/api/authentication'
 import CustomerAPI from '@/api/customer'
 import Mapper from '@/mapper/customer'
 import MasterApi from '@/api/master'
 import MasterMapper from '@/mapper/master'
 import commonFunc from '@/common/commonFunc'
+
+
 export default {
   name: 'Register',
   data () {
@@ -173,6 +174,22 @@ export default {
       return !(this.errorName || this.errorCity || this.errorDistrict || this.errorPhone
             || this.errorGender || this.errorBirthday || !this.phoneNumberCheckFlag)
     },
+
+    /**
+   * Make toast without title
+   */
+    popToast(variant, content) {
+      this.$bvToast.toast(content, {
+        toastClass: 'my-toast',
+        noCloseButton: true,
+        variant: variant,
+        autoHideDelay: 3000
+      })
+    },
+
+    /**
+     * Get customer information
+     */
     getCustomerInfo () {
       let cusId = this.$store.state.user.id
       CustomerAPI.getCustomerInfo(cusId).then(res => {
@@ -181,7 +198,9 @@ export default {
           this.getOptionCity()
         }
       }).catch(err => {
-        console.log(err)
+        // Handle error
+          let errorMess = commonFunc.handleCusError(err)
+          this.popToast('danger', errorMess)
       })
     },
     /**

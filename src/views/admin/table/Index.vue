@@ -45,6 +45,9 @@
 <script>
 import adminAPI from '@/api/admin'
 import Mapper from '@/mapper/table'
+import commonFunc from '@/common/commonFunc'
+
+
 export default {
   data () {
     return {
@@ -70,6 +73,23 @@ export default {
     checkValidate () {
       return !(this.errorName)
     },
+
+    /**
+   * Make toast without title
+   */
+  popToast(variant, content) {
+    this.$bvToast.toast(content, {
+      toastClass: 'my-toast',
+      noCloseButton: true,
+      variant: variant,
+      autoHideDelay: 5000
+    })
+  },
+
+
+    /**
+     * Get detail
+     */
     getTableDetail() {
       let tableId = this.$route.params.id
       if(tableId){
@@ -78,10 +98,16 @@ export default {
             this.table = Mapper.mapTableDetailModelToDto(res.data.data)
           }
         }).catch(err => {
-          console.log(err)
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
         })
       }
     },
+
+    /**
+     * Save
+     */
     save () {
       this.click = true
       this.saving = true

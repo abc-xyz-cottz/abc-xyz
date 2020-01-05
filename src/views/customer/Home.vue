@@ -78,25 +78,30 @@
               </b-col>
             </b-row>
           </b-form>
-          <b-table 
-            hover
-            bordered
-            stacked="md"
-            :fields="fields" 
-            :items="items"
-            class="mt-3">
-            <template v-slot:cell(actions)="dataId">
-              <b-list-group horizontal>
-                  <b-button
-                    v-show="dataId.item.quantity > 0"
-                    variant="primary"
-                    class="px-4 pull-right"
-                    @click="buyPmt(dataId.item.id, dataId.item.name, dataId.item.storeName, dataId.item.price, dataId.item.expiredAt)">
-                    Mua
-                  </b-button>
-              </b-list-group>
-            </template>
-            </b-table>
+
+          <b-row>
+            <b-col>
+              <b-table
+                hover
+                bordered
+                stacked="md"
+                :fields="fields"
+                :items="items"
+                class="mt-3">
+                <template v-slot:cell(actions)="dataId">
+                  <b-list-group horizontal>
+                      <b-button
+                        v-show="dataId.item.quantity > 0"
+                        variant="primary"
+                        class="px-4 pull-right"
+                        @click="buyPmt(dataId.item.id, dataId.item.name, dataId.item.storeName, dataId.item.price, dataId.item.expiredAt)">
+                        Mua
+                      </b-button>
+                  </b-list-group>
+                </template>
+                </b-table>
+            </b-col>
+          </b-row>
 
             <!-- Loading -->
             <span class="loading-more" v-show="loading"><icon name="loading" width="60" /></span>
@@ -483,7 +488,7 @@ export default {
      * Confirm login
      */
     confirmLogin() {
-      this.$router.push("/customer-login")
+      this.$router.push("/login")
     },
 
      /**

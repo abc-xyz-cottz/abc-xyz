@@ -108,6 +108,7 @@
 import superAdminAPI from '@/api/superAdmin'
 import Mapper from '@/mapper/staff'
 import MapperStore from '@/mapper/store'
+import commonFunc from '@/common/commonFunc'
 
 
 export default {
@@ -165,6 +166,18 @@ export default {
           || this.errorPassword || this.errorLengthPassword)
     },
 
+     /**
+   * Make toast without title
+   */
+  popToast(variant, content) {
+    this.$bvToast.toast(content, {
+      toastClass: 'my-toast',
+      noCloseButton: true,
+      variant: variant,
+      autoHideDelay: 5000
+    })
+  },
+
     /**
      *  Get store options
      */
@@ -174,7 +187,9 @@ export default {
             this.optionsStore = MapperStore.mapStoreModelListToDto(res.data.data)
           }
         }).catch(err => {
-          console.log(err)
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
         })
     },
 
@@ -189,7 +204,9 @@ export default {
             this.adminStore = Mapper.mapAdminStoreDetailModelToDto(res.data.data)
           }
         }).catch(err => {
-          console.log(err)
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
         })
       }
     },

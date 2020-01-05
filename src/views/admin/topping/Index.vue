@@ -155,7 +155,9 @@ export default {
         adminAPI.getToppingDetail(toppingId).then(res => {
           this.topping = Mapper.mapToppingDetailModelToDto(res.data.data)
         }).catch(err => {
-          console.log(err)
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
         })
       }
     },

@@ -9,9 +9,15 @@ export default {
     var stt = offset
     for (var index in menus) {
       stt = stt + 1
+
       var active = "Mở"
       if(!menus[index].fields.active) {
         active = "Đóng"
+      }
+
+      var topping = "Không"
+      if(menus[index].fields.topping) {
+        topping = "Có"
       }
 
       let menuTemp = {
@@ -19,6 +25,7 @@ export default {
         , name: menus[index].fields.name
         , price: menus[index].fields.price
         , status: active
+        , topping: topping
         , action: menus[index].pk
       }
       result.push(menuTemp)
@@ -35,6 +42,7 @@ export default {
       "name": menu.fields.name,
       "price": menu.fields.price,
       "active": menu.fields.active,
+      "topping": menu.fields.topping,
       "image": menu.fields.image,
       "imagePreview": menu.fields.image_preview
     }
@@ -55,6 +63,7 @@ export default {
         , image: menus[index].fields.image
         , name: menus[index].fields.name
         , price: menus[index].fields.price
+        , topping: menus[index].fields.topping
         , action: stt
       }
       result.push(menuTemp)

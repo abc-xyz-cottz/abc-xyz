@@ -154,6 +154,22 @@ export default {
     this.search()
   },
   methods: {
+
+    /**
+   * Make toast without title
+   */
+  popToast(variant, content) {
+    this.$bvToast.toast(content, {
+      toastClass: 'my-toast',
+      noCloseButton: true,
+      variant: variant,
+      autoHideDelay: 5000
+    })
+  },
+
+    /**
+     * Event scroll
+     */
     onScroll (event) {
       if(this.onSearch) {
         return
@@ -169,6 +185,7 @@ export default {
         }
       }
     },
+
     /**
      * Prepare to search
      */
@@ -179,6 +196,10 @@ export default {
 
       this.search()
     },
+
+    /**
+     * Delete
+     */
     deleted (id, name, rowIndex) {
       this.$bvModal.msgBoxConfirm('Xóa ' + name + ". Bạn có chắc không?", {
         title: false,
@@ -198,12 +219,25 @@ export default {
         }
       })
     },
+
+    /**
+     * Go to edit
+     * @param id
+     */
     edit (id) {
       this.$router.push('/admin-store/index/' + id)
     },
+
+    /**
+     * Go to add
+     */
     gotoAdd () {
       this.$router.push('/admin-store/index/')
     },
+
+    /**
+     * Search
+     */
     search () {
       if (this.loading) { return }
 
@@ -242,11 +276,19 @@ export default {
           this.onSearch = false
           this.loading = false
         }).catch(err => {
-          console.log(err)
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
+
           this.onSearch = false
           this.loading = false
       })
     },
+
+    /**
+     * Validate
+     * @param event
+     */
     validateCode (event) {
       // not number
       if(!commonFunc.isNumber(event)) {
