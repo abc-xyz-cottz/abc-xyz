@@ -134,16 +134,17 @@
 <script>
 import AuthenticationAPI from '@/api/authentication'
 import 'bootstrap/dist/css/bootstrap.css'
-// import datePicker from 'vue-bootstrap-datetimepicker'
 import datePicker from 'vuejs-datepicker'
 import moment from 'moment'
-import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css'
 import MasterApi from '@/api/master'
 import MasterMapper from '@/mapper/master'
 
 
 export default {
   name: 'Register',
+  components: {
+    datePicker
+  },
   data () {
     return {
       inputs: {
@@ -177,9 +178,6 @@ export default {
         from: new Date(Date.now())
       }
     }
-  },
-  components: {
-    datePicker
   },
   mounted () {
     this.getOptionCity()

@@ -2,29 +2,12 @@
   <div class="container-fluid">
     <div>
       <b-row class="form-row">
-        <b-col md='12'>
+        <b-col md='6'>
           <h4 class="mt-2">Quản lý order</h4>
         </b-col>
-      </b-row>
-
-      <b-row class="form-row text-right">
-        <b-col md="9">
-          <label> Lọc theo mốc thời gian </label>
-        </b-col>
-        <b-col md='2'>
-          <b-form-select
-          :options="options"
-          id="status"
-          type="text"
-          autocomplete="new-password"
-          class="form-control"
-          >
-            <!--v-model="inputs.status"-->
-          </b-form-select>
-        </b-col>
-        <b-col md='1'>
-          <b-button variant="primary" class="px-4">
-            Lọc
+        <b-col md='6'>
+          <b-button variant="primary" class="px-4" @click="goToOrderHis">
+            Xem lịch sử đặt món
           </b-button>
         </b-col>
       </b-row>
@@ -228,6 +211,13 @@ export default {
         let errorMess = commonFunc.handleStaffError(err)
         this.popToast('danger', errorMess)
       })
+    },
+
+    /**
+    * Go to order history
+    */
+    goToOrderHis() {
+      this.$router.push('/menu/add')
     }
   }
 }

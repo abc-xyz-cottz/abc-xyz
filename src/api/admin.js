@@ -169,8 +169,8 @@ export default {
   /**
    * Load order history
    */
-  loadOrderHistory() {
-    return session.get(RootAPI + 'staff/order-his')
+  loadOrderHistory(data) {
+    return session.post(RootAPI + 'staff/order-his', data)
   },
 
   /**
@@ -215,4 +215,10 @@ export default {
     return session.get(RootAPI + 'topping/delete/' + toppingId)
   },
 
+  /**
+   * Search order history
+   */
+  searchOrderHistory(order) {
+    return session.post(RootAPI + 'staff/search-order-his', order)
+  },
 }
