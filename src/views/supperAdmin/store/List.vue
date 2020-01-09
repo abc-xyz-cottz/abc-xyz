@@ -209,7 +209,9 @@ export default {
             this.items.splice(indexTemp, 1)
             this.listIdDeleted.push(rowIndex - 1)
           }).catch(err => {
-            console.log(err)
+            // Handle error
+            let errorMess = commonFunc.handleStaffError(err)
+            this.popToast('danger', errorMess)
           })
         }
       })

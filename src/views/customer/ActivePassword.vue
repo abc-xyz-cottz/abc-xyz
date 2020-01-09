@@ -42,8 +42,9 @@
   </div>
 </template>
 <script>
-import lang_vn from "@/lang/lang_vn.json"
 import AuthenticationAPI from '@/api/authentication'
+
+
 export default {
   name: 'ActivePassword',
   data () {
@@ -53,7 +54,6 @@ export default {
          code: null,
       },
       click: false,
-      lang_vn: lang_vn,
       onConfirm: null
     }
   },
@@ -87,7 +87,7 @@ export default {
                 // show popup success
                 message = "Password của bạn đã được cập nhật"
                 this.$bvModal.msgBoxOk(message, {
-                  title: lang_vn.commons.updateSuccess,
+                  title: "Cập nhật thành công",
                   centered: true, 
                   size: 'sm',
                   headerClass: 'bg-success',
@@ -99,15 +99,14 @@ export default {
               }
             }
           }).catch(err => {
-            console.log(err)
             let message = ""
             if(err.response.data.status == 422) {
               message = err.response.data.mess
             } else {
-              message = lang_vn.commons.systemError
+              message = "Lỗi hệ thống"
             }
             this.$bvModal.msgBoxOk(message, {
-              title: lang_vn.commons.updateFailed,
+              title: "Cập nhật thất bại",
               centered: true, 
               size: 'sm',
               headerClass: 'bg-danger',

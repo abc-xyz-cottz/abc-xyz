@@ -223,7 +223,6 @@ export default {
             }
           }).catch(err => {
             this.saving = false
-            console.log(err)
             // Show notify edit fail: TODO
             let message = ""
             if(err.response.data.status == 422) {
@@ -259,7 +258,6 @@ export default {
             }
           }).catch(err => {
             this.saving = false
-            console.log(err)
             let message = ""
               if(err.response.data.status == 422) {
                 message = err.response.data.mess

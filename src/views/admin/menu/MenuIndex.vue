@@ -307,9 +307,10 @@ export default {
           }
         }).catch(err => {
           this.saving = false
-          console.log(err)
-          // Show notify edit fail
-          this.popToast('danger', 'Lưu menu thất bại!!! ')
+
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
         })
       } else {
         // Add
@@ -324,9 +325,9 @@ export default {
           }
         }).catch(err => {
           this.saving = false
-          console.log(err)
-          // Show notify add fail
-          this.popToast('danger', 'Lưu menu thất bại!!! ')
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
         })
       }
     },

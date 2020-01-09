@@ -112,7 +112,6 @@ export default {
           }
         }).catch(err => {
           this.saving = false
-          console.log(err)
           let message = "Lỗi hệ thống"
           this.$bvModal.msgBoxOk(message, {
             title: "Cập Nhật Cài Đặt",

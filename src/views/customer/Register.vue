@@ -133,7 +133,6 @@
 
 <script>
 import AuthenticationAPI from '@/api/authentication'
-import lang_vn from "@/lang/lang_vn.json"
 import 'bootstrap/dist/css/bootstrap.css'
 // import datePicker from 'vue-bootstrap-datetimepicker'
 import datePicker from 'vuejs-datepicker'
@@ -166,7 +165,6 @@ export default {
       optionsDistrict: [
       ],
       repeat_password: '',
-      lang_vn: lang_vn,
       click: false,
       confirmPassword: null,
       errorMatch: null,
@@ -266,7 +264,7 @@ export default {
               if(err.response.data.status == 422) {
                 message = err.response.data.mess
               } else {
-                message = lang_vn.commons.systemError
+                message = "Lỗi hệ thống"
               }
               this.$bvModal.msgBoxOk(message, {
                 title: "Đăng kí không thành công",

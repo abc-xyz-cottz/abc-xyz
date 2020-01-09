@@ -15,7 +15,7 @@
                       {{errorMess}}
                   </b-form-invalid-feedback>
                   <div class="form-group">
-                    <label>{{ $t(login.label.phone) }}</label><span class="error-sybol"></span>
+                    <label>Số điện thoại</label><span class="error-sybol"></span>
                     <input
                       id="phone"
                       v-model="inputs.phone_number"
@@ -26,21 +26,21 @@
                       @keyup="intergerOnly($event.target)"
                       v-on:change="checkPhoneNumberFormat($event.target)">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
-                      {{ login.commons.requiredPhone }}
+                      Vui lòng nhập số điện thoại
                     </b-form-invalid-feedback>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="phoneNumberCheckFlag">
                       Số điện thoại không đúng
                     </b-form-invalid-feedback>
                   </div>
                   <div class="form-group">
-                    <label>{{ $t(login.label.password) }}</label><span class="error-sybol"></span>
+                    <label>Mật khẩu</label><span class="error-sybol"></span>
                     <input
                       id="password"
                       v-model="inputs.password"
                       type="password"
                       class="form-control">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPassword">
-                      {{ login.commons.requiredPassword }}
+                      Vui lòng nhập mật khẩu
                     </b-form-invalid-feedback>
                   </div>
                   <b-row>
@@ -51,7 +51,7 @@
                         variant="primary"
                         class="px-4 "
                         @click.prevent="logIn">
-                        {{ onLogin ? $t(login.commons.onLogging) : $t(login.commons.onLogin) }}
+                        {{ onLogin ? "Đăng Nhập..." : "Đăng Nhập" }}
                       </b-button>
                     </b-col>
                   </b-row>
@@ -82,7 +82,6 @@
 <script>
 import CustomerApi from '@/api/customer'
 import CustomerMapper from '@/mapper/customer'
-import lang_vn from "@/lang/lang_vn.json"
 import commonFunc from '@/common/commonFunc'
 
 
@@ -98,9 +97,7 @@ export default {
       onLogin: false,
       selected: '',
       onShowQRCode: false,
-      login: lang_vn.login,
       click: false,
-      lang_vn: lang_vn,
       phoneNumberCheckFlag: true,
       errorFlag: true,
       errorMess: ""
@@ -151,7 +148,7 @@ export default {
           }).catch(err => {
             let message = ""
             if(err.response.data.status == 500) {
-              message = lang_vn.commons.systemError
+              message = "Lỗi hệ thống"
             } else {
               message = err.response.data.mess
             }

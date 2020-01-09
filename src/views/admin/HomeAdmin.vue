@@ -178,7 +178,9 @@ export default {
       adminAPI.updateOrderStatus(orderInfo).then(res => {
         this.popToast('success', 'Thao tác thành công!!! ')
       }).catch(err => {
-        this.popToast('danger', 'Thao tác thất bại!!! ')
+        // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
       })
     },
 
@@ -199,7 +201,9 @@ export default {
       adminAPI.updateOrderStatus(orderInfo).then(res => {
         this.popToast('success', 'Thao tác thành công!!! ')
       }).catch(err => {
-        this.popToast('danger', 'Thao tác thất bại!!! ')
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
       })
     },
 

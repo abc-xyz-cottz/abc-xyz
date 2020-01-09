@@ -122,7 +122,7 @@ export default {
          }).catch(err => {
            let message = ""
             if(err.response.data.status == 500) {
-              message = lang_en.commons.systemError
+              message = "Lỗi hệ thống"
             } else {
               message = err.response.data.mess
             }

@@ -45,10 +45,11 @@
 
 <script>
 import AuthenticationAPI from '@/api/authentication'
-import lang_vn from "@/lang/lang_vn.json"
 import CustomerApi from '@/api/customer'
 import CustomerMapper from '@/mapper/customer'
 import commonFunc from '@/common/commonFunc'
+
+
 export default {
   name: 'ActiveAccount',
   data () {
@@ -59,7 +60,6 @@ export default {
       },
       click: false,
       onConfirm: null,
-      lang_vn : lang_vn
     }
   },
   computed: {
@@ -116,15 +116,14 @@ export default {
               }
             }
           }).catch(err => {
-            console.log(err)
             let message = ""
             if(err.response.data.status == 422) {
               message = err.response.data.mess
             } else {
-              message = lang_vn.commons.systemError
+              message = "Lỗi hệ thống"
             }
             this.$bvModal.msgBoxOk(message, {
-              title: lang_vn.commons.updateFailed,
+              title: "Cập nhật thất bại",
               centered: true, 
               size: 'sm',
               headerClass: 'bg-danger',

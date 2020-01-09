@@ -72,6 +72,7 @@ import MasterMapper from '@/mapper/master'
 import Cookies from 'js-cookie'
 import {Constant} from '@/common/constant'
 import adminAPI from '@/api/admin'
+import commonFunc from '@/common/commonFunc'
 
 
 export default {
@@ -110,6 +111,18 @@ export default {
     },
 
     /**
+   * Make toast without title
+   */
+    popToast(variant, content) {
+      this.$bvToast.toast(content, {
+        toastClass: 'my-toast',
+        noCloseButton: true,
+        variant: variant,
+        autoHideDelay: 3000
+      })
+    },
+
+    /**
    * Make toast with title
    */
   makeToast(variant = null, title="Success!!!", content="Thao tác thành công!!!") {
@@ -136,7 +149,11 @@ export default {
           cityId = userTemp.cityId
           this.noti.cityId = cityId
         }
-      })
+      }).catch(err => {
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
+        })
     },
 
     /**

@@ -30,6 +30,18 @@
               </b-button>
             </b-col>
           </b-row>
+
+          <b-row>
+            <b-col md="2">
+              <label> Nhập chiều rộng bản in: </label>
+            </b-col>
+            <b-col md="4">
+              <input
+                  type="text"
+                  autocomplete="new-password"
+                  class="form-control">
+            </b-col>
+          </b-row>
         </b-card>
       </b-col>
     </b-row>
@@ -118,10 +130,7 @@ export default {
       tableId: null,
       tableName: "",
       storeName: "Abc xyz",
-      tables: [
-        {value: '1', text: 'q1'},
-        {value: '1', text: 'q2'}
-      ],
+      tables: [],
       qr_code: "hello word"
     }
   },

@@ -7,7 +7,7 @@
             <b-card
               no-body>
               <b-card-body>
-                <b-form @submit.prevent="logIn">
+                <b-form>
                   <h1 class="text-center">
                   Kích Hoạt Mật khẩu Mới
                   </h1>
@@ -45,8 +45,9 @@
 
 <script>
 import AuthenticationAPI from '@/api/authentication'
-import lang_vn from "@/lang/lang_vn.json"
 import commonFunc from '@/common/commonFunc'
+
+
 export default {
   name: 'ActiveAccount',
   data () {
@@ -57,7 +58,6 @@ export default {
       },
       click: false,
       onConfirm: null,
-      lang_vn : lang_vn
     }
   },
   computed: {
@@ -84,7 +84,6 @@ export default {
         setTimeout(() => {
           AuthenticationAPI.CustomerActivePass(this.inputs).then(res => {
             if (res != null && res.data != null) {
-              console.log(res)
               let message = ""
               if (res.data.status == 200) {
                 // show popup success

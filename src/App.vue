@@ -1,19 +1,18 @@
 <template>
   <div class="app">
     <template v-if="this.$route.name != 'Login'">
-
       <AppHeader fixed v-if="this.$store.state.user == null">
         <div class="container">
-          <b-link class="navbar-brand" to="/">
-            <span>
-              <i class="fa fa-home fa-2x" />
-            </span>
+          <b-link class="nav-link home-icon" to="/">
+              <span>
+                <i class="fa fa-home fa-2x" ></i>
+              </span>
           </b-link>
 
           <b-navbar-nav>
             <!-- hiện cho template customer -->
-             <HeaderDropdownContact class="text-left"/>
              <HeaderDropdownLogin />
+            <HeaderDropdownContact class="text-left"/>
             <!-- end -->
           </b-navbar-nav>
 
@@ -22,18 +21,20 @@
 
        <!-- đăng nhập xong sẽ dùng đoạn code bên dưới -->
       <AppHeader fixed v-if="this.$store.state.user">
-        <SidebarToggler
-          class="d-none"
-          :default-open="true"
-        />
-        <b-link class="navbar-brand" to="/">
-          <span>
-            <i class="fa fa-home fa-2x" />
-          </span>
-        </b-link>
+        <div class="container">
+          <div class="nav-left">
+            <button @click="activePushedMenu = !activePushedMenu" display="lg" type="button" class="navbar-toggler"
+                    v-if="this.$store.state.user.role == roleAdmin || this.$store.state.user.role == roleSpAdmin">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <b-link class="nav-link home-icon" to="/">
+              <span>
+                <i class="fa fa-home fa-2x" ></i>
+              </span>
+            </b-link>
+          </div>
 
         <b-navbar-nav>
-          <HeaderDropdownContact class="text-left ml-3"/>
           <!-- hiện cho template customer -->
            <HeaderDropdownGift v-if="this.$store.state.user.userType == 'customer'"/>
              <span class="white" v-if="this.$store.state.user.userType == 'customer'">
@@ -42,6 +43,7 @@
                </span>
              </span>
            <HeaderDropdownCusAcc v-if="this.$store.state.user.userType == 'customer'"/>
+
           <!-- end -->
 
           <!-- hiện cho template staff -->
@@ -52,16 +54,18 @@
             <HeaderDropdownStaffAcc  v-if="this.$store.state.user.userType == 'staff'"/>
           </template>
           <!-- end -->
+           <HeaderDropdownContact class="text-left ml-3"/>
         </b-navbar-nav>
+        </div>
       </AppHeader>
 
       <div class="app-body" >
         <template v-if="this.$store.state.user && this.$store.state.user.role == roleAdmin">
-          <AppSidebar fixed>
+          <AppSidebar fixed :class="{ 'active': activePushedMenu }">
             <SidebarHeader />
             <SidebarForm />
               <template>
-                <SidebarNav :nav-items="navAdmin" />
+                <SidebarNav class="testtest" :nav-items="navAdmin" />
               </template>
             <SidebarFooter />
             <SidebarMinimizer />
@@ -69,11 +73,12 @@
         </template>
 
         <template v-if="this.$store.state.user && this.$store.state.user.role == roleSpAdmin">
-          <AppSidebar fixed>
+
+          <AppSidebar fixed :class="{ 'active': activePushedMenu }">
             <SidebarHeader />
             <SidebarForm />
               <template>
-                <SidebarNav :nav-items="navSpAdmin" />
+                <SidebarNav  class="testtest" :nav-items="navSpAdmin" />
               </template>
             <SidebarFooter />
             <SidebarMinimizer />
@@ -139,7 +144,13 @@ export default {
       size: 40,
       roleAdmin: Constant.ROLE_ADMIN,
       roleSpAdmin: Constant.ROLE_SP_ADMIN,
-      notifyNumber: 0
+      notifyNumber: 0,
+      activePushedMenu: false
+    }
+  },
+  watch: {
+    '$route' (newVal, oldVal) {
+      this.activePushedMenu = false
     }
   },
   mounted (){
@@ -239,5 +250,15 @@ export default {
     text-align:center;
     min-width:2em;
     font-weight:bold;
+  }
+  .nav-left {
+    display: flex;
+    align-content: center;
+    .home-icon {
+      padding: .5rem .5rem .5rem .2rem;
+    }
+  }
+  .app-body .sidebar.active {
+    margin-left: 0;
   }
 </style>

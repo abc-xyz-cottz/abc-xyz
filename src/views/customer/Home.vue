@@ -1,28 +1,46 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <div class="container">
+  <div class="container homepage">
     <b-card-group>
       <b-card no-body>
         <b-card-body>
-          <b-carousel
-            id="carousel-1"
-            v-model="slide"
-            :interval="4000"
-            controls
-            indicators
-            background="#ababab"
-            img-height="175"
-            style="text-shadow: 1px 1px 2px #333;"
-            @sliding-start="onSlideStart"
-            @sliding-end="onSlideEnd"
-          >
-            <b-carousel-slide img-src="../../static/img/quang-cao/1.jpg"></b-carousel-slide>
-            <b-carousel-slide img-src="../../static/img/quang-cao/2.jpg"></b-carousel-slide>
-            <b-carousel-slide img-src="../../static/img/quang-cao/3.jpg"></b-carousel-slide>
-            <b-carousel-slide img-src="../../static/img/quang-cao/4.jpg"></b-carousel-slide>
-            <b-carousel-slide img-src="../../static/img/quang-cao/5.jpg"></b-carousel-slide>
-          </b-carousel>
           <b-row>
-            <b-col class="text-center">
+            <b-col md="12">
+              <b-carousel
+                id="carousel-fade"
+                style="text-shadow: 0px 0px 2px #000"
+                fade
+                indicators
+                img-width="1024"
+                img-height="480"
+              >
+                <b-carousel-slide
+                  img-src="../../static/img/quang-cao/1.png"
+                ></b-carousel-slide>
+                <b-carousel-slide
+                  img-src="../../static/img/quang-cao/2.png"
+                ></b-carousel-slide>
+                <b-carousel-slide
+                  img-src="../../static/img/quang-cao/3.png"
+                ></b-carousel-slide>
+                <b-carousel-slide
+                  img-src="../../static/img/quang-cao/4.png"
+                ></b-carousel-slide>
+                <b-carousel-slide
+                  img-src="../../static/img/quang-cao/5.png"
+                ></b-carousel-slide>
+              </b-carousel>
+            </b-col>
+          </b-row>
+        </b-card-body>
+      </b-card>
+    </b-card-group>
+
+      <b-card-group>
+      <b-card no-body>
+        <b-card-body>
+
+          <b-row>
+            <b-col md="12" class="text-center">
               <b-button
                 class="mt-2"
                 @click="showPopupQRCode()">
@@ -35,6 +53,7 @@
         </b-card-body>
       </b-card>
     </b-card-group>
+
     <b-card-group>
       <b-card no-body>
         <b-card-body>
@@ -448,7 +467,6 @@ export default {
         this.onSearch = false
         this.loading = false
       }).catch(err => {
-        console.log(err)
         this.onSearch = false
         this.loading = false
       })
@@ -524,3 +542,11 @@ export default {
     }
   }
 </script>
+<style lang="scss">
+  .homepage {
+    .carousel img {
+      /*height: unset;*/
+    }
+  }
+
+</style>

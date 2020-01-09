@@ -117,9 +117,13 @@ export default {
       customerAPI.getPointDetailList(store_id).then(res => {
         if(res != null && res.data != null && res.data.data != null) {
           this.itemsPoint = Mapper.mapPointDetailModelToDto(res.data.data.point_detail)
+          this.$bvModal.show('modal-point')
         }
+      }).catch(err => {
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
       })
-      this.$bvModal.show('modal-point')
     },
 
     /**

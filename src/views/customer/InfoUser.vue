@@ -203,6 +203,7 @@ export default {
           this.popToast('danger', errorMess)
       })
     },
+
     /**
      * Get city options
      */
@@ -210,6 +211,10 @@ export default {
       MasterApi.getCityOptions().then(res => {
         this.optionsCity = MasterMapper.mapCityModelToDto(res.data.data)
         this.changeCity()
+      }).catch(err => {
+        // Handle error
+          let errorMess = commonFunc.handleCusError(err)
+          this.popToast('danger', errorMess)
       })
     },
 
@@ -224,6 +229,10 @@ export default {
           if(this.onEdit) {
             this.inputs.district_id = ""
           }
+        }).catch(err => {
+        // Handle error
+          let errorMess = commonFunc.handleCusError(err)
+          this.popToast('danger', errorMess)
         })
       } else {
         this.inputs.district_id = ""
@@ -258,7 +267,6 @@ export default {
             }
           }
         }).catch(err => {
-          console.log(err)
           let message = ""
           if(err.response.data.status == 422) {
             message = err.response.data.mess
