@@ -5,7 +5,8 @@
   >
     <template slot="header">
       <span class="white mr-3">
-        <i class="fa fa-gift fa-2x"/>
+        <!--<i class="fa fa-gift fa-2x"/>-->
+        <img src="/static/img/icons/gift.png" class="iconsCustom"/>
       </span>
     </template>
     <template slot="dropdown">
@@ -19,8 +20,6 @@
 
 <script>
 import { HeaderDropdown as AppHeaderDropdown } from '@coreui/vue'
-import Cookies from 'js-cookie'
-var jwtDecode = require('jwt-decode')
 export default {
   name: 'DefaultHeaderDropdownGift',
   components: {

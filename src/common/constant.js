@@ -7,6 +7,7 @@ export const Constant = {
   TABLE_ID: 'Cusres-Table',
 
   // Role conts
+  ROLE_CUS: 'CUS',
   ROLE_STAFF: 'STAFF',
   ROLE_ADMIN: 'ADMIN',
   ROLE_SP_ADMIN: 'SUPER_ADMIN',

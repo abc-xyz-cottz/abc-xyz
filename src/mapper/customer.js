@@ -6,7 +6,7 @@ export default {
       phoneNumber: usr.fields.phone_number,
       cityId: usr.fields.city_id,
       userType: "customer",
-      role: ""
+      role: "CUS"
     }
   },
   mapCustomerDetailToDto(usr) {

@@ -46,18 +46,25 @@
             <b-row class="pull-right mb-3">
               <b-col>
                 <b-button variant="primary" class="px-4" :disabled="onSearch" @click.prevent="prepareToSearch">
-                  Tìm Kiếm
+                  Lọc
                 </b-button>
+              </b-col>
+            </b-row>
+
+            <b-row>
+              <b-col>
+                Số kết quả: {{total}}
               </b-col>
             </b-row>
           </b-form>
         </b-card>
         <b-card v-for="(item, index) in items" :key="item.table + index">
           <div>
-              <b-row class="border border-dark mt-4 mess">
-                <h4 class="col-12">Bàn: {{item.table}}</h4>
-                <p class="col-12" v-if="item.type == 'order'">Loại: Order</p>
+              <b-row class="mess">
+                <h4 class="col-12">Bàn: <b>{{item.table}}</b></h4>
+                <p class="col-12" v-if="item.type == 'order'">Loại: Đặt món</p>
                 <p class="col-12" v-if="item.type == 'request'">Loại: Yêu cầu</p>
+                <p class="col-12">Trạng thái: {{item.status}}</p>
                 <p class="col-12">Khách hàng: {{item.customerName}}</p>
                 <p class="col-12">Thời gian : {{item.time}}</p>
                 <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
@@ -97,7 +104,7 @@ export default {
       ],
       statusOptions: [
         {value: null, text: ''},
-        {value: 'created', text: 'Đã đặt món'},
+        {value: 'created', text: 'Đã gửi'},
         {value: 'approved', text: 'Đã xác nhận'},
         {value: 'canceled', text: 'Đã hủy'}
       ],
@@ -111,7 +118,8 @@ export default {
       hasNext: true,
       onSearch: false,
       loadByScroll: false,
-      loading: false
+      loading: false,
+      total: 0
     }
   },
   computed: {
@@ -188,20 +196,21 @@ export default {
         if(res != null && res.data != null && res.data.data != null){
           // Load orders created
           let orders = res.data.data.orders
-          // this.items.push.apply(this.items, orders)
 
            // Update items
           if(this.loadByScroll) {
             let temp = this.items
-            var newArray = temp.concat(it)
+            var newArray = temp.concat(orders)
             this.items = newArray
           } else {
-            this.items = it
+            this.items = orders
           }
           this.loadByScroll = false
 
           // Check has next
-          if(this.offset + this.pageLimit >= res.data.data.total_row) {
+          let totalRecord = res.data.data.total_row
+          this.total = totalRecord
+          if(this.offset + this.pageLimit >= totalRecord) {
             this.hasNext = false
           }
         } else{

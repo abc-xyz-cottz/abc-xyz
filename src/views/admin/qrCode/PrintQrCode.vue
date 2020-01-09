@@ -4,10 +4,8 @@
       <b-col>
         <b-card>
           <b-row>
-            <b-col md="2">
-              <label> Chọn bàn: </label>
-            </b-col>
             <b-col md="4">
+              <label :style="{width: 100 + '%'}">Chọn bàn:</label>
               <b-form-select
                   :options="tables"
                   id="tableList"
@@ -19,95 +17,112 @@
                   >
               </b-form-select>
             </b-col>
-            <b-col md="3">
-              <b-button variant="primary" class="px-4" :disabled="!tableId" @click="print">
-                In
-              </b-button>
-            </b-col>
-            <b-col md="3">
-              <b-button variant="primary" class="px-4" :disabled="!tableId" @click="createPDF">
-                Xuất file pdf
-              </b-button>
-            </b-col>
-          </b-row>
-
-          <b-row>
-            <b-col md="2">
-              <label> Nhập chiều rộng bản in: </label>
-            </b-col>
             <b-col md="4">
-              <input
+              <label :style="{width: 100 + '%'}">Chọn kích thước(cm)</label>
+              <div class="inline-center">
+                <input
+                  v-model="defaultWidthCm"
                   type="text"
                   autocomplete="new-password"
-                  class="form-control">
+                  :style="{width: 50 + '%'}"
+                  class="form-control inLine"
+                >
+                <b-button
+                  :style="{width: 30 + '%'}"
+                  class="inLine"
+                  @click="changeWidth">
+                  Đổi
+                </b-button>
+              </div>
+            </b-col>
+            <b-col md="4" class="mt-4 inline-center">
+              <div :style="{width: 20 + '%'}">
+                <b-button :disabled="!tableId" @click="print">
+                  In
+                </b-button>
+              </div>
+              <div :style="{width: 60 + '%'}">
+                <b-button :disabled="!tableId" @click="createPDF">
+                  Xuất file pdf
+                </b-button>
+              </div>
             </b-col>
           </b-row>
         </b-card>
       </b-col>
     </b-row>
 
-    <b-row v-show="tableId">
-      <b-col>
-        <b-card class="a4" id="printAble">
-          <b-card-body class="p-4">
-              <b-row>
-                <b-col md="10" class="text-right"><p>Bàn: </p></b-col>
-                <b-col md="2" class="text-left"><h4><b>{{tableName}}</b></h4></b-col>
-              </b-row>
-            <b-row>
+    <b-card>
+      <b-card-body>
+        <b-row v-show="tableId" id="printAble">
+          <b-col>
+            <b-card  :style="{width: defaultWidthPx + 'px', height: 800 + 'px'}">
+              <b-card-body class="p-4">
+                <b-row>
+                  <!--<b-col md="10" class="text-right"><p>Bàn: </p></b-col>-->
+                  <!--<b-col md="2" class="text-left"><h4><b>{{tableName}}</b></h4></b-col>-->
+                  <b-col md="12" class="text-right mr-4">
+                    <h5>Bàn: <b>{{tableName}}</b></h5>
+                  </b-col>
 
-              <b-col md="6" class="text-right">
-                LOGO:
-              </b-col>
-              <b-col md="6" class="text-left">
-                <h2> CusRes</h2>
-                <h5>Ứng dụng đặt món tại bàn trực tuyến</h5>
-              </b-col>
-            </b-row>
-            <hr>
-            <b-row>
-              <b-col class="text-center">
-                <h4 >
-                  Chào mừng tới cửa hàng {{storeName}}
-                </h4>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col class="text-center">
-                <br/>
-                <qrcode v-if="qr_code" :value="qr_code" :options="{ width: 200 }"/>
-                <br/>
-              </b-col>
-            </b-row>
-            <b-row>
-              <p>Hướng dẫn sử dụng:</p>
-            </b-row>
-            <b-row>
-              <p>1. Truy cập website cusres.vn</p>
-            </b-row>
-            <b-row>
-              <p>2. Nhấn vào nút "Quét QR code"</p>
-            </b-row>
-            <b-row>
-              <p>3. Quét QR code phía trên</p>
-            </b-row>
-            <b-row>
-              <p>4. Chọn món hoặc gửi yêu cầu tới nhân viên trong màn hình hiện ra</p>
-            </b-row>
-            <b-row>
-              <p>5. Chờ xác nhận từ bếp</p>
-            </b-row>
-            <hr/>
-            <b-row>
-              <br/>
-              <p>* Đăng nhập tài khoản để tích điểm trong mỗi lần order, điểm này có thể mua nhiều
-                khuyến mãi từ nhà hàng</p>
-            </b-row>
+                </b-row>
+                <hr>
+                <b-row>
+                  <b-col class="text-center">
+                    <h4 >
+                      Chào mừng tới cửa hàng {{storeName}}
+                    </h4>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col class="text-center">
+                    <br/>
+                    <qrcode v-if="qr_code" :value="qr_code" :options="{ width: 200 }"/>
+                    <br/>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <p>Hướng dẫn sử dụng:</p>
+                </b-row>
+                <b-row>
+                  <p>1. Truy cập website cusres.vn</p>
+                </b-row>
+                <b-row>
+                  <p>2. Nhấn vào nút "Quét QR code"</p>
+                </b-row>
+                <b-row>
+                  <p>3. Quét QR code phía trên</p>
+                </b-row>
+                <b-row>
+                  <p>4. Chọn món hoặc gửi yêu cầu tới nhân viên trong màn hình hiện ra</p>
+                </b-row>
+                <b-row>
+                  <p>5. Chờ xác nhận từ bếp</p>
+                </b-row>
+                <hr/>
+                <b-row>
 
-          </b-card-body>
-        </b-card>
-      </b-col>
-    </b-row>
+                  <b-col md="3" class="text-right">
+                    LOGO:
+                  </b-col>
+                  <b-col md="9" class="text-left">
+                    <h2> CusRes</h2>
+                    <p>Ứng dụng đặt món tại bàn trực tuyến</p>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <br/>
+                  <p>* Đăng nhập tài khoản để tích điểm trong mỗi lần order, điểm này có thể mua nhiều
+                    khuyến mãi từ nhà hàng</p>
+                </b-row>
+
+              </b-card-body>
+            </b-card>
+          </b-col>
+        </b-row>
+      </b-card-body>
+    </b-card>
+
   </div>
 </template>
 <script>
@@ -131,7 +146,9 @@ export default {
       tableName: "",
       storeName: "Abc xyz",
       tables: [],
-      qr_code: "hello word"
+      qr_code: "hello word",
+      defaultWidthCm: 13,
+      defaultWidthPx: 491.33858268
     }
   },
   mounted() {
@@ -185,6 +202,7 @@ export default {
 
       // Get HTML to print from element
       const prtHtml = document.getElementById('printAble').innerHTML;
+      alert(prtHtml)
 
       // Get all stylesheets HTML
       let stylesHtml = '';
@@ -239,6 +257,20 @@ export default {
         // }
         doc.save(Date.now() +'.pdf');
       });
+    },
+
+    /**
+     * Convert cm to px
+     */
+    convertCmToPx(cmInput) {
+        return parseInt(cmInput) * 37.795275591
+    },
+
+    /**
+     * Change width of print place
+     */
+    changeWidth() {
+      this.defaultWidthPx = this.convertCmToPx(this.defaultWidthCm)
     }
   }
 }

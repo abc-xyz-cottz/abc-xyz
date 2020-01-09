@@ -5,7 +5,8 @@
   >
     <template slot="header">
       <span>
-        <i class="fa fa-user fa-2x" />
+        <!--<i class="fa fa-user fa-2x" />-->
+        <img src="/static/img/icons/avatar.png" class="iconsCustom"/>
       </span>
     </template>
     <template slot="dropdown">

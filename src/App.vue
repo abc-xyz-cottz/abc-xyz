@@ -1,47 +1,55 @@
 <template>
   <div class="app">
     <template v-if="this.$route.name != 'Login'">
-      <AppHeader fixed v-if="this.$store.state.user == null">
+      <AppHeader fixed v-if="this.$store.state.user == null" class="header-custom">
         <div class="container">
-          <b-link class="nav-link home-icon" to="/">
-              <span>
-                <i class="fa fa-home fa-2x" ></i>
-              </span>
-          </b-link>
+          <div class="nav-left">
+            <button @click="activePushedMenu = !activePushedMenu" display="lg" type="button" class="navbar-toggler">
+                <!--<span class="navbar-toggler-icon"></span>-->
+              <img src="/static/img/icons/menu.ico" class="iconsCustom"/>
+              </button>
 
-          <b-navbar-nav>
-            <!-- hiện cho template customer -->
-             <HeaderDropdownLogin />
-            <HeaderDropdownContact class="text-left"/>
-            <!-- end -->
-          </b-navbar-nav>
-
+            <b-link class="nav-link home-icon" to="/">
+                <!--<span>-->
+                  <!--<i class="fa fa-home fa-2x" ></i>-->
+                <!--</span>-->
+              <img src="/static/img/icons/home.ico" class="iconsCustom"/>
+            </b-link>
+          </div>
         </div>
       </AppHeader>
 
        <!-- đăng nhập xong sẽ dùng đoạn code bên dưới -->
-      <AppHeader fixed v-if="this.$store.state.user">
+      <AppHeader fixed v-if="this.$store.state.user"  class="header-custom">
         <div class="container">
           <div class="nav-left">
             <button @click="activePushedMenu = !activePushedMenu" display="lg" type="button" class="navbar-toggler"
-                    v-if="this.$store.state.user.role == roleAdmin || this.$store.state.user.role == roleSpAdmin">
-              <span class="navbar-toggler-icon"></span>
+                    v-if="this.$store.state.user.role == roleAdmin || this.$store.state.user.role == roleSpAdmin || this.$store.state.user.role == roleCus">
+              <!--<span class="navbar-toggler-icon"></span>-->
+              <img src="/static/img/icons/menu.ico" class="iconsCustom"/>
             </button>
             <b-link class="nav-link home-icon" to="/">
-              <span>
-                <i class="fa fa-home fa-2x" ></i>
-              </span>
+              <!--<span>-->
+                <!--<i class="fa fa-home fa-2x" ></i>-->
+              <!--</span>-->
+              <img src="/static/img/icons/home.ico" class="iconsCustom"/>
             </b-link>
           </div>
 
         <b-navbar-nav>
           <!-- hiện cho template customer -->
            <HeaderDropdownGift v-if="this.$store.state.user.userType == 'customer'"/>
-             <span class="white" v-if="this.$store.state.user.userType == 'customer'">
+          <li>
+            <a href="/notification">
+              <span class="white" v-if="this.$store.state.user.userType == 'customer'">
                <span class="fa-stack" :data-count="notifyNumber">
-                 <a href="/notification"><i class="fa fa-bell fa-2x"></i></a>
+                   <!--<i src="/static/img/icons/bell.png" class="iconsCustom"></i>-->
+                   <img src="/static/img/icons/bell.png" class="iconsCustom"/>
                </span>
              </span>
+            </a>
+          </li>
+
            <HeaderDropdownCusAcc v-if="this.$store.state.user.userType == 'customer'"/>
 
           <!-- end -->
@@ -54,31 +62,21 @@
             <HeaderDropdownStaffAcc  v-if="this.$store.state.user.userType == 'staff'"/>
           </template>
           <!-- end -->
-           <HeaderDropdownContact class="text-left ml-3"/>
+
         </b-navbar-nav>
         </div>
       </AppHeader>
 
       <div class="app-body" >
-        <template v-if="this.$store.state.user && this.$store.state.user.role == roleAdmin">
+        <template >
           <AppSidebar fixed :class="{ 'active': activePushedMenu }">
             <SidebarHeader />
             <SidebarForm />
               <template>
-                <SidebarNav class="testtest" :nav-items="navAdmin" />
-              </template>
-            <SidebarFooter />
-            <SidebarMinimizer />
-          </AppSidebar>
-        </template>
-
-        <template v-if="this.$store.state.user && this.$store.state.user.role == roleSpAdmin">
-
-          <AppSidebar fixed :class="{ 'active': activePushedMenu }">
-            <SidebarHeader />
-            <SidebarForm />
-              <template>
-                <SidebarNav  class="testtest" :nav-items="navSpAdmin" />
+                <SidebarNav v-if="!this.$store.state.user" :nav-items="navCusNotLogin" />
+                <SidebarNav v-if="this.$store.state.user && this.$store.state.user.role == roleCus" :nav-items="navCus" />
+                <SidebarNav v-if="this.$store.state.user && this.$store.state.user.role == roleAdmin" :nav-items="navAdmin" />
+                <SidebarNav  v-if="this.$store.state.user && this.$store.state.user.role == roleSpAdmin"  :nav-items="navSpAdmin"/>
               </template>
             <SidebarFooter />
             <SidebarMinimizer />
@@ -88,10 +86,7 @@
         <main class="main">
           <router-view />
         </main>
-        <!--<AppAside fixed>-->
-          <!--&lt;!&ndash;aside&ndash;&gt;-->
-          <!--<DefaultAside />-->
-        <!--</AppAside>-->
+
       </div>
     </template>
 
@@ -106,12 +101,12 @@
 <script>
 import navSpAdmin from '@/navSpAdmin'
 import navAdmin from '@/navAdmin'
+import navCusNotLogin from '@/navCusNotLogin'
+import navCus from '@/navCus'
 import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFooter, SidebarForm, SidebarHeader, SidebarMinimizer, SidebarNav } from '@coreui/vue'
 import HeaderDropdownCusAcc from '@/components/common/HeaderDropdownCusAcc'
 import HeaderDropdownStaffAcc from '@/components/common/HeaderDropdownStaffAcc'
 import HeaderDropdownGift from '@/components/common/HeaderDropdownGift'
-import HeaderDropdownContact from '@/components/common/HeaderDropdownContact'
-import HeaderDropdownLogin from '@/components/common/HeaderDropdownLogin'
 import {Constant} from '@/common/constant'
 import Cookies from 'js-cookie'
 import { RootAPI } from '@/api/index'
@@ -125,23 +120,23 @@ export default {
     AppSidebar,
     SidebarForm,
     SidebarFooter,
-    SidebarToggler,
     SidebarHeader,
     SidebarNav,
     SidebarMinimizer,
     HeaderDropdownCusAcc,
     HeaderDropdownStaffAcc,
-    HeaderDropdownGift,
-    HeaderDropdownContact,
-    HeaderDropdownLogin
+    HeaderDropdownGift
   },
   data () {
     return {
       language: 'en',
+      navCus: navCus.items,
+      navCusNotLogin: navCusNotLogin.items,
       navSpAdmin: navSpAdmin.items,
       navAdmin: navAdmin.items,
       fullName: '',
       size: 40,
+      roleCus: Constant.ROLE_CUS,
       roleAdmin: Constant.ROLE_ADMIN,
       roleSpAdmin: Constant.ROLE_SP_ADMIN,
       notifyNumber: 0,
@@ -260,5 +255,16 @@ export default {
   }
   .app-body .sidebar.active {
     margin-left: 0;
+  }
+  .header-custom {
+    background-color: #444444 !important;
+  }
+  .iconsCustom {
+    width: 40px;
+    height: 40px;
+  }
+  .inline-center {
+    display: flex;
+    align-items: center;
   }
 </style>

@@ -5,7 +5,7 @@
         <b-col md='6'>
           <h4 class="mt-2">Quản lý order</h4>
         </b-col>
-        <b-col md='6'>
+        <b-col md='6' class="text-right">
           <b-button variant="primary" class="px-4" @click="goToOrderHis">
             Xem lịch sử đặt món
           </b-button>
@@ -217,7 +217,7 @@ export default {
     * Go to order history
     */
     goToOrderHis() {
-      this.$router.push('/menu/add')
+      this.$router.push('/order-history')
     }
   }
 }

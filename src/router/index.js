@@ -41,6 +41,7 @@ import TableAdd from '@/views/admin/table/Index'
 import Setting from '@/views/admin/setting/List'
 import PrintQrCode from '@/views/admin/qrCode/PrintQrCode'
 import ManNotification from '@/views/admin/notification/Index'
+import OrderHis from '@/views/admin/order_history/order_history'
 
 // Super admin group
 import HomeSPAdmin from '@/views/supperAdmin/HomeSPAdmin'
@@ -268,6 +269,11 @@ export default new Router({
       path: '/man-notification',
       name: 'ManNotification',
       component: ManNotification
+    },
+    {
+      path: '/order-history',
+      name: 'OrderHistory',
+      component: OrderHis
     },
 
 
