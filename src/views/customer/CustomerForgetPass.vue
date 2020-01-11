@@ -88,6 +88,7 @@
 <script>
 import AuthenticationAPI from '@/api/authentication'
 import commonFunc from '@/common/commonFunc'
+import Cookies from 'js-cookie'
 
 
 export default {
@@ -155,7 +156,8 @@ export default {
           AuthenticationAPI.CustomerForgetPass(this.inputs).then(res => {
             if(res && res.data && res.data.status == 200) {
               // Redirect to active password
-              this.$router.push({ name: 'CustomerActivePass', params: { phone_number: this.inputs.phone_number }})
+              Cookies.set("phoneNumber", this.inputs.phone_number, { expires: 1 })
+              this.$router.push('/cus-active-pass')
             }
           }).catch(err => {
             let message = ""

@@ -46,6 +46,7 @@
 <script>
 import AuthenticationAPI from '@/api/authentication'
 import commonFunc from '@/common/commonFunc'
+import Cookies from 'js-cookie'
 
 
 export default {
@@ -66,6 +67,8 @@ export default {
     }
   },
   mounted () {
+    // Get phone number
+    this.getPhoneNumber()
   },
   methods: {
     checkInfo (info) {
@@ -79,7 +82,6 @@ export default {
       let result = this.checkValidate()
       if(result) {
         // get id account
-        this.inputs.phone_number = this.$route.params.phone_number
         this.onConfirm = true
         setTimeout(() => {
           console.log(this.inputs)
@@ -125,6 +127,14 @@ export default {
       if(!commonFunc.isNumber(event)) {
         event.preventDefault()
       }
+    },
+
+    /**
+     * Get phone number
+     */
+    getPhoneNumber() {
+      this.inputs.phone_number = Cookies.get("phoneNumber")
+      Cookies.remove("phoneNumber")
     }
   }
 }

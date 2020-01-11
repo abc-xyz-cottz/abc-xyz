@@ -59,8 +59,6 @@
             <b-card  :style="{width: defaultWidthPx + 'px', height: 800 + 'px'}">
               <b-card-body class="p-4">
                 <b-row>
-                  <!--<b-col md="10" class="text-right"><p>Bàn: </p></b-col>-->
-                  <!--<b-col md="2" class="text-left"><h4><b>{{tableName}}</b></h4></b-col>-->
                   <b-col md="12" class="text-right mr-4">
                     <h5>Bàn: <b>{{tableName}}</b></h5>
                   </b-col>
@@ -70,50 +68,45 @@
                 <b-row>
                   <b-col class="text-center">
                     <h4 >
-                      Chào mừng tới cửa hàng {{storeName}}
+                      {{storeName}}
                     </h4>
                   </b-col>
                 </b-row>
+                <br/>
                 <b-row>
-                  <b-col class="text-center">
-                    <br/>
-                    <qrcode v-if="qr_code" :value="qr_code" :options="{ width: 200 }"/>
-                    <br/>
+                  <b-col class="text-center" id="qrCodePlace">
+                    <qrcode id="qrCode" v-if="qr_code" :value="qr_code" :options="{ width: 200 }" tag="img"/>
                   </b-col>
                 </b-row>
+                <br/>
                 <b-row>
-                  <p>Hướng dẫn sử dụng:</p>
+                  <p class="border-bottom"><b>Hướng dẫn sử dụng:</b></p>
                 </b-row>
                 <b-row>
-                  <p>1. Truy cập website cusres.vn</p>
+                  <p>1. Bạn có thể quét QR code phía trên bằng bất cứ công cụ nào: camera, Zalo, hoặc
+                    nhấn nút quét QR code trên website orderway.vn</p>
                 </b-row>
                 <b-row>
-                  <p>2. Nhấn vào nút "Quét QR code"</p>
+                  <p>2. Chọn món hoặc gửi yêu cầu tới nhân viên trong màn hình hiện ra</p>
                 </b-row>
                 <b-row>
-                  <p>3. Quét QR code phía trên</p>
-                </b-row>
-                <b-row>
-                  <p>4. Chọn món hoặc gửi yêu cầu tới nhân viên trong màn hình hiện ra</p>
-                </b-row>
-                <b-row>
-                  <p>5. Chờ xác nhận từ bếp</p>
-                </b-row>
-                <hr/>
-                <b-row>
-
-                  <b-col md="3" class="text-right">
-                    LOGO:
-                  </b-col>
-                  <b-col md="9" class="text-left">
-                    <h2> CusRes</h2>
-                    <p>Ứng dụng đặt món tại bàn trực tuyến</p>
-                  </b-col>
+                  <p>3. Kết thúc! </p>
                 </b-row>
                 <b-row>
                   <br/>
                   <p>* Đăng nhập tài khoản để tích điểm trong mỗi lần order, điểm này có thể mua nhiều
                     khuyến mãi từ nhà hàng</p>
+                </b-row>
+                <hr/>
+                <b-row>
+
+                  <b-col md="3" class="text-right">
+                    <img src="/static/img/icons/favicon.ico" class="logoSize"/>
+                  </b-col>
+                  <b-col md="9" class="text-left">
+                    <h2> Order Way</h2>
+                    <p>Ứng dụng đặt món tại bàn trực tuyến</p>
+                  </b-col>
                 </b-row>
 
               </b-card-body>
@@ -137,6 +130,8 @@ import Cookies from 'js-cookie'
 import jsPDF from 'jspdf'
 import html2canvas from "html2canvas"
 import commonFunc from '@/common/commonFunc'
+import superAdminAPI from '@/api/superAdmin'
+
 
 export default {
 
@@ -144,7 +139,7 @@ export default {
     return {
       tableId: null,
       tableName: "",
-      storeName: "Abc xyz",
+      storeName: "Order way",
       tables: [],
       qr_code: "hello word",
       defaultWidthCm: 13,
@@ -152,7 +147,12 @@ export default {
     }
   },
   mounted() {
+
+    // Get table list
     this.getTableList()
+
+    // Get store name
+    this.getStoreName()
   },
   methods: {
 
@@ -184,6 +184,26 @@ export default {
     },
 
     /**
+     * Get store name
+     */
+    getStoreName () {
+      let user = JSON.parse(Cookies.get(Constant.APP_USR))
+      if(user) {
+        superAdminAPI.getStoreDetail(user.storeId).then(res => {
+          if(res != null && res.data != null && res.data.data != null) {
+            this.storeName = res.data.data.fields.name
+          }
+        }).catch(err => {
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
+        })
+      } else {
+        this.$router.push('/staff-login')
+      }
+    },
+
+    /**
      * Get selected table
      */
     getSelectedItem() {
@@ -199,10 +219,8 @@ export default {
      * Print
      */
     print() {
-
       // Get HTML to print from element
       const prtHtml = document.getElementById('printAble').innerHTML;
-      alert(prtHtml)
 
       // Get all stylesheets HTML
       let stylesHtml = '';
@@ -277,10 +295,8 @@ export default {
 </script>
 
 <style lang="css" scoped>
-  .a4 {
-    width: 793px;
-    height: 1133px;
-    max-height: 1133px;
-    max-width: 793px;
+  .logoSize {
+    width: 80px;
+    height: 80px;
   }
 </style>

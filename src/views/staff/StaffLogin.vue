@@ -72,7 +72,6 @@ import StaffMapper from '@/mapper/staff'
 import Staff from '@/api/staff'
 import {Constant} from '@/common/constant'
 import commonFunc from '@/common/commonFunc'
-import lang_en from "@/lang/lang_en.json"
 
 
 export default {

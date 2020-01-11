@@ -47,12 +47,16 @@
 
                   <div class="form-group">
                     <label>Ngày Tháng Năm Sinh</label><span class="error-sybol"></span>
-                    <date-picker input-class="input-date" style="width:100%" class="form-control" v-model="inputs.birthday" :format="customFormatter" :disabledDates="disabledDates">
-                    </date-picker>
+                    <datepicker
+                    id="expired_date_from"
+                    v-model="inputs.birthday"
+                    placeholder="yyyy-mm-dd">
+                    </datepicker>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorBirthday">
                       Vui lòng nhập ngày sinh
                     </b-form-invalid-feedback>
                   </div>
+
                   <div class="form-group">
                     <label>Tỉnh/ Thành Phố</label><span class="error-sybol"></span>
                     <b-form-select
@@ -134,7 +138,8 @@
 <script>
 import AuthenticationAPI from '@/api/authentication'
 import 'bootstrap/dist/css/bootstrap.css'
-import datePicker from 'vuejs-datepicker'
+import Datepicker from 'vue2-datepicker'
+import 'vue2-datepicker/index.css'
 import moment from 'moment'
 import MasterApi from '@/api/master'
 import MasterMapper from '@/mapper/master'
@@ -143,7 +148,7 @@ import MasterMapper from '@/mapper/master'
 export default {
   name: 'Register',
   components: {
-    datePicker
+    Datepicker
   },
   data () {
     return {
@@ -176,7 +181,15 @@ export default {
       },
       disabledDates: {
         from: new Date(Date.now())
-      }
+      },
+      // valueType: {
+      //   value2date: (value) => {
+      //   return value ? moment(value).format('YYYY-MM-DD') : null
+      //   },
+      //   date2value: (date) => {
+      //   return date ? moment(date).format('YYYY-MM-DD') : null
+      //   }
+      // }
     }
   },
   mounted () {
@@ -216,7 +229,8 @@ export default {
       if(!this.confirmPassword || this.errorConfirmPassword)
         return false
       return (this.confirmPassword.length < 6) 
-    }
+    },
+
   },
   watch: {
     confirmPassword () {
@@ -299,7 +313,9 @@ export default {
         this.inputs.district_id = ""
       }
 
-    }
+    },
+
+
 
   }
 }
