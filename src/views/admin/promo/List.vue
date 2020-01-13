@@ -31,6 +31,10 @@
             </b-list-group>
           </template>
           </b-table>
+
+          <!-- Loading -->
+          <span class="loading-more" v-show="loading"><icon name="loading" width="60" /></span>
+          <span class="loading-more" v-if="hasNext === false">Hết</span>
         </b-card>
       </b-col>
     </b-row>
@@ -40,13 +44,13 @@
 import adminAPI from '@/api/admin'
 import Mapper from '@/mapper/promotion'
 import commonFunc from '@/common/commonFunc'
+import {Constant} from '@/common/constant'
 
 
 export default {
   data () {
     return {
-      perPage: '10',
-      currentPage: '1',
+      pageLimit: Constant.PAGE_LIMIT,
       fields: [
         {
           key: 'stt',
@@ -76,6 +80,11 @@ export default {
       ],
       items: [],
       listIdDeleted: [],
+      offset: 0,
+      hasNext: true,
+      onSearch: false,
+      loadByScroll: false,
+      loading: false
     }
   },
   computed: {
@@ -84,6 +93,10 @@ export default {
     }
   },
   mounted() {
+    window.addEventListener('scroll', this.onScroll)
+
+    window.addEventListener('resize', this.delete)
+
     this.getPromoList()
   },
   methods: {
@@ -97,6 +110,25 @@ export default {
         variant: variant,
         autoHideDelay: 5000
       })
+    },
+
+    /**
+     *  Processing on scroll: use for paging
+     */
+    onScroll (event) {
+      if(this.onSearch) {
+        return
+      }
+      event.preventDefault()
+      var body = document.body
+      var html = document.documentElement
+      if (window.pageYOffset + window.innerHeight +1 > Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)) {
+        if(this.hasNext) {
+          this.offset = this.offset + this.pageLimit
+          this.loadByScroll = true
+          this.getPromoList ()
+        }
+      }
     },
 
     /**
@@ -143,14 +175,46 @@ export default {
      * Get list
      */
     getPromoList () {
-      adminAPI.getPromoList().then(res => {
+      if (this.loading) { return }
+
+      this.onSearch = true
+      this.loading = true
+      // Define params
+      let param = {
+        "limit": this.pageLimit,
+        "offset": this.offset
+      }
+
+      adminAPI.getPromoList(param).then(res => {
         if(res != null && res.data != null && res.data.data != null) {
-          this.items = Mapper.mapPromoModelToDto(res.data.data)
+          let it = Mapper.mapPromoModelToDto(res.data.data.promotions, this.offset)
+
+          // Update items
+          if(this.loadByScroll) {
+            let temp = this.items
+            var newArray = temp.concat(it)
+            this.items = newArray
+          } else {
+            this.items = it
+          }
+          this.loadByScroll = false
+
+          // Check has next
+          if(this.offset + this.pageLimit >= res.data.data.total_row) {
+            this.hasNext = false
+          }
+        } else {
+          this.items = []
         }
+        this.onSearch = false
+        this.loading = false
       }).catch(err => {
         // Handle error
         let errorMess = commonFunc.handleStaffError(err)
         this.popToast('danger', errorMess)
+
+        this.onSearch = false
+        this.loading = false
       })
     }
   }

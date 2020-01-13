@@ -17,6 +17,7 @@
             </b-row>
 
             <b-row class="mt-3">
+              <b-col><h4>Menu</h4></b-col>
 
             </b-row>
 
@@ -170,10 +171,6 @@ export default {
       currentPage: '1',
       fields: [
         {
-          key: 'stt',
-          label: 'STT'
-        },
-        {
           key: 'image',
           label: 'Hình Ảnh'
         },
@@ -217,10 +214,8 @@ export default {
           label: 'Thành tiền',
         }
       ],
-      items: [
-      ],
-      orderItems: [
-      ],
+      items: [],
+      orderItems: [],
       storeId: null,
       tableId: null,
       totalPrice: 0,
@@ -392,7 +387,6 @@ export default {
       CustomerApi.getTopping(this.storeId).then(res => {
         if(res && res.data && res.data.data) {
           this.listTopping = ToppingMapper.mapToppingCusModelToDto(res.data.data)
-          console.log(this.listTopping)
         }
 
       }).catch(err => {

@@ -22,6 +22,27 @@
                 </b-col>
               </b-row>
               <hr/>
+
+              <b-row class="form-row">
+                <b-col md="3" class="mt-2">
+                  <label> Loại </label><span class="error-sybol"></span>
+                </b-col>
+                <b-col md="9">
+                  <b-form-select
+                  :options="typeOptions"
+                  id="status"
+                  type="text"
+                  maxlength="1"
+                  autocomplete="new-password"
+                  class="form-control"
+                  v-model="topping.type">
+                  </b-form-select>
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorType">
+                    Đây là mục bắt buộc nhập
+                  </b-form-invalid-feedback>
+                </b-col>
+              </b-row>
+
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
                   <label> Tên </label><span class="error-sybol"></span>
@@ -39,6 +60,7 @@
                   </b-form-invalid-feedback>
                 </b-col>
               </b-row>
+
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
                   <label> Giá </label><span class="error-sybol"></span>
@@ -56,6 +78,7 @@
                   </b-form-invalid-feedback>
                 </b-col>
               </b-row>
+
               <b-row class="form-row" v-if="this.$route.params.id">
                 <b-col md="3" class="mt-2">
                   <label> Trạng Thái </label><span class="error-sybol"></span>
@@ -72,6 +95,7 @@
                   </b-form-select>
                 </b-col>
               </b-row>
+
           </b-card-body>
         </b-card>
       </b-col>
@@ -93,9 +117,17 @@ export default {
         {value: 'false', text: 'Đóng'},
         {value: 'true', text: 'Mở'}
       ],
+      typeOptions: [
+        {value: null, text: ''},
+        {value: 'sugar', text: 'Đường'},
+        {value: 'ice', text: 'Đá'},
+        {value: 'food', text: 'Đồ ăn'},
+        {value: 'size', text: 'Kích thước'},
+      ],
       topping: {
         "id": null,
         "name": null,
+        "type": null,
         "price": null,
         "status": null
       },
@@ -110,6 +142,9 @@ export default {
     errorName () {
       return this.checkInfo(this.topping.name)
     },
+    errorType () {
+      return this.checkInfo(this.topping.type)
+    },
     errorPrice () {
       return this.checkInfo(this.topping.price)
     }
@@ -119,7 +154,7 @@ export default {
       return (this.click && (info == null || info.length <= 0))
     },
     checkValidate () {
-      return !(this.errorName || this.errorPrice)
+      return !(this.errorName || this.errorType || this.errorPrice)
     },
 
     /**

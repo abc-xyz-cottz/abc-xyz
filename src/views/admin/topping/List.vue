@@ -59,6 +59,10 @@ export default {
           label: 'Tên'
         },
         {
+          key: 'type',
+          label: 'Loại'
+        },
+        {
           key: 'price',
           label: 'Giá'
         },

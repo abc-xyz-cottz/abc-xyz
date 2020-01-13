@@ -13,9 +13,25 @@ export default {
           status = "Đóng"
         }
 
+        let type = toppings[index].fields.type
+        let typeName = type
+        if(type == "sugar") {
+          typeName = "Đường"
+        }
+        if(type == "ice") {
+          typeName = "Đá"
+        }
+        if(type == "food") {
+          typeName = "Đồ ăn"
+        }
+        if(type == "size") {
+          typeName = "Kích thước"
+        }
+
         let toppingTemp = {
           stt: stt
           , name: toppings[index].fields.name
+          , type: typeName
           , price: toppings[index].fields.price
           , status: status
           , actions: toppings[index].pk
@@ -28,6 +44,7 @@ export default {
         return {
           "id": topping.pk
           , "name": topping.fields.name
+          , "type": topping.fields.type
           , "price": topping.fields.price
           , "status": topping.fields.status
         }
@@ -42,6 +59,7 @@ export default {
         let toppingTemp = {
           stt: stt
           , name: toppings[index].fields.name
+          , type: toppings[index].fields.type
           , price: toppings[index].fields.price
           , actions: toppings[index].pk
         }

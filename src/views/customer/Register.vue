@@ -2,14 +2,10 @@
   <div class="app flex-row align-items-center">
     <div class="container">
       <b-row class="justify-content-center">
-        <b-col
-          md="6"
-          sm="8">
-          <b-card
-            no-body
-            class="mx-4">
+        <b-col md="6" sm="8">
+          <b-card no-body class="mx-4">
             <b-card-body class="p-4">
-              <b-form @submit.prevent="update">
+              <b-form>
                   <h3 class="text-center">Đăng Ký</h3>
                   <div class="form-group">
                     <label>Tên</label><span class="error-sybol"></span>
@@ -50,7 +46,8 @@
                     <datepicker
                     id="expired_date_from"
                     v-model="inputs.birthday"
-                    placeholder="yyyy-mm-dd">
+                    placeholder="dd-mm-yyyy"
+                    :format="momentFormat">
                     </datepicker>
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorBirthday">
                       Vui lòng nhập ngày sinh
@@ -182,14 +179,16 @@ export default {
       disabledDates: {
         from: new Date(Date.now())
       },
-      // valueType: {
-      //   value2date: (value) => {
-      //   return value ? moment(value).format('YYYY-MM-DD') : null
-      //   },
-      //   date2value: (date) => {
-      //   return date ? moment(date).format('YYYY-MM-DD') : null
-      //   }
-      // }
+      momentFormat: {
+        // Date to String
+        stringify: (date) => {
+        return date ? moment(date).format('DD-MM-YYYY') : ''
+        },
+        // String to Date
+        parse: (value) => {
+        return value ? moment(value, 'DD-MM-YYYY').toDate() : null
+        }
+      }
     }
   },
   mounted () {

@@ -59,8 +59,7 @@ export default {
       stt = stt + 1
 
       let menuTemp = {
-        stt: stt
-        , image: menus[index].fields.image
+        image: menus[index].fields.image
         , name: menus[index].fields.name
         , price: menus[index].fields.price
         , topping: menus[index].fields.topping

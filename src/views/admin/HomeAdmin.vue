@@ -1,82 +1,88 @@
 <template>
   <div class="container-fluid">
-    <div>
-      <b-row class="form-row">
-        <b-col md='6'>
-          <h4 class="mt-2">Quản lý order</h4>
-        </b-col>
-        <b-col md='6' class="text-right">
-          <b-button variant="primary" class="px-4" @click="goToOrderHis">
-            Xem lịch sử đặt món
-          </b-button>
-        </b-col>
-      </b-row>
+    <b-row>
+      <b-col>
+        <b-card>
+          <b-card-body class="p-4">
+        <b-row class="form-row">
+          <b-col md='6'>
+            <h4 class="mt-2">Quản lý order</h4>
+          </b-col>
+          <b-col md='6' class="text-right">
+            <b-button variant="primary" class="px-4" @click="goToOrderHis">
+              Xem lịch sử đặt món
+            </b-button>
+          </b-col>
+        </b-row>
 
-      <hr/>
-        <b-tabs content-class="mt-3">
-            <!-- First tab -->
-            <b-tab title="Orders" active>
-                <div  v-for="(item, index) in created" :key="item.table + index">
-                    <b-row class="border border-dark mt-4 mess">
-                      <h4 class="col-12">Bàn: {{item.table}}</h4>
-                      <p class="col-12" v-if="item.type == 'order'">Loại: Order</p>
-                      <p class="col-12" v-if="item.type == 'request'">Loại: Yêu cầu</p>
-                      <p class="col-12">Khách hàng: {{item.customerName}}</p>
-                      <p class="col-12">Thời gian : {{item.time}}</p>
-                      <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
-                      <p class="col-12" >Chi tiết:</p>
-                      <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
-                      <b-col class="col-6">
-                          <div class="is-left">
-                              <b-button class="btn-danger pull-right ml-3 px-4" @click="cancel(index, item.orderId, item.customerName, item.type)">
-                                  Hủy
-                              </b-button>
-                          </div>
-                      </b-col>
-                      <b-col class="col-6">
-                          <div class="text-right">
-                              <b-button class="btn-primary pull-right ml-3 px-4" @click="confirm(index, item.orderId, item.customerName, item.type)">
-                                  Xác nhận
-                              </b-button>
-                          </div>
-                      </b-col>
-                    </b-row>
-                </div>
-            </b-tab>
+        <hr/>
+          <b-tabs content-class="mt-3">
+              <!-- First tab -->
+              <b-tab title="Orders" active>
+                  <div  v-for="(item, index) in created" :key="item.table + index">
+                      <b-row class="border border-dark mt-4 mess">
+                        <h4 class="col-12">Bàn: {{item.table}}</h4>
+                        <p class="col-12" v-if="item.type == 'order'">Loại: Order</p>
+                        <p class="col-12" v-if="item.type == 'request'">Loại: Yêu cầu</p>
+                        <p class="col-12">Khách hàng: {{item.customerName}}</p>
+                        <p class="col-12">Thời gian : {{item.time}}</p>
+                        <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
+                        <p class="col-12" >Chi tiết:</p>
+                        <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
+                        <b-col class="col-6">
+                            <div class="is-left">
+                                <b-button class="btn-danger pull-left ml-3 px-1" @click="cancel(index, item.orderId, item.customerName, item.type)">
+                                    Hủy
+                                </b-button>
+                            </div>
+                        </b-col>
+                        <b-col class="col-6">
+                            <div class="text-right">
+                                <b-button class="btn-primary pull-right ml-3 px-1" @click="confirm(index, item.orderId, item.customerName, item.type)">
+                                    Xác nhận
+                                </b-button>
+                            </div>
+                        </b-col>
+                      </b-row>
+                  </div>
+              </b-tab>
 
-            <!-- Second tab -->
-            <b-tab title="Đã xác nhận">
-                <div  v-for="(item, index) in approved" :key="item.table + index">
-                    <b-row class="border border-dark mt-4 mess">
-                      <h4 class="col-12">Bàn: {{item.table}}</h4>
-                      <p class="col-12" v-if="item.type == 'order'">Loại: Order</p>
-                      <p class="col-12" v-if="item.type == 'request'">Loại: Yêu cầu</p>
-                      <p class="col-12">Khách hàng: {{item.customerName}}</p>
-                      <p class="col-12">Thời gian : {{item.time}}</p>
-                      <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
-                      <p class="col-12" >Chi tiết:</p>
-                      <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
-                    </b-row>
-                </div>
-            </b-tab>
+              <!-- Second tab -->
+              <b-tab title="Đã xác nhận">
+                  <div  v-for="(item, index) in approved" :key="item.table + index">
+                      <b-row class="border border-dark mt-4 mess">
+                        <h4 class="col-12">Bàn: {{item.table}}</h4>
+                        <p class="col-12" v-if="item.type == 'order'">Loại: Order</p>
+                        <p class="col-12" v-if="item.type == 'request'">Loại: Yêu cầu</p>
+                        <p class="col-12">Khách hàng: {{item.customerName}}</p>
+                        <p class="col-12">Thời gian : {{item.time}}</p>
+                        <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
+                        <p class="col-12" >Chi tiết:</p>
+                        <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
+                      </b-row>
+                  </div>
+              </b-tab>
 
-            <!-- Third tab -->
-            <b-tab title="Đã hủy">
-                <div  v-for="(item, index) in canceled" :key="item.table + index">
-                    <b-row class="border border-dark mt-4 mess">
-                      <h4 class="col-12">Bàn: {{item.table}}</h4>
-                      <p class="col-12" v-if="item.type == 'order'">Loại: Order</p>
-                      <p class="col-12" v-if="item.type == 'request'">Loại: Yêu cầu</p>
-                      <p class="col-12">Khách hàng: {{item.customerName}}</p>
-                      <p class="col-12">Thời gian : {{item.time}}</p>
-                      <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
-                      <p class="col-12" >Chi tiết:</p>
-                      <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
-                    </b-row>
-                </div>
-            </b-tab>
-        </b-tabs>
-    </div>
+              <!-- Third tab -->
+              <b-tab title="Đã hủy">
+                  <div  v-for="(item, index) in canceled" :key="item.table + index">
+                      <b-row class="border border-dark mt-4 mess">
+                        <h4 class="col-12">Bàn: {{item.table}}</h4>
+                        <p class="col-12" v-if="item.type == 'order'">Loại: Order</p>
+                        <p class="col-12" v-if="item.type == 'request'">Loại: Yêu cầu</p>
+                        <p class="col-12">Khách hàng: {{item.customerName}}</p>
+                        <p class="col-12">Thời gian : {{item.time}}</p>
+                        <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
+                        <p class="col-12" >Chi tiết:</p>
+                        <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
+                      </b-row>
+                  </div>
+              </b-tab>
+          </b-tabs>
+          </b-card-body>
+        </b-card>
+      </b-col>
+    </b-row>
   </div>
 </template>
 <script>

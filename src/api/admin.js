@@ -85,8 +85,8 @@ export default {
   /**
    * Get promotion list
    */
-  getPromoList() {
-    return session.get(RootAPI + 'promotion/staff')
+  getPromoList(params) {
+    return session.post(RootAPI + 'promotion/staff', params)
   },
   
   /**

@@ -153,14 +153,14 @@ export default {
     /**
    * Make toast without title
    */
-  popToast(variant, content) {
-    this.$bvToast.toast(content, {
-      toastClass: 'my-toast',
-      noCloseButton: true,
-      variant: variant,
-      autoHideDelay: 5000
-    })
-  },
+    popToast(variant, content) {
+      this.$bvToast.toast(content, {
+        toastClass: 'my-toast',
+        noCloseButton: true,
+        variant: variant,
+        autoHideDelay: 5000
+      })
+    },
 
     /**
      *  Processing on scroll: use for paging
@@ -174,7 +174,7 @@ export default {
       var html = document.documentElement
       if (window.pageYOffset + window.innerHeight +1 > Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)) {
         if(this.hasNext) {
-          this.offset = this.offset + 10
+          this.offset = this.offset + this.pageLimit
           this.loadByScroll = true
           this.search ()
         }

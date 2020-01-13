@@ -1,9 +1,9 @@
 import commonFunc from '@/common/commonFunc'
 export default {
-    mapPromoModelToDto (promotions) {
+    mapPromoModelToDto (promotions, offset) {
       let result = []
   
-      var stt = 0
+     var stt = offset
       for (var index in promotions) {
         stt = stt + 1
   
