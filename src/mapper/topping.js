@@ -52,16 +52,11 @@ export default {
     mapToppingCusModelToDto (toppings) {
       let result = []
 
-      var stt = 0
       for (var index in toppings) {
-        stt = stt + 1
 
         let toppingTemp = {
-          stt: stt
-          , name: toppings[index].fields.name
-          , type: toppings[index].fields.type
+          name: toppings[index].fields.name
           , price: toppings[index].fields.price
-          , actions: toppings[index].pk
         }
         result.push(toppingTemp)
       }

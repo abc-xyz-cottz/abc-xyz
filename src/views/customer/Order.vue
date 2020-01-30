@@ -32,20 +32,15 @@
                 <template v-slot:cell(image)="data">
                   <img :src="data.item.image" :style="{width: 100 + 'px', height: 100 + 'px'}"/>
                 </template>
-                <template v-slot:cell(topping)="data">
-                  <b-button variant="primary" class="pull-right px-4" v-if="data.item.topping" @click="showTopping">
-                    Thêm topping
-                  </b-button>
-                </template>
                 <template v-slot:cell(action)="dataId">
                   <b-list-group horizontal>
-                    <b-list-group-item @click="countDown(dataId.value)">
-                      <i class="fa fa-minus" />
-                    </b-list-group-item>
-                    <b-list-group-item @click="countUp(dataId.value)">
+                    <!--<b-list-group-item @click="countDown(dataId.value)">-->
+                      <!--<i class="fa fa-minus" />-->
+                    <!--</b-list-group-item>-->
+                    <b-list-group-item @click="countUp(dataId.value, dataId.item.topping)">
                       <i class="fa fa-plus" />
                     </b-list-group-item>
-                    <b-list-group-item>
+                    <b-list-group-item hidden>
                       <span :id="`${dataId.value}`">0</span>
                     </b-list-group-item>
                   </b-list-group>
@@ -86,6 +81,19 @@
           stacked="md"
           :fields="orderfields"
           :items="orderItems">
+            <template v-slot:cell(action)="dataId">
+              <b-list-group horizontal>
+                <b-list-group-item @click="countDownOrder(dataId.item.index)">
+                  <i class="fa fa-minus" />
+                </b-list-group-item>
+                <b-list-group-item @click="countUpOrder(dataId.item.index, dataId.item.topping)">
+                  <i class="fa fa-plus" />
+                </b-list-group-item>
+                <b-list-group-item hidden>
+                  <span :id="`${dataId.value}`">0</span>
+                </b-list-group-item>
+              </b-list-group>
+            </template>
           </b-table>
       <b-row>
 
@@ -109,46 +117,73 @@
       <!-- Modal show topping-->
     <b-modal title="Topping" centered hide-footer id="modal-choose-topping">
 
+        <b-row v-show="sugarTopping.length != 0">
+          <h5>Đường</h5>
+          <hr/>
+        </b-row>
+      <b-row>
+        <b-col>
+          <div v-for="sugar in sugarTopping" :key="sugar.name" class="border">
+            <input type="radio" v-model="sugars" name="sugar" :value="sugar.name">
+            <label>{{ sugar.name }}</label>
+          </div>
+       </b-col>
+      </b-row>
+
+      <b-row v-show="iceTopping.length != 0">
+          <h5>Đá</h5>
+          <hr/>
+        </b-row>
+      <b-row>
+        <b-col>
+          <div v-for="ice in iceTopping" :key="ice.name" class="border">
+            <input type="radio" v-model="ices" name="ice" :value="ice.name">
+            <label>{{ ice.name }}</label>
+          </div>
+       </b-col>
+      </b-row>
+
+      <b-row v-show="sizeTopping.length != 0">
+        <h5>Kích thước</h5>
+        <hr/>
+      </b-row>
+      <b-row>
+        <b-col>
+          <div v-for="size in sizeTopping" :key="size.name" class="border">
+            <input type="radio" v-model="sizes" name="size" :value="size.name">
+            <label>{{ size.name }}</label>
+          </div>
+       </b-col>
+      </b-row>
+
+      <b-row v-show="foodTopping.length != 0">
+          <h5>Topping</h5>
+          <hr/>
+        </b-row>
+      <b-row>
+        <b-col>
+          <div v-for="food in foodTopping" :key="food.name" class="border">
+            <input type="checkbox" v-model="foods" v-bind:name="food.name" :value="food.name">
+            <label>{{ food.name }}   +{{food.price}}</label>
+          </div>
+       </b-col>
+      </b-row>
+
         <b-row>
-              <b-col>
-                <b-table
-                hover
-                bordered
-                stacked="md"
-                :fields="toppingFields"
-                :items="listTopping">
-                <template v-slot:cell(action)="dataId">
-                  <b-list-group horizontal>
-                    <b-list-group-item @click="countDownTopping(dataId.item.actions)">
-                      <i class="fa fa-minus" />
-                    </b-list-group-item>
-                    <b-list-group-item @click="countUpTopping(dataId.item.actions)">
-                      <i class="fa fa-plus" />
-                    </b-list-group-item>
-                    <b-list-group-item>
-                      <span :id="'topping_' + `${dataId.item.actions}`">0</span>
-                    </b-list-group-item>
-                  </b-list-group>
-                </template>
-                </b-table>
-              </b-col>
-            </b-row>
-      <b-row>
+        </b-row>
 
-      </b-row>
-
-      <b-row>
-        <b-col cols="4" class="text-left mt-3">
-          <button class="btn btn-danger px-4" @click="cancelOrder()">
-            Hủy
-          </button>
-        </b-col>
-        <b-col cols="8" class="text-right mt-3">
-          <button class="btn btn-primary px-4" @click="sendOrder()">
-            Xác nhận
-          </button>
-        </b-col>
-      </b-row>
+        <b-row>
+          <b-col cols="4" class="text-left mt-3">
+            <button class="btn btn-danger px-4" @click="cancelTopping">
+              Hủy
+            </button>
+          </b-col>
+          <b-col cols="8" class="text-right mt-3">
+            <button class="btn btn-primary px-4" @click="confirmTopping">
+              Xác nhận
+            </button>
+          </b-col>
+        </b-row>
 
     </b-modal>
 
@@ -179,10 +214,6 @@ export default {
           label: 'Tên Sản Phẩm'
         },
         {
-          key: 'Topping',
-          label: 'topping'
-        },
-        {
           key: 'price',
           label: 'Giá'
         },
@@ -194,7 +225,7 @@ export default {
       ],
       orderfields: [
         {
-          key: 'stt',
+          key: 'index',
           label: 'STT'
         },
         {
@@ -202,7 +233,7 @@ export default {
           label: 'Tên Sản Phẩm'
         },
         {
-          key: 'price',
+          key: 'priceTempStr',
           label: 'Đơn giá'
         },
         {
@@ -212,14 +243,20 @@ export default {
         {
           key: 'amount',
           label: 'Thành tiền',
-        }
+        },
+        {
+          key: 'action',
+          label: '',
+          class: 'actions-cell'
+        },
+
       ],
       items: [],
       orderItems: [],
       storeId: null,
       tableId: null,
       totalPrice: 0,
-      listTopping: [],
+      currentIndex: null,
       toppingFields: [
         {
           key: 'stt',
@@ -239,6 +276,17 @@ export default {
           class: 'actions-cell'
         }
       ],
+      sugarTopping: [],
+      iceTopping: [],
+      sizeTopping: [],
+      foodTopping: [],
+      toppingItems: [],
+      sugars: "",
+      ices: "",
+      sizes: "",
+      foods: [],
+      menuCount: 0,
+
     }
   },
 
@@ -252,17 +300,17 @@ export default {
   },
 
   methods: {
-  /**
-   * Make toast with title
-   */
-  makeToast(variant = null, title="Success!!!", content="Thao tác thành công!!!") {
-    this.$bvToast.toast(content, {
-      title: title,
-      variant: variant,
-      solid: true,
-      autoHideDelay: 5000
-    })
-  },
+    /**
+     * Make toast with title
+     */
+    makeToast(variant = null, title="Success!!!", content="Thao tác thành công!!!") {
+      this.$bvToast.toast(content, {
+        title: title,
+        variant: variant,
+        solid: true,
+        autoHideDelay: 5000
+      })
+    },
 
     /**
      * Get menu
@@ -272,7 +320,6 @@ export default {
         if(res && res.data && res.data.data) {
           this.items = MenuMapper.mapCustomerMenuModelToDto(res.data.data)
         }
-
       }).catch(err => {
       })
     },
@@ -289,28 +336,29 @@ export default {
      */
     confirmOrder() {
       // Get list order
-      this.orderItems = []
-      for(var i = 1; i <= this.items.length; i++) {
-        let count = parseInt(document.getElementById(i).textContent)
-        let index = 1
-        if(count > 0) {
-          let order = {}
-          order.stt = index
-          order.name = this.items[i-1].name
-          order.price = this.items[i-1].price
-          order.quantity = count
-          let amount = parseInt(this.items[i-1].price) * parseInt(count)
-          order.amount = amount
-          this.totalPrice = this.totalPrice + amount
-
-          this.orderItems.push(order)
-          index = index + 1
-        }
-      }
-
-      if(this.orderItems.length == 0) {
-        return
-      }
+      // this.orderItems = []
+      // for(var i = 1; i <= this.items.length; i++) {
+      //   let count = parseInt(document.getElementById(i).textContent)
+      //   let index = 1
+      //   if(count > 0) {
+      //     let order = {}
+      //     order.stt = index
+      //     order.name = this.items[i-1].name
+      //     order.price = this.items[i-1].price
+      //     order.quantity = count
+      //     let amount = parseInt(this.items[i-1].price) * parseInt(count)
+      //     order.amount = amount
+      //     this.totalPrice = this.totalPrice + amount
+      //
+      //     this.orderItems.push(order)
+      //     index = index + 1
+      //   }
+      // }
+      //
+      // if(this.orderItems.length == 0) {
+      //   return
+      // }
+      this.getTotalPrice()
 
       this.$bvModal.show('modal-confirm-order')
     },
@@ -336,16 +384,75 @@ export default {
       let orderInfo = {"customerId": customerId,"customerName": customerName, "storeId": this.storeId, "tableId": this.tableId, "orders": this.orderItems}
       console.log(JSON.stringify(orderInfo))
       CustomerAPI.sendOrder(orderInfo).then(res => {
-        // this.$bvModal.msgBoxOk("Món ăn bạn gọi đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé!!!", {
-        //   title: "Đặt món thành công!!! ",
-        //   buttonSize: 'sm',
-        //   centered: true, size: 'sm',
-        //   footerClass: 'p-2'
-        // })
         this.makeToast('success', 'Đặt món thành công!!!', 'Món ăn bạn gọi đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé.')
       }).catch(err => {
         this.makeToast('danger', 'Đặt món thất bại!!!', 'Đã có lỗi xảy ra, bạn thử lại nhé.')
       })
+    },
+
+    /**
+     * Check menu is exist
+     */
+    checkMenu(index) {
+      if(this.orderItems.length > 0) {
+        for(var i = 0; i < this.orderItems.length; i++ ) {
+          if(this.orderItems[i].stt == index && this.items[index - 1].topping == false) {
+            return true
+          }
+        }
+      }
+      return false
+    },
+
+    /**
+     * Get index by id
+     */
+    getIndexById(id) {
+      let index = 0
+      if(this.orderItems.length > 0) {
+        for(var i = 0; i < this.orderItems.length; i++) {
+          if(this.orderItems[i].stt == id ) {
+            return index
+          }
+          index = index + 1
+        }
+      }
+      return index
+    },
+
+    /**
+     * Add menu
+     */
+    addMenu(id) {
+      if(this.checkMenu(id)) {
+        // Remove old
+        let indexTemp = this.getIndexById(id)
+        this.orderItems.splice(indexTemp, 1)
+      }
+      // Add new
+      let count = parseInt(document.getElementById(id).textContent)
+      if(count > 0) {
+        let order = {}
+        order.index = this.orderItems.length + 1
+        order.stt = id
+        order.name = this.items[id-1].name
+        order.price = this.items[id-1].price
+        order.priceTempStr = this.items[id-1].price
+        order.priceTempInt = this.items[id-1].price
+        let amount = 0
+
+        if(this.items[id-1].topping) {
+          order.quantity = 1
+          amount = parseInt(this.items[id-1].price)
+          order.amount = amount
+        } else {
+          order.quantity = count
+          amount = parseInt(this.items[id-1].price) * parseInt(count)
+          order.amount = amount
+        }
+
+        this.orderItems.push(order)
+      }
     },
 
     /**
@@ -356,14 +463,71 @@ export default {
       if(currentNumber > 0) {
         document.getElementById(num).textContent = currentNumber - 1
       }
+      this.addMenu(num)
+    },
+
+    /**
+     * Update index
+     */
+    updateIndex() {
+      for(var i = 0; i < this.orderItems.length; i++) {
+        this.orderItems[i].index = i + 1
+      }
+    },
+
+    /**
+     * Count down number of food
+     */
+    countDownOrder (index) {
+
+      index = index - 1
+      if(this.orderItems[index].quantity == 1) {
+        this.orderItems.splice(index, 1)
+
+        // Update index
+        this.updateIndex()
+
+      } else {
+        this.orderItems[index].quantity = this.orderItems[index].quantity - 1
+        this.orderItems[index].amount = this.orderItems[index].quantity * this.orderItems[index].priceTempInt
+      }
+      this.getTotalPrice()
+    },
+
+    /**
+     * Count down number of food
+     */
+    countUpOrder (index) {
+
+      index = index - 1
+
+      this.orderItems[index].quantity = this.orderItems[index].quantity + 1
+      this.orderItems[index].amount = this.orderItems[index].quantity * this.orderItems[index].priceTempInt
+      this.getTotalPrice()
+    },
+
+    /**
+     * Get total price
+     */
+    getTotalPrice() {
+      this.totalPrice = 0
+      for(var i = 0; i < this.orderItems.length; i++) {
+        this.totalPrice = this.totalPrice + this.orderItems[i].amount
+      }
     },
 
     /**
      * Count up number of food
      */
-    countUp (num) {
+    countUp (num, toppingFlag) {
+      if(toppingFlag) {
+        this.$bvModal.show('modal-choose-topping')
+      }
+      this.currentIndex = num
       let currentNumber = document.getElementById(num).textContent
       document.getElementById(num).textContent = parseInt(currentNumber) + 1
+
+      this.addMenu(num)
     },
 
     /**
@@ -374,41 +538,94 @@ export default {
     },
 
     /**
-     * Show topping
-     */
-    showTopping () {
-      this.$bvModal.show('modal-choose-topping')
-    },
-
-    /**
      * Get topping
      */
     getTopping() {
       CustomerApi.getTopping(this.storeId).then(res => {
         if(res && res.data && res.data.data) {
-          this.listTopping = ToppingMapper.mapToppingCusModelToDto(res.data.data)
+          let respone = res.data.data
+          this.sugarTopping = ToppingMapper.mapToppingCusModelToDto(respone.sugar)
+          this.iceTopping = ToppingMapper.mapToppingCusModelToDto(respone.ice)
+          this.sizeTopping = ToppingMapper.mapToppingCusModelToDto(respone.size)
+          this.foodTopping = ToppingMapper.mapToppingCusModelToDto(respone.food)
         }
-
       }).catch(err => {
       })
     },
 
     /**
-     * Count down number of topping
+     * Cancel topping
      */
-    countDownTopping (num) {
-      let currentNumber = parseInt(document.getElementById('topping_' + num).textContent)
-      if(currentNumber > 0) {
-        document.getElementById('topping_' + num).textContent = currentNumber - 1
-      }
+    cancelTopping() {
+      this.$bvModal.hide('modal-choose-topping')
     },
 
     /**
-     * Count up number of topping
+     * Get total price of topping
      */
-    countUpTopping (num) {
-      let currentNumber = document.getElementById('topping_' + num).textContent
-      document.getElementById('topping_' + num).textContent = parseInt(currentNumber) + 1
+    getTotalPriceOfTopping() {
+      let totalPrice = 0
+      for(var i = 0; i < this.foods.length; i++ ) {
+        for (var j = 0; j < this.foodTopping.length; j++) {
+          if (this.foods[i] == this.foodTopping[j].name) {
+            totalPrice = totalPrice + this.foodTopping[j].price
+          }
+        }
+      }
+      return totalPrice
+    },
+
+    /**
+     * Confirm topping
+     */
+    confirmTopping() {
+      // let topping = {}
+      //
+      // topping.menu = this.currentIndex
+      let detail = ""
+      if(this.sugars) {
+        detail = detail + this.sugars + " đường, "
+      }
+      if(this.ices) {
+        detail = detail + this.ices + " đá, "
+      }
+      if(this.sizes) {
+        detail = detail + "Size: " + this.sizes
+      }
+      if(this.foods) {
+        detail = detail + this.foods
+      }
+      if (detail != "") {
+        this.orderItems[this.orderItems.length - 1].name = this.orderItems[this.orderItems.length - 1].name + "(" + detail + ")"
+      }
+      // this.orderItems[this.orderItems.length - 1].topping = detail
+      let toppingPrice = this.getTotalPriceOfTopping()
+      let foodPrice = this.orderItems[this.orderItems.length - 1].price
+      alert(foodPrice)
+      if(toppingPrice > 0) {
+        this.orderItems[this.orderItems.length - 1].priceTempStr = this.orderItems[this.orderItems.length - 1].price + " + " + toppingPrice
+        let price = foodPrice + toppingPrice
+        this.orderItems[this.orderItems.length - 1].priceTempInt = price
+        this.orderItems[this.orderItems.length - 1].price = price
+        this.orderItems[this.orderItems.length - 1].amount = (price) * this.orderItems[this.orderItems.length - 1].quantity
+      }
+      this.orderItems[this.orderItems.length - 1].toppingPrice = toppingPrice
+      // alert(JSON.stringify(this.orderItems))
+
+      this.$bvModal.hide('modal-choose-topping')
+
+      // console.log(this.toppingItems)
+      this.resetModal()
+    },
+
+    /**
+     * Reset modal
+     */
+    resetModal() {
+      this.sugars = ""
+      this.ices = ""
+      this.sizes = ""
+      this.foods = []
     },
   }
 }

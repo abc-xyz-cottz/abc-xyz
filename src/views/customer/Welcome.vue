@@ -14,7 +14,7 @@
               <b-row>
                 <b-col cols="12" class="text-center">
                   <b-button variant="primary" class="px-4" @click="goToOrder()">
-                  Chọn Món
+                  Gọi Món
                   </b-button>
                   <b-button variant="primary" class="px-4" @click="goToRequire()">
                   Gửi Yêu Cầu
