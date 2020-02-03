@@ -10,9 +10,9 @@ export default {
         let promoTemp = {
           stt: stt
           , name: promotions[index].fields.name
-          , price: promotions[index].fields.cost
-          , expired: commonFunc.formatDate(promotions[index].fields.expired_at)
-          , createDate: commonFunc.formatDate(promotions[index].fields.created_at)
+          , price: commonFunc.currencyFormat(promotions[index].fields.cost)
+          , expired: promotions[index].fields.expired_at
+          , createDate: promotions[index].fields.created_at
           , id: promotions[index].pk
         }
         result.push(promoTemp)
@@ -36,8 +36,9 @@ export default {
   
         let promoTemp = {
           stt: stt,
+          storeName: promotions[index].fields.store_name,
           name: promotions[index].fields.name,
-          expiredate: commonFunc.formatDate(promotions[index].fields.expired_at),
+          expiredate: promotions[index].fields.expired_at,
           id: promotions[index].pk
         }
         result.push(promoTemp)
@@ -57,9 +58,9 @@ export default {
             storeName: promotions[index].fields.store_name,
             cityName: promotions[index].fields.city_name,
             districtName: promotions[index].fields.district_name,
-            price: promotions[index].fields.price,
+            price: commonFunc.currencyFormat(promotions[index].fields.price),
             quantity: promotions[index].fields.quantity,
-            expiredAt: commonFunc.formatDate(promotions[index].fields.expired_at),
+            expiredAt: promotions[index].fields.expired_at,
             id: promotions[index].pk,
             action: promotions[index].pk
           }

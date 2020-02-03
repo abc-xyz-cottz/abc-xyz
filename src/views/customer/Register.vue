@@ -5,7 +5,7 @@
         <b-col md="6" sm="8">
           <b-card no-body class="mx-4">
             <b-card-body class="p-4">
-              <b-form>
+
                   <h3 class="text-center">Đăng Ký</h3>
                   <div class="form-group">
                     <label>Tên</label><span class="error-sybol"></span>
@@ -43,14 +43,25 @@
 
                   <div class="form-group">
                     <label>Ngày Tháng Năm Sinh</label><span class="error-sybol"></span>
-                    <datepicker
-                    id="expired_date_from"
-                    v-model="inputs.birthday"
-                    placeholder="dd-mm-yyyy"
-                    :format="momentFormat">
-                    </datepicker>
+                    <!--<datepicker-->
+                    <!--id="expired_date_from"-->
+                    <!--v-model="inputs.birthday"-->
+                    <!--placeholder="dd-mm-yyyy"-->
+                    <!--:format="momentFormat">-->
+                    <!--</datepicker>-->
+                    <input
+                      id="birthday"
+                      v-model="inputs.birthday"
+                      type="text"
+                      placeholder="dd-mm-yyyy"
+                      autocomplete="new-password"
+                      class="form-control"
+                      v-on:change="checkBirthdayFormat($event.target)">
                     <b-form-invalid-feedback  class="invalid-feedback" :state="!errorBirthday">
                       Vui lòng nhập ngày sinh
+                    </b-form-invalid-feedback>
+                    <b-form-invalid-feedback class="invalid-feedback" :state="birthdayCheckFlag">
+                      Ngày sinh không đúng
                     </b-form-invalid-feedback>
                   </div>
 
@@ -118,12 +129,12 @@
                   </div>
                   <b-row>
                     <b-col cols="12" class="text-center">
-                      <button class="btn btn-primary px-4">
+                      <button class="btn btn-primary px-4" v-on:click="update">
                         Đăng Ký
                       </button>
                     </b-col>
                   </b-row>
-              </b-form>
+
             </b-card-body>
           </b-card>
         </b-col>
@@ -135,18 +146,14 @@
 <script>
 import AuthenticationAPI from '@/api/authentication'
 import 'bootstrap/dist/css/bootstrap.css'
-import Datepicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css'
-import moment from 'moment'
 import MasterApi from '@/api/master'
 import MasterMapper from '@/mapper/master'
+import commonFunc from '@/common/commonFunc'
 
 
 export default {
   name: 'Register',
-  components: {
-    Datepicker
-  },
   data () {
     return {
       inputs: {
@@ -179,16 +186,7 @@ export default {
       disabledDates: {
         from: new Date(Date.now())
       },
-      momentFormat: {
-        // Date to String
-        stringify: (date) => {
-        return date ? moment(date).format('DD-MM-YYYY') : ''
-        },
-        // String to Date
-        parse: (value) => {
-        return value ? moment(value, 'DD-MM-YYYY').toDate() : null
-        }
-      }
+      birthdayCheckFlag: true,
     }
   },
   mounted () {
@@ -237,9 +235,7 @@ export default {
     }
   },
   methods: {
-    customFormatter(date) {
-      return moment(date).format('DD/MM/YYYY');
-    },
+
     checkConfirmPass () {
       return this.errorConfirmPassword || (this.inputs.password == this.confirmPassword)
     },
@@ -249,7 +245,8 @@ export default {
     checkValidate () {
       return !(this.errorName || this.errorPhone || this.errorGender || this.errorBirthday
         || this.errorCity || this.errorDistrict || this.errorPassword || this.errorConfirmPassword
-        || this.errorMatch || this.errorLengthPassword || this.errorLengthConfirmPassword)
+        || this.errorMatch || this.errorLengthPassword || this.errorLengthConfirmPassword
+        || !this.birthdayCheckFlag)
     },
 
     /**
@@ -314,6 +311,21 @@ export default {
 
     },
 
+    /**
+     * Check phone number
+     */
+    checkBirthdayFormat(item) {
+      let valueInput = item.value
+      if (valueInput != null && valueInput != "") {
+        if (commonFunc.dateFormatCheck(valueInput)) {
+          this.birthdayCheckFlag = true
+        } else {
+          this.birthdayCheckFlag = false
+        }
+      } else {
+        this.birthdayCheckFlag = true
+      }
+    },
 
 
   }

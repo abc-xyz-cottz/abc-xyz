@@ -10,8 +10,8 @@
                 </b-button>
               </b-col>
               <b-col cols="6">
-                <button class="btn btn-primary pull-right  px-4" @click="confirmOrder()">
-                    Đặt Món
+                <button class="btn btn-primary pull-right  px-4" @click="confirmOrder()" :disabled="orderedNumber == 0">
+                  Gọi Món <b style="color: deeppink">{{orderedNumber}}</b>
                 </button>
               </b-col>
             </b-row>
@@ -40,7 +40,7 @@
                     <b-list-group-item @click="countUp(dataId.value, dataId.item.topping)">
                       <i class="fa fa-plus" />
                     </b-list-group-item>
-                    <b-list-group-item hidden>
+                    <b-list-group-item>
                       <span :id="`${dataId.value}`">0</span>
                     </b-list-group-item>
                   </b-list-group>
@@ -56,7 +56,7 @@
 
       <!-- Modal -->
       <b-modal id="modal-order" title="Thông Báo">
-        <p>Đặt món thành công!</p>
+        <p>Gọi món thành công!</p>
         <p>Đăng ký tài khoản để tích điểm và nhận nhiều khuyến mãi từ nhà hàng</p>
         <template v-slot:modal-footer>
           <b-button
@@ -68,7 +68,7 @@
       </b-modal>
 
       <!-- Modal confirm order -->
-    <b-modal title="Thông tin đặt món" centered hide-footer
+    <b-modal title="Thông tin gọi món" centered hide-footer
     id="modal-confirm-order">
       <b-row>
         <b-col>
@@ -286,6 +286,7 @@ export default {
       sizes: "",
       foods: [],
       menuCount: 0,
+      orderedNumber: 0
 
     }
   },
@@ -335,32 +336,24 @@ export default {
      * Confirm order
      */
     confirmOrder() {
-      // Get list order
-      // this.orderItems = []
-      // for(var i = 1; i <= this.items.length; i++) {
-      //   let count = parseInt(document.getElementById(i).textContent)
-      //   let index = 1
-      //   if(count > 0) {
-      //     let order = {}
-      //     order.stt = index
-      //     order.name = this.items[i-1].name
-      //     order.price = this.items[i-1].price
-      //     order.quantity = count
-      //     let amount = parseInt(this.items[i-1].price) * parseInt(count)
-      //     order.amount = amount
-      //     this.totalPrice = this.totalPrice + amount
-      //
-      //     this.orderItems.push(order)
-      //     index = index + 1
-      //   }
-      // }
-      //
-      // if(this.orderItems.length == 0) {
-      //   return
-      // }
       this.getTotalPrice()
 
       this.$bvModal.show('modal-confirm-order')
+    },
+
+    /**
+     * Reset order
+     */
+    resetOrder() {
+      for(var i = 0; i < this.orderItems.length; i++) {
+        document.getElementById(this.orderItems[i].stt).textContent = 0
+      }
+
+      this.orderedNumber = 0
+      this.orderItems = []
+      this.totalPrice = 0
+
+
     },
 
     /**
@@ -384,10 +377,13 @@ export default {
       let orderInfo = {"customerId": customerId,"customerName": customerName, "storeId": this.storeId, "tableId": this.tableId, "orders": this.orderItems}
       console.log(JSON.stringify(orderInfo))
       CustomerAPI.sendOrder(orderInfo).then(res => {
-        this.makeToast('success', 'Đặt món thành công!!!', 'Món ăn bạn gọi đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé.')
+        this.makeToast('success', 'Gọi món thành công!!!', 'Món ăn bạn gọi đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé.')
       }).catch(err => {
-        this.makeToast('danger', 'Đặt món thất bại!!!', 'Đã có lỗi xảy ra, bạn thử lại nhé.')
+        this.makeToast('danger', 'Gọi món thất bại!!!', 'Đã có lỗi xảy ra, bạn thử lại nhé.')
       })
+
+      // Reset order
+      this.resetOrder()
     },
 
     /**
@@ -453,6 +449,9 @@ export default {
 
         this.orderItems.push(order)
       }
+
+      // Update ordered number
+      this.orderedNumber = this.orderedNumber + 1
     },
 
     /**
@@ -492,6 +491,9 @@ export default {
         this.orderItems[index].amount = this.orderItems[index].quantity * this.orderItems[index].priceTempInt
       }
       this.getTotalPrice()
+
+      // Update ordered number
+      this.orderedNumber = this.orderedNumber - 1
     },
 
     /**
@@ -504,6 +506,9 @@ export default {
       this.orderItems[index].quantity = this.orderItems[index].quantity + 1
       this.orderItems[index].amount = this.orderItems[index].quantity * this.orderItems[index].priceTempInt
       this.getTotalPrice()
+
+      // Update ordered number
+      this.orderedNumber = this.orderedNumber + 1
     },
 
     /**

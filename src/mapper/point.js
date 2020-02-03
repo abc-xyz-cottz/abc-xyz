@@ -10,7 +10,7 @@ export default {
       let pointTemp = {
         stt: stt,
         name: points[index].fields.store_name,
-        point: points[index].fields.total_point,
+        point: commonFunc.currencyFormat(points[index].fields.total_point),
         store_id: points[index].fields.store_id,
         id: points[index].pk
       }
@@ -28,7 +28,9 @@ export default {
 
       let pointTemp = {
         stt: stt,
-        point: points[index].fields.remaining,
+        point: commonFunc.currencyFormat(points[index].fields.point),
+        remaining: commonFunc.currencyFormat(points[index].fields.remaining),
+        createdDate: commonFunc.formatDate(points[index].fields.created_at),
         expiredate: commonFunc.formatDate(points[index].fields.expire_date)
       }
       result.push(pointTemp)

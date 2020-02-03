@@ -62,7 +62,7 @@ export default {
         },
         {
           key: 'price',
-          label: 'Giá'
+          label: 'Giá(điểm)'
         },
         {
           key: 'expired',

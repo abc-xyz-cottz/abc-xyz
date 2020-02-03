@@ -18,7 +18,7 @@
               </b-col>
             </b-row>
             <div class="form-group">
-              <label>Tên</label>
+              <label>Tên</label><span class="error-sybol"></span>
               <input
                 id="name"
                 v-model="inputs.name"
@@ -32,7 +32,7 @@
                 </b-form-invalid-feedback>
             </div>
             <div class="form-group">
-              <label>Số Điện Thoại</label>
+              <label>Số Điện Thoại</label><span class="error-sybol"></span>
               <input
                 id="phone"
                 v-model="inputs.phone"
@@ -52,7 +52,7 @@
             </div>
 
             <div class="form-group">
-              <label>Giới Tính</label>
+              <label>Giới Tính</label><span class="error-sybol"></span>
               <b-form-select :disabled="!onEdit" :options="options" class="mb-3" v-model="inputs.gender"></b-form-select>
               <b-form-invalid-feedback class="invalid-feedback" :state="!errorGender">
                 Vui lòng chọn giới tính
@@ -60,20 +60,24 @@
             </div>
 
             <div class="form-group">
-              <label>Ngày Tháng Năm Sinh</label>
+              <label>Ngày Tháng Năm Sinh</label><span class="error-sybol"></span>
               <input
                 id="birthday"
                 v-model="inputs.birthday"
                 type="text"
                 autocomplete="new-password"
                 class="form-control"
-                :disabled="!onEdit">
+                :disabled="!onEdit"
+                v-on:change="checkBirthdayFormat($event.target)">
               <b-form-invalid-feedback class="invalid-feedback" :state="!errorBirthday">
                 Vui lòng nhập ngày sinh
               </b-form-invalid-feedback>
+              <b-form-invalid-feedback class="invalid-feedback" :state="birthdayCheckFlag">
+                Ngày sinh không đúng
+              </b-form-invalid-feedback>
             </div>
             <div class="form-group">
-              <label>Tỉnh/ Thành Phố</label>
+              <label>Tỉnh/Thành Phố</label><span class="error-sybol"></span>
               <b-form-select 
                   :options="optionsCity"
                   id="city_id"
@@ -90,7 +94,7 @@
                 </b-form-invalid-feedback>
             </div>
             <div class="form-group">
-              <label>Quận/ Huyện</label>
+              <label>Quận/Huyện</label><span class="error-sybol"></span>
               <b-form-select 
                 :options="optionsDistrict"
                 id="district"
@@ -102,7 +106,7 @@
                 :disabled="!onEdit">
               </b-form-select>
               <b-form-invalid-feedback class="invalid-feedback" :state="!errorDistrict">
-                Vui lòng nhập quận
+                Vui lòng nhập quận/huyện
               </b-form-invalid-feedback>
             </div>
           </b-form>
@@ -118,6 +122,7 @@ import Mapper from '@/mapper/customer'
 import MasterApi from '@/api/master'
 import MasterMapper from '@/mapper/master'
 import commonFunc from '@/common/commonFunc'
+import 'vue2-datepicker/index.css'
 
 
 export default {
@@ -141,6 +146,7 @@ export default {
       click: false,
       onEdit: false,
       phoneNumberCheckFlag: true,
+      birthdayCheckFlag: true,
     }
   },
   computed: {
@@ -172,7 +178,8 @@ export default {
     },
     checkValidate () {
       return !(this.errorName || this.errorCity || this.errorDistrict || this.errorPhone
-            || this.errorGender || this.errorBirthday || !this.phoneNumberCheckFlag)
+            || this.errorGender || this.errorBirthday || !this.phoneNumberCheckFlag
+            || !this.birthdayCheckFlag)
     },
 
     /**
@@ -282,6 +289,7 @@ export default {
         })
       }
     },
+
     /**
      * Check phone number
      */
@@ -297,6 +305,22 @@ export default {
           this.phoneNumberCheckFlag = false
       } else {
         this.phoneNumberCheckFlag = true
+      }
+    },
+
+    /**
+     * Check phone number
+     */
+    checkBirthdayFormat(item) {
+      let valueInput = item.value
+      if (valueInput != null && valueInput != "") {
+        if (commonFunc.dateFormatCheck(valueInput)) {
+          this.birthdayCheckFlag = true
+        } else {
+          this.birthdayCheckFlag = false
+        }
+      } else {
+        this.birthdayCheckFlag = true
       }
     },
   }

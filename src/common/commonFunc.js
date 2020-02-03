@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import {Constant} from "./constant";
+import moment from 'moment'
 
 export default {
 
@@ -10,6 +11,25 @@ export default {
   phoneNumberCheck(phoneNumber) {
     var vnf_regex = /((01|02|03|04|05|06|07|08|09)+([0-9]{8})\b)/g
     return vnf_regex.test(phoneNumber)
+  },
+
+  /**
+   * Date format check
+   * @param dateInput
+   */
+  dateFormatCheck(dateInput) {
+    let result = false
+    var vnf_regex = /^\d{2}[./-]\d{2}[./-]\d{4}$/
+
+    let flag_check = vnf_regex.test(dateInput)
+    if(flag_check) {
+      var m = moment(dateInput, 'DD-MM-YYYY');
+      if(m.isValid()) {
+        result = true
+      }
+    }
+    return result
+
   },
 
   /**
@@ -64,6 +84,7 @@ export default {
    */
   formatDate(date) {
     let result = date.substring(0, 10)
+    result = moment(result).format('DD-MM-YYYY')
     return result
   },
 
@@ -141,5 +162,13 @@ export default {
           }
       }
       return message
-  }
+  },
+
+  /**
+   * Currency format
+   */
+  currencyFormat(num) {
+    let result = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    return result
+  },
 }

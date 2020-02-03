@@ -12,12 +12,11 @@
             <b-table 
               hover
               bordered
-              stacked="md"
               :fields="fields" 
               :items="items">
               <template v-slot:cell(actions)="dataId">
                 <b-list-group horizontal>
-                  <b-list-group-item @click="showDetail(dataId.item.store_id)">
+                  <b-list-group-item @click="showDetail(dataId.item.store_id, dataId.item.name)">
                     <i class="fa fa-info" />
                   </b-list-group-item>
                 </b-list-group>
@@ -27,13 +26,15 @@
         </b-row>
       </b-card-body>
     </b-card>
-    <b-modal id="modal-point" title="Chi Tiết">
-      <b-table 
+    <b-modal id="modal-point" title="Chi Tiết Điểm">
+      <h5>Cửa hàng: <b>{{currentStore}}</b></h5>
+      <b-table
         hover
         bordered
-        stacked="md"
+        sticky-header
         :fields="fieldsPoint" 
-        :items="itemsPoint">
+        :items="itemsPoint"
+        >
         </b-table>
         <template v-slot:modal-footer>
           <b-button
@@ -66,7 +67,7 @@ export default {
         },
         {
           key: 'point',
-          label: 'Tổng Điểm'
+          label: 'Điểm(khả dụng)'
         },
         {
           key: 'actions',
@@ -86,11 +87,20 @@ export default {
           label: 'Điểm'
         },
         {
+          key: 'remaining',
+          label: 'Còn lại'
+        },
+        {
+          key: 'createdDate',
+          label: 'Ngày tích điểm'
+        },
+        {
           key: 'expiredate',
-          label: 'Ngày Hết Hạn'
+          label: 'Ngày hết hạn'
         }
       ],
-      itemsPoint: []
+      itemsPoint: [],
+      currentStore: "",
     }
   },
   mounted() {
@@ -113,7 +123,8 @@ export default {
      * Show detail
      * @param store_id
      */
-    showDetail (store_id) {
+    showDetail (store_id, storeName) {
+      this.currentStore = storeName
       customerAPI.getPointDetailList(store_id).then(res => {
         if(res != null && res.data != null && res.data.data != null) {
           this.itemsPoint = Mapper.mapPointDetailModelToDto(res.data.data.point_detail)
@@ -144,3 +155,4 @@ export default {
   }
 }
 </script>
+

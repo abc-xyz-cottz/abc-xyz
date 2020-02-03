@@ -70,6 +70,10 @@ export default {
           label: 'STT'
         },
         {
+          key: 'storeName',
+          label: 'Cửa hàng'
+        },
+        {
           key: 'name',
           label: 'Tên'
         },
