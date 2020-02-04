@@ -267,4 +267,7 @@ export default {
     display: flex;
     align-items: center;
   }
+  .default-btn-bg {
+    background-color: #444444 !important;
+  }
 </style>

@@ -155,4 +155,11 @@ export default {
   getTopping(storeId) {
     return session.get(RootAPI + 'topping/store/' + storeId)
   },
+
+  /**
+   * Get store name
+   */
+  getStoreNameTableName(inputs) {
+    return session.post(RootAPI + 'store/get-name',inputs)
+  }
 }

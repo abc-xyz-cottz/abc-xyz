@@ -127,7 +127,7 @@ export default new Router({
       component: CustomerHome
     },
     {
-      path: '/store/:sid/table/:tid',
+      path: '/welcome/:code',
       name: 'Welcome',
       component: Welcome
     },

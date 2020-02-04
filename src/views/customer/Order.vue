@@ -34,9 +34,6 @@
                 </template>
                 <template v-slot:cell(action)="dataId">
                   <b-list-group horizontal>
-                    <!--<b-list-group-item @click="countDown(dataId.value)">-->
-                      <!--<i class="fa fa-minus" />-->
-                    <!--</b-list-group-item>-->
                     <b-list-group-item @click="countUp(dataId.value, dataId.item.topping)">
                       <i class="fa fa-plus" />
                     </b-list-group-item>
@@ -539,7 +536,8 @@ export default {
      * Go back
      */
     goBack() {
-      this.$router.push('/store/' + this.storeId + '/table/' + this.tableId)
+      let code = btoa(this.storeId + "-" + this.tableId)
+      this.$router.push('/welcome/' + code)
     },
 
     /**

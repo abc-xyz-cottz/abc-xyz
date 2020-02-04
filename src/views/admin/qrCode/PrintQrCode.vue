@@ -56,7 +56,7 @@
       <b-card-body>
         <b-row v-show="tableId" id="printAble">
           <b-col>
-            <b-card  :style="{width: defaultWidthPx + 'px', height: 800 + 'px'}">
+            <b-card  :style="{width: defaultWidthPx + 'px', height: 800 + 'px'}" id="qrCodePlaceFull">
               <b-card-body class="p-4">
                 <b-row>
                   <b-col md="12" class="text-right mr-4">
@@ -73,41 +73,43 @@
                   </b-col>
                 </b-row>
                 <br/>
+                <br/>
+                <br/>
                 <b-row>
                   <b-col class="text-center" id="qrCodePlace">
                     <qrcode id="qrCode" v-if="qr_code" :value="qr_code" :options="{ width: 200 }" tag="img"/>
                   </b-col>
                 </b-row>
                 <br/>
-                <b-row>
-                  <p class="border-bottom"><b>Hướng dẫn sử dụng:</b></p>
-                </b-row>
-                <b-row>
-                  <p>1. Bạn có thể quét QR code phía trên bằng bất cứ công cụ nào: camera, Zalo, hoặc
-                    nhấn nút quét QR code trên website orderway.vn</p>
-                </b-row>
-                <b-row>
-                  <p>2. Chọn món hoặc gửi yêu cầu tới nhân viên trong màn hình hiện ra</p>
-                </b-row>
-                <b-row>
-                  <p>3. Kết thúc! </p>
-                </b-row>
-                <b-row>
-                  <br/>
-                  <p>* Đăng nhập tài khoản để tích điểm trong mỗi lần order, điểm này có thể mua nhiều
-                    khuyến mãi từ nhà hàng</p>
-                </b-row>
-                <hr/>
-                <b-row>
+                <!--<b-row>-->
+                  <!--<p class="border-bottom"><b>Hướng dẫn sử dụng:</b></p>-->
+                <!--</b-row>-->
+                <!--<b-row>-->
+                  <!--<p>1. Bạn có thể quét QR code phía trên bằng bất cứ công cụ nào: camera, Zalo, hoặc-->
+                    <!--nhấn nút quét QR code trên website orderway.vn</p>-->
+                <!--</b-row>-->
+                <!--<b-row>-->
+                  <!--<p>2. Chọn món hoặc gửi yêu cầu tới nhân viên trong màn hình hiện ra</p>-->
+                <!--</b-row>-->
+                <!--<b-row>-->
+                  <!--<p>3. Kết thúc! </p>-->
+                <!--</b-row>-->
+                <!--<b-row>-->
+                  <!--<br/>-->
+                  <!--<p>* Đăng nhập tài khoản để tích điểm trong mỗi lần order, điểm này có thể mua nhiều-->
+                    <!--khuyến mãi từ nhà hàng</p>-->
+                <!--</b-row>-->
+                <!--<hr/>-->
+                <!--<b-row>-->
 
-                  <b-col md="3" class="text-right">
-                    <img src="/static/img/icons/favicon.ico" class="logoSize"/>
-                  </b-col>
-                  <b-col md="9" class="text-left">
-                    <h2> Order Way</h2>
-                    <p>Ứng dụng đặt món tại bàn trực tuyến</p>
-                  </b-col>
-                </b-row>
+                  <!--<b-col md="3" class="text-right">-->
+                    <!--<img src="/static/img/icons/favicon.ico" class="logoSize"/>-->
+                  <!--</b-col>-->
+                  <!--<b-col md="9" class="text-left">-->
+                    <!--<h2> Order Way</h2>-->
+                    <!--<p>Ứng dụng đặt món tại bàn trực tuyến</p>-->
+                  <!--</b-col>-->
+                <!--</b-row>-->
 
               </b-card-body>
             </b-card>
@@ -210,7 +212,8 @@ export default {
       this.tableName = document.getElementById("tableList").selectedOptions[0].text
       let user = JSON.parse(Cookies.get(Constant.APP_USR))
       if(user) {
-        let url = window.location.host + "/store/" + user.storeId + "/table/" + this.tableId
+        let code = btoa(user.storeId + "-" + this.tableId)
+        let url = window.location.host + "/welcome/" + code
         this.qr_code = url
       }
     },
@@ -298,5 +301,9 @@ export default {
   .logoSize {
     width: 80px;
     height: 80px;
+  }
+
+  #qrCodePlaceFull {
+    background-image: url("../../../../static/img/project/bg_qr.jpg");
   }
 </style>

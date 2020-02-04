@@ -1,5 +1,5 @@
 <template>
-  <div class="app flex-row align-items-center">
+  <div class="app flex-row align-items-center" id="fullScreen">
     <div class="container">
       <b-row class="row justify-content-center">
         <b-col md="6">
@@ -7,16 +7,17 @@
             <b-card-body class="welcome-page">
               <b-row>
                 <b-col class="text-center">
-                  <h5>Welcome To Delicious Restaurant</h5>
+                  <h5>{{storeName}}</h5>
+                  <p class="text-right">(Bàn: {{tableName}})</p>
                 </b-col>
               </b-row>
-              <img src="/static/welcome.jpg"/>
+              <br>
               <b-row>
                 <b-col cols="12" class="text-center">
-                  <b-button variant="primary" class="px-4" @click="goToOrder()">
+                  <b-button variant="primary" class="px-4 default-btn-bg" @click="goToOrder()">
                   Gọi Món
                   </b-button>
-                  <b-button variant="primary" class="px-4" @click="goToRequire()">
+                  <b-button variant="primary" class="px-4 default-btn-bg" @click="goToRequire()">
                   Gửi Yêu Cầu
                   </b-button>
                 </b-col>
@@ -72,7 +73,9 @@ export default {
   data () {
     return {
       storeId: null,
+      storeName: "Order way",
       tableId: null,
+      tableName: "00",
       request: null,
       isConnected: false,
       socketMessage: ''
@@ -96,14 +99,14 @@ export default {
   },
 
   mounted() {
-    this.storeId = this.$route.params.sid
-    this.tableId = this.$route.params.tid
+    let code = this.$route.params.code
+    let decode = atob(code)
+    let decode_temmp = decode.split("-")
 
-    // Store store
-    this.$store.commit('updateStore', this.$route.params.sid)
+    this.storeId = decode_temmp[0]
+    this.tableId = decode_temmp[1]
 
-    // Store table
-    this.$store.commit('updateTable', this.$route.params.tid)
+    this.getStoreNameTableName()
   },
 
   methods: {
@@ -132,6 +135,27 @@ export default {
      */
     goToRequire () {
       this.$bvModal.show('modal-send-request')
+    },
+
+    /**
+     * Get store name, table name by id
+     */
+    getStoreNameTableName() {
+      let dataPost = {"storeId": this.storeId, "tableId": this.tableId}
+      CustomerAPI.getStoreNameTableName(dataPost).then(res => {
+        this.storeName = res.data.data.store
+        this.tableName = res.data.data.table
+
+        // Store store
+        this.$store.commit('updateStore', this.storeId)
+
+        // Store table
+        this.$store.commit('updateTable', this.tableId)
+      }).catch(err => {
+        // Handle error
+        // let errorMess = commonFunc.handleStaffError(err)
+        // this.popToast('danger', errorMess)
+      })
     },
 
     /**
@@ -165,12 +189,6 @@ export default {
       }
 
       CustomerAPI.sendRequest(requestInfo).then(res => {
-        // this.$bvModal.msgBoxOk("Yêu cầu của bạn đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé!!!", {
-        //   title: "Gửi yêu cầu thành công!!! ",
-        //   buttonSize: 'sm',
-        //   centered: true, size: 'sm',
-        //   footerClass: 'p-2'
-        // })
         this.makeToast('success', 'Gửi yêu cầu thành công!!!', 'Yêu cầu của bạn đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé.' )
       }).catch(err => {
         this.makeToast('danger', 'Gửi yêu cầu thất bại!!!', 'Đã có lỗi xảy ra, bạn thử lại nhé.')
@@ -188,3 +206,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  #fullScreen {
+    background-image: url("../../../static/img/project/bg_welcome_1.png");
+  }
+</style>
