@@ -226,7 +226,7 @@ export default new Router({
       component: Promo
     },
     {
-      path: '/promo-detail/:Tab/:id',
+      path: '/promo-detail/:id',
       name: 'PromoDetail',
       component: PromoDetail
     },

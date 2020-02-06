@@ -27,6 +27,25 @@ export default {
           "quantity": promotion.fields.quantity,
       }
     },
+    mapPromoCustomerModelToOwnerDto (promotions) {
+      let result = []
+
+      var stt = 0
+      for (var index in promotions) {
+        stt = stt + 1
+
+        let promoTemp = {
+          stt: stt,
+          storeName: promotions[index].fields.store_name,
+          name: promotions[index].fields.name,
+          expiredate: promotions[index].fields.expired_at,
+          id: promotions[index].pk,
+          action: promotions[index].pk
+        }
+        result.push(promoTemp)
+      }
+      return result
+    },
     mapPromoCustomerModelToDto (promotions) {
       let result = []
   
@@ -67,5 +86,15 @@ export default {
           result.push(promoTemp)
         }
         return result
-    }
+    },
+    mapPromoCusDetailModelToDto (promotion) {
+        return {
+          "id": promotion.pk,
+          "name": promotion.fields.name,
+          "expiredAt": promotion.fields.expired_at,
+          "createAt": promotion.fields.created_at,
+          "storeId": promotion.fields.store_id,
+          "storeName": promotion.fields.store_name,
+        }
+      },
   }

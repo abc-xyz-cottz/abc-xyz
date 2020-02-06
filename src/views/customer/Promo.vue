@@ -3,34 +3,39 @@
     <b-card no-body>
       <b-card-body>
           <b-tabs content-class="mt-3">
+
             <b-tab title="Khả Dụng" active>
+              <b-row>
+          <b-col>
                 <b-table
                 hover
                 bordered
                 stacked="md"
-                :fields="fields"
+                :fields="ownerFields"
                 :items="AvailablePromo">
-                <template v-slot:cell(stt)="dataId">
-                  <span class="promo-tabs-link" @click="showDetail(dataId.item.id, 'available')">
-                    {{ dataId.value }}
-                  </span>
-                </template>
+
+                  <template v-slot:cell(action)="dataId">
+                    <b-list-group horizontal>
+                      <b-list-group-item @click="showDetail(dataId.item.id)">
+                        <i class="fa fa-info" />
+                      </b-list-group-item>
+                    </b-list-group>
+                  </template>
                 </b-table>
+          </b-col>
+              </b-row>
             </b-tab>
-            <b-tab title="Đã Hết Hạn">
+
+            <b-tab title="Hết Hạn">
                 <b-table
                 hover
                 bordered
                 stacked="md"
                 :fields="fields"
                 :items="ExpiredPromo">
-                <template v-slot:cell(stt)="dataId">
-                  <span class="promo-tabs-link" @click="showDetail(dataId.item.id, 'expired')">
-                    {{ dataId.value }}
-                  </span>
-                </template>
               </b-table>
             </b-tab>
+
             <b-tab title="Đã Dùng">
                 <b-table
                 hover
@@ -38,15 +43,9 @@
                 stacked="md"
                 :fields="fields"
                 :items="UsedPromo">
-                <template v-slot:cell(stt)="dataId">
-                  <b-list-group horizontal>
-                    <span class="promo-tabs-link" @click="showDetail(dataId.item.id, 'used')">
-                      {{ dataId.value }}
-                    </span>
-                  </b-list-group>
-                </template>
                 </b-table>
             </b-tab>
+
         </b-tabs>
       </b-card-body>
     </b-card>
@@ -70,6 +69,24 @@ export default {
           label: 'STT'
         },
         {
+          key: 'name',
+          label: 'Tên'
+        },
+        {
+          key: 'storeName',
+          label: 'Cửa hàng'
+        },
+        {
+          key: 'expiredate',
+          label: 'Ngày Hết Hạn'
+        }
+      ],
+      ownerFields: [
+        {
+          key: 'stt',
+          label: 'STT'
+        },
+        {
           key: 'storeName',
           label: 'Cửa hàng'
         },
@@ -80,6 +97,10 @@ export default {
         {
           key: 'expiredate',
           label: 'Ngày Hết Hạn'
+        },
+        {
+          key: 'action',
+          label: ''
         }
       ],
       AvailablePromo: [],
@@ -108,11 +129,9 @@ export default {
 
     /**
      * Show detail
-     * @param id
-     * @param tabName
      */
-    showDetail (id, tabName) {
-      this.$router.push('/promo-detail/'+ tabName + '/' + id)
+    showDetail (id) {
+      this.$router.push('/promo-detail/' + id)
     },
 
     /**
@@ -122,7 +141,7 @@ export default {
       customerAPI.getAvailablePromo().then(res => {
         if(res != null && res.data != null && res.data.data != null) {
           console.log(res.data.data)
-          this.AvailablePromo = Mapper.mapPromoCustomerModelToDto(res.data.data)
+          this.AvailablePromo = Mapper.mapPromoCustomerModelToOwnerDto(res.data.data)
         }
       }).catch(err => {
         // Handle error

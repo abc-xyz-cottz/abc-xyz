@@ -147,6 +147,7 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.onScroll)
+    window.addEventListener('resize', this.deleted)
     this.search()
   },
   methods: {

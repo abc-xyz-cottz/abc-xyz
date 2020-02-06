@@ -161,5 +161,12 @@ export default {
    */
   getStoreNameTableName(inputs) {
     return session.post(RootAPI + 'store/get-name',inputs)
+  },
+
+  /**
+   * Get promotion detail
+   */
+  getPromotionDetail(id) {
+    return session.get(RootAPI + 'promotion/' + id + "/customer")
   }
 }
