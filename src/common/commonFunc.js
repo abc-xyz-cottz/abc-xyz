@@ -171,4 +171,19 @@ export default {
     let result = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     return result
   },
+
+  /**
+   * Format id
+   */
+  formatId(idInput, lenInput) {
+    let befor = ""
+    let idLen = idInput.toString().length
+    if(idLen < lenInput) {
+      for(var i = 0; i< lenInput-idLen; i++) {
+        befor = befor + "0"
+      }
+    }
+    let result = befor + idInput.toString()
+    return result
+  }
 }

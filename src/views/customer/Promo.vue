@@ -65,8 +65,8 @@ export default {
       currentPage: '1',
       fields: [
         {
-          key: 'stt',
-          label: 'STT'
+          key: 'idString',
+          label: 'Mã'
         },
         {
           key: 'name',
@@ -83,16 +83,16 @@ export default {
       ],
       ownerFields: [
         {
-          key: 'stt',
-          label: 'STT'
-        },
-        {
-          key: 'storeName',
-          label: 'Cửa hàng'
+          key: 'idString',
+          label: 'Mã'
         },
         {
           key: 'name',
           label: 'Tên'
+        },
+        {
+          key: 'storeName',
+          label: 'Cửa hàng'
         },
         {
           key: 'expiredate',

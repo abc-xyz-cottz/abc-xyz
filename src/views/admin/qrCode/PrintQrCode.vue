@@ -174,7 +174,7 @@ export default {
      * Load list option table
      */
     getTableList () {
-      adminAPI.getTableList().then(res => {
+      adminAPI.getTableListOption().then(res => {
         if(res != null && res.data != null && res.data.data != null) {
           this.tables = Mapper.mapTableModelToOption(res.data.data)
         }

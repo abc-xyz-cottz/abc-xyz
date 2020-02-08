@@ -126,8 +126,7 @@ export default {
      * Go to menu
      */
     goToOrder () {
-      this.$router.push({params:{sid:this.storeId}})
-      this.$router.push('/menu')
+      this.$router.push({ name: 'Order', params:{sid:this.storeId}})
     },
 
     /**

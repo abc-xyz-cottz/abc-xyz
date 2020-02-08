@@ -24,6 +24,7 @@
                         <h4 class="col-12">Bàn: {{item.table}}</h4>
                         <p class="col-12" v-if="item.type == 'order'">Loại: Order</p>
                         <p class="col-12" v-if="item.type == 'request'">Loại: Yêu cầu</p>
+                        <p class="col-12" v-if="item.type == 'confirm'">Loại: Xác nhận</p>
                         <p class="col-12">Khách hàng: {{item.customerName}}</p>
                         <p class="col-12">Thời gian : {{item.time}}</p>
                         <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
@@ -54,6 +55,7 @@
                         <h4 class="col-12">Bàn: {{item.table}}</h4>
                         <p class="col-12" v-if="item.type == 'order'">Loại: Order</p>
                         <p class="col-12" v-if="item.type == 'request'">Loại: Yêu cầu</p>
+                        <p class="col-12" v-if="item.type == 'confirm'">Loại: Xác nhận</p>
                         <p class="col-12">Khách hàng: {{item.customerName}}</p>
                         <p class="col-12">Thời gian : {{item.time}}</p>
                         <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
@@ -70,6 +72,7 @@
                         <h4 class="col-12">Bàn: {{item.table}}</h4>
                         <p class="col-12" v-if="item.type == 'order'">Loại: Order</p>
                         <p class="col-12" v-if="item.type == 'request'">Loại: Yêu cầu</p>
+                        <p class="col-12" v-if="item.type == 'confirm'">Loại: Xác nhận</p>
                         <p class="col-12">Khách hàng: {{item.customerName}}</p>
                         <p class="col-12">Thời gian : {{item.time}}</p>
                         <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>

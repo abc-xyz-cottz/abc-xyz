@@ -59,6 +59,13 @@ export default {
   },
 
   /**
+   * Get list promotion by store
+   */
+  getPromotions(storeId) {
+    return session.get(RootAPI + 'customer/pmt-owned/' + storeId)
+  },
+
+  /**
    * get point list of customer
    */
   getPointList () {

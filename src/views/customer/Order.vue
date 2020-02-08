@@ -102,12 +102,44 @@
             Hủy
           </button>
         </b-col>
-        <b-col cols="8" class="text-right mt-3">
+        <b-col cols="4" class="text-right mt-3">
+          <button class="btn btn-primary px-4" @click="addPromotion()">
+            Thêm khuyến mãi
+          </button>
+        </b-col>
+        <b-col cols="4" class="text-right mt-3">
           <button class="btn btn-primary px-4" @click="sendOrder()">
             Xác nhận
           </button>
         </b-col>
       </b-row>
+
+    </b-modal>
+
+      <!-- Modal show topping-->
+    <b-modal title="Thêm khuyến mãi" centered hide-footer id="modal-add-promotion">
+        <b-row>
+          <b-col>
+            <div v-for="promo in promotions" :key="promo.id">
+              <input type="radio" v-model="promotion" name="promo" :value="promo.name">
+              <label>{{ promo.name }}</label>
+            </div>
+         </b-col>
+        </b-row>
+
+
+        <b-row>
+          <b-col cols="4" class="text-left mt-3">
+            <button class="btn btn-danger px-4" @click="cancelTopping">
+              Hủy
+            </button>
+          </b-col>
+          <b-col cols="8" class="text-right mt-3">
+            <button class="btn btn-primary px-4" @click="confirmTopping">
+              Xác nhận
+            </button>
+          </b-col>
+        </b-row>
 
     </b-modal>
 
@@ -193,6 +225,7 @@ import {Constant} from '@/common/constant'
 import CustomerApi from '@/api/customer'
 import MenuMapper from '@/mapper/menu'
 import ToppingMapper from '@/mapper/topping'
+import PromotionMapper from '@/mapper/promotion'
 
 export default {
   data () {
@@ -283,7 +316,11 @@ export default {
       sizes: "",
       foods: [],
       menuCount: 0,
-      orderedNumber: 0
+      orderedNumber: 0,
+      customerId: null,
+      customerName: null,
+      promotions:[],
+      promotion: null
 
     }
   },
@@ -317,9 +354,34 @@ export default {
       CustomerApi.getMenu(this.storeId).then(res => {
         if(res && res.data && res.data.data) {
           this.items = MenuMapper.mapCustomerMenuModelToDto(res.data.data)
+
+          // Get customer info
+          let customer = Cookies.get(Constant.APP_USR)
+          if(customer) {
+            let cusTemp = JSON.parse(customer)
+            this.customerId = cusTemp.id
+            this.customerName = cusTemp.userName + " - " + cusTemp.phoneNumber
+
+            // Get owner promotion
+            this.getOwnerPromotion()
+          }
+
         }
       }).catch(err => {
       })
+    },
+
+    /**
+     * Get owner promotion
+     */
+    getOwnerPromotion() {
+      CustomerApi.getPromotions(this.storeId).then(res => {
+        if(res && res.data && res.data.data) {
+          this.promotions = PromotionMapper.mapPromoOptionModelToDto(res.data.data)
+        }
+      }).catch(err => {
+      })
+
     },
 
     /**
@@ -336,6 +398,13 @@ export default {
       this.getTotalPrice()
 
       this.$bvModal.show('modal-confirm-order')
+    },
+
+    /**
+     * Add promotion
+     */
+    addPromotion() {
+      this.$bvModal.show('modal-add-promotion')
     },
 
     /**
@@ -360,18 +429,8 @@ export default {
       // Hide modal
       this.$bvModal.hide('modal-confirm-order')
 
-      // Get customer info
-      let customer = Cookies.get(Constant.APP_USR)
-      let customerId = null
-      let customerName = null
-      if(customer) {
-        let cusTemp = JSON.parse(customer)
-        customerId = cusTemp.id
-        customerName = cusTemp.userName + " - " + cusTemp.phoneNumber
-      }
-
       // Send order
-      let orderInfo = {"customerId": customerId,"customerName": customerName, "storeId": this.storeId, "tableId": this.tableId, "orders": this.orderItems}
+      let orderInfo = {"customerId": this.customerId,"customerName": this.customerName, "storeId": this.storeId, "tableId": this.tableId, "orders": this.orderItems}
       console.log(JSON.stringify(orderInfo))
       CustomerAPI.sendOrder(orderInfo).then(res => {
         this.makeToast('success', 'Gọi món thành công!!!', 'Món ăn bạn gọi đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé.')

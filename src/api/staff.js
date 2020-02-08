@@ -7,40 +7,14 @@ export default {
    */
   logIn (data) {
     return session.post(RootAPI + 'staff/login', data)
+  },
+
+  /**
+   * Send promotion info to admin
+   */
+  sendPromo (data) {
+    return session.post(RootAPI + 'staff/send-promo', data)
   }
 
-  // /**
-  //  * get info of staff
-  //  */
-  // getStaffInfo (id, param) {
-  //   return session.get(RootAPI + 'staff/' + id, { param })
-  // },
-  //
-  // /**
-  //  * update info staff
-  //  */
-  // updateStaffInfo (req) {
-  //   return session.post(RootAPI + 'staff/update-info', req)
-  // },
-  //
-  // /**
-  //  * change password for staff
-  //  */
-  // changePassword (req) {
-  //   return session.post(RootAPI + 'auth/staff/change_password', req)
-  // },
-  //
-  // /**
-  //  * Search account
-  //  */
-  // searchAccount (params) {
-  //   return session.post(RootAPI + 'staff/search/'+ params)
-  // },
-  //
-  // /**
-  //  * Get selected option for search staff screen
-  //  */
-  // defineOptionsForSearchStaff () {
-  //   return session.post(RootAPI + 'staff/get-master-option')
-  // }
+
 }

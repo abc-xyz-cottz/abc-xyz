@@ -24,7 +24,8 @@
         <div class="container">
           <div class="nav-left">
             <button @click="activePushedMenu = !activePushedMenu" display="lg" type="button" class="navbar-toggler"
-                    v-if="this.$store.state.user.role == roleAdmin || this.$store.state.user.role == roleSpAdmin || this.$store.state.user.role == roleCus">
+                    v-if="this.$store.state.user.role == roleAdmin || this.$store.state.user.role == roleSpAdmin
+                    || this.$store.state.user.role == roleCus || this.$store.state.user.role == roleStaff">
               <!--<span class="navbar-toggler-icon"></span>-->
               <img src="/static/img/icons/menu.ico" class="iconsCustom"/>
             </button>
@@ -76,6 +77,7 @@
                 <SidebarNav v-if="!this.$store.state.user" :nav-items="navCusNotLogin" />
                 <SidebarNav v-if="this.$store.state.user && this.$store.state.user.role == roleCus" :nav-items="navCus" />
                 <SidebarNav v-if="this.$store.state.user && this.$store.state.user.role == roleAdmin" :nav-items="navAdmin" />
+                <SidebarNav v-if="this.$store.state.user && this.$store.state.user.role == roleStaff" :nav-items="navStaff" />
                 <SidebarNav  v-if="this.$store.state.user && this.$store.state.user.role == roleSpAdmin"  :nav-items="navSpAdmin"/>
               </template>
             <SidebarFooter />
@@ -103,6 +105,7 @@ import navSpAdmin from '@/navSpAdmin'
 import navAdmin from '@/navAdmin'
 import navCusNotLogin from '@/navCusNotLogin'
 import navCus from '@/navCus'
+import navStaff from '@/navStaff'
 import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFooter, SidebarForm, SidebarHeader, SidebarMinimizer, SidebarNav } from '@coreui/vue'
 import HeaderDropdownCusAcc from '@/components/common/HeaderDropdownCusAcc'
 import HeaderDropdownStaffAcc from '@/components/common/HeaderDropdownStaffAcc'
@@ -134,10 +137,12 @@ export default {
       navCusNotLogin: navCusNotLogin.items,
       navSpAdmin: navSpAdmin.items,
       navAdmin: navAdmin.items,
+      navStaff: navStaff.items,
       fullName: '',
       size: 40,
       roleCus: Constant.ROLE_CUS,
       roleAdmin: Constant.ROLE_ADMIN,
+      roleStaff: Constant.ROLE_STAFF,
       roleSpAdmin: Constant.ROLE_SP_ADMIN,
       notifyNumber: 0,
       activePushedMenu: false

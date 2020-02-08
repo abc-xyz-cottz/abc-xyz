@@ -25,6 +25,7 @@ import StaffLogin from '@/views/staff/StaffLogin'
 import StaffChangePass from '@/views/staff/StaffChangePass'
 import StaffActivePass from '@/views/staff/StaffActivePass'
 import StaffForgetPass from '@/views/staff/StaffForgetPass'
+import ConfirmPromotion from '@/views/staff/StaffGetPromotion'
 
 // Admin group
 import HomeAdmin from '@/views/admin/HomeAdmin'
@@ -167,6 +168,11 @@ export default new Router({
       path: '/home-staff',
       name: 'HomeStaff',
       component: HomeStaff
+    },
+    {
+      path: '/confirm-promotion',
+      name: 'ConfirmPromotion',
+      component: ConfirmPromotion
     },
 
     // Admin group

@@ -120,8 +120,15 @@ export default {
   /**
    * Get table list
    */
+  getTableListOption() {
+    return session.get(RootAPI + 'table/list')
+  },
+
+  /**
+   * Get table list
+   */
   getTableList() {
-    return session.get(RootAPI + 'table/')
+    return session.get(RootAPI + 'table')
   },
 
   /**

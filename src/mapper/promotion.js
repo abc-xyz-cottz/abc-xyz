@@ -40,6 +40,7 @@ export default {
           name: promotions[index].fields.name,
           expiredate: promotions[index].fields.expired_at,
           id: promotions[index].pk,
+          idString: commonFunc.formatId(promotions[index].pk, 8),
           action: promotions[index].pk
         }
         result.push(promoTemp)
@@ -58,7 +59,8 @@ export default {
           storeName: promotions[index].fields.store_name,
           name: promotions[index].fields.name,
           expiredate: promotions[index].fields.expired_at,
-          id: promotions[index].pk
+          id: promotions[index].pk,
+          idString: commonFunc.formatId(promotions[index].pk, 8)
         }
         result.push(promoTemp)
       }
@@ -95,6 +97,19 @@ export default {
           "createAt": promotion.fields.created_at,
           "storeId": promotion.fields.store_id,
           "storeName": promotion.fields.store_name,
+          "idString": commonFunc.formatId(promotion.pk, 8)
         }
-      },
+    },
+    mapPromoOptionModelToDto (promotions) {
+      let result = []
+
+      for (var index in promotions) {
+        let promoTemp = {
+          id: promotions[index].pk,
+          name: promotions[index].fields.name,
+        }
+        result.push(promoTemp)
+      }
+      return result
+    },
   }

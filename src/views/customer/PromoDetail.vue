@@ -2,7 +2,28 @@
   <div class="container">
     <b-card no-body>
       <b-card-body>
-        <h3 class="boder-bottom">Chi tiết khuyến mãi</h3>
+
+        <b-row>
+          <b-col cols="6">
+            <b-button variant="secondary" class="pull-left px-4" @click="back">
+              Quay lại
+            </b-button>
+          </b-col>
+        </b-row>
+        <br>
+
+        <b-row>
+          <b-col cols="12">
+            <h3 class="boder-bottom text-center">Chi tiết khuyến mãi</h3>
+          </b-col>
+        </b-row>
+
+          <b-row>
+            <b-col>
+              <label>Mã: {{ promotion.idString }}</label>
+            </b-col>
+          </b-row>
+
           <b-row>
             <b-col>
               <label>Tên: {{ promotion.name }}</label>
@@ -41,6 +62,8 @@ import QrcodeVue from 'qrcode.vue'
 import customerAPI from '@/api/customer'
 import Mapper from '@/mapper/promotion'
 import commonFunc from '@/common/commonFunc'
+import Cookies from 'js-cookie'
+import {Constant} from '@/common/constant'
 
 
 export default {
@@ -51,6 +74,7 @@ export default {
     return {
       promotion: {
         "id":null,
+        "idString":"",
         "name": "",
         "createAt":"",
         "expiredAt":"",
@@ -87,14 +111,29 @@ export default {
         if(res != null && res.data != null && res.data.data != null) {
           this.promotion = Mapper.mapPromoCusDetailModelToDto(res.data.data)
 
-          this.qrValue = this.promotion.id + "-" + this.promotion.storeId
+          let customer = Cookies.get(Constant.APP_USR)
+          let cusId = ""
+          if(customer) {
+            let cusTemp = JSON.parse(customer)
+            cusId = cusTemp.id
+          }
+          this.qrValue = this.promotion.id + "-" + this.promotion.storeId + "-" + cusId
         }
       }).catch(err => {
         // Handle error
           let errorMess = commonFunc.handleCusError(err)
           this.popToast('danger', errorMess)
       })
-    }
+    },
+
+    /**
+     * Back to list
+     */
+    back() {
+      // Go to list
+      this.$router.push('/promo')
+    },
+
   }
 
 }
