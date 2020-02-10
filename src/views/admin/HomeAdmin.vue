@@ -28,6 +28,7 @@
                         <p class="col-12">Khách hàng: {{item.customerName}}</p>
                         <p class="col-12">Thời gian : {{item.time}}</p>
                         <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
+                        <p class="col-12" v-if="item.promotion">Khuyến mãi: {{item.promotion}}</p>
                         <p class="col-12" >Chi tiết:</p>
                         <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
                         <b-col class="col-6">
@@ -59,6 +60,7 @@
                         <p class="col-12">Khách hàng: {{item.customerName}}</p>
                         <p class="col-12">Thời gian : {{item.time}}</p>
                         <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
+                        <p class="col-12" v-if="item.promotion">Khuyến mãi: {{item.promotion}}</p>
                         <p class="col-12" >Chi tiết:</p>
                         <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
                       </b-row>
@@ -76,6 +78,7 @@
                         <p class="col-12">Khách hàng: {{item.customerName}}</p>
                         <p class="col-12">Thời gian : {{item.time}}</p>
                         <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
+                        <p class="col-12" v-if="item.promotion">Khuyến mãi: {{item.promotion}}</p>
                         <p class="col-12" >Chi tiết:</p>
                         <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
                       </b-row>

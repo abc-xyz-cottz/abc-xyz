@@ -37,7 +37,7 @@
             </b-col>
             <b-col md="4" class="mt-4 inline-center">
               <div :style="{width: 20 + '%'}">
-                <b-button :disabled="!tableId" @click="print">
+                <b-button :disabled="!tableId" v-print="'#printAble'" >
                   In
                 </b-button>
               </div>
@@ -54,7 +54,7 @@
 
     <b-card>
       <b-card-body>
-        <b-row v-show="tableId" id="printAble">
+        <b-row v-show="tableId" id="printAble" >
           <b-col>
             <b-card  :style="{width: defaultWidthPx + 'px', height: 800 + 'px'}" id="qrCodePlaceFull">
               <b-card-body class="p-4">
@@ -221,35 +221,35 @@ export default {
     /**
      * Print
      */
-    print() {
-      // Get HTML to print from element
-      const prtHtml = document.getElementById('printAble').innerHTML;
-
-      // Get all stylesheets HTML
-      let stylesHtml = '';
-      for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
-        stylesHtml += node.outerHTML;
-      }
-
-      // Open the print window
-      const WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
-
-      WinPrint.document.write(`<!DOCTYPE html>
-      <html>
-        <head>
-          ${stylesHtml}
-        </head>
-        <body>
-          ${prtHtml}
-        </body>
-      </html>`);
-
-      WinPrint.document.close();
-      WinPrint.focus();
-      WinPrint.print();
-      WinPrint.close();
-      return
-    },
+    // print() {
+    //   // Get HTML to print from element
+    //   const prtHtml = document.getElementById('printAble').innerHTML;
+    //
+    //   // Get all stylesheets HTML
+    //   let stylesHtml = '';
+    //   for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
+    //     stylesHtml += node.outerHTML;
+    //   }
+    //
+    //   // Open the print window
+    //   const WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+    //
+    //   WinPrint.document.write(`<!DOCTYPE html>
+    //   <html>
+    //     <head>
+    //       ${stylesHtml}
+    //     </head>
+    //     <body>
+    //       ${prtHtml}
+    //     </body>
+    //   </html>`);
+    //
+    //   WinPrint.document.close();
+    //   WinPrint.focus();
+    //   WinPrint.print();
+    //   WinPrint.close();
+    //   return
+    // },
 
     /**
      * Gen pdf file
@@ -298,12 +298,10 @@ export default {
 </script>
 
 <style lang="css" scoped>
-  .logoSize {
-    width: 80px;
-    height: 80px;
-  }
 
   #qrCodePlaceFull {
-    background-image: url("../../../../static/img/project/bg_qr.jpg");
+    background-image: url("../../../../static/img/project/bg_qr.jpg") !important;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
   }
 </style>

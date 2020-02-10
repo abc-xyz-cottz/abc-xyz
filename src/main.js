@@ -15,6 +15,10 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(BootstrapVue)
 
+// Import print component
+import Print from 'vue-print-nb'
+Vue.use(Print);
+
 // Global components
 // import LazyImage from '@/components/common/LazyImage'
 // Vue.component('lazy-img', LazyImage)

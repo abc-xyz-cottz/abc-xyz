@@ -92,8 +92,11 @@
               </b-list-group>
             </template>
           </b-table>
-      <b-row>
 
+      <b-row>
+        <b-col cols="12" class="text-left mt-3" v-show="promotion">
+          - {{promotion}}
+        </b-col>
       </b-row>
 
       <b-row>
@@ -116,7 +119,7 @@
 
     </b-modal>
 
-      <!-- Modal show topping-->
+      <!-- Modal add promotion-->
     <b-modal title="Thêm khuyến mãi" centered hide-footer id="modal-add-promotion">
         <b-row>
           <b-col>
@@ -127,15 +130,14 @@
          </b-col>
         </b-row>
 
-
         <b-row>
           <b-col cols="4" class="text-left mt-3">
-            <button class="btn btn-danger px-4" @click="cancelTopping">
+            <button class="btn btn-danger px-4" @click="cancelAddPromo">
               Hủy
             </button>
           </b-col>
           <b-col cols="8" class="text-right mt-3">
-            <button class="btn btn-primary px-4" @click="confirmTopping">
+            <button class="btn btn-primary px-4" @click="confirmAddPromotion" :disabled="promotion == null">
               Xác nhận
             </button>
           </b-col>
@@ -418,8 +420,7 @@ export default {
       this.orderedNumber = 0
       this.orderItems = []
       this.totalPrice = 0
-
-
+      this.promotion = null
     },
 
     /**
@@ -430,7 +431,8 @@ export default {
       this.$bvModal.hide('modal-confirm-order')
 
       // Send order
-      let orderInfo = {"customerId": this.customerId,"customerName": this.customerName, "storeId": this.storeId, "tableId": this.tableId, "orders": this.orderItems}
+      let orderInfo = {"customerId": this.customerId,"customerName": this.customerName, "storeId": this.storeId,
+        "tableId": this.tableId, "orders": this.orderItems, "promotion": this.promotion}
       console.log(JSON.stringify(orderInfo))
       CustomerAPI.sendOrder(orderInfo).then(res => {
         this.makeToast('success', 'Gọi món thành công!!!', 'Món ăn bạn gọi đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé.')
@@ -689,6 +691,21 @@ export default {
       this.sizes = ""
       this.foods = []
     },
+
+    /**
+     * Cancel add promotion
+     */
+    cancelAddPromo() {
+      this.promotion = null
+      this.$bvModal.hide('modal-add-promotion')
+    },
+
+    /**
+     * Confirm add promotion
+     */
+    confirmAddPromotion() {
+      this.$bvModal.hide('modal-add-promotion')
+    }
   }
 }
 </script>
