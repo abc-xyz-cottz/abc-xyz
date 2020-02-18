@@ -58,58 +58,27 @@
           <b-col>
             <b-card  :style="{width: defaultWidthPx + 'px', height: 800 + 'px'}" id="qrCodePlaceFull">
               <b-card-body class="p-4">
+
                 <b-row>
                   <b-col md="12" class="text-right mr-4">
-                    <h5>Bàn: <b>{{tableName}}</b></h5>
+                    <h5 class="text-while">Bàn: <b>{{tableName}}</b></h5>
                   </b-col>
-
                 </b-row>
                 <hr>
+
                 <b-row>
                   <b-col class="text-center">
-                    <h4 >
-                      {{storeName}}
-                    </h4>
+                    <h3 class="text-while">
+                      <b>{{storeName}}</b>
+                    </h3>
                   </b-col>
                 </b-row>
-                <br/>
-                <br/>
-                <br/>
+
                 <b-row>
                   <b-col class="text-center" id="qrCodePlace">
-                    <qrcode id="qrCode" v-if="qr_code" :value="qr_code" :options="{ width: 200 }" tag="img"/>
+                    <qrcode id="qrCode" v-if="qr_code" :value="qr_code" :options="{ width: 170 }" tag="img"/>
                   </b-col>
                 </b-row>
-                <br/>
-                <!--<b-row>-->
-                  <!--<p class="border-bottom"><b>Hướng dẫn sử dụng:</b></p>-->
-                <!--</b-row>-->
-                <!--<b-row>-->
-                  <!--<p>1. Bạn có thể quét QR code phía trên bằng bất cứ công cụ nào: camera, Zalo, hoặc-->
-                    <!--nhấn nút quét QR code trên website orderway.vn</p>-->
-                <!--</b-row>-->
-                <!--<b-row>-->
-                  <!--<p>2. Chọn món hoặc gửi yêu cầu tới nhân viên trong màn hình hiện ra</p>-->
-                <!--</b-row>-->
-                <!--<b-row>-->
-                  <!--<p>3. Kết thúc! </p>-->
-                <!--</b-row>-->
-                <!--<b-row>-->
-                  <!--<br/>-->
-                  <!--<p>* Đăng nhập tài khoản để tích điểm trong mỗi lần order, điểm này có thể mua nhiều-->
-                    <!--khuyến mãi từ nhà hàng</p>-->
-                <!--</b-row>-->
-                <!--<hr/>-->
-                <!--<b-row>-->
-
-                  <!--<b-col md="3" class="text-right">-->
-                    <!--<img src="/static/img/icons/favicon.ico" class="logoSize"/>-->
-                  <!--</b-col>-->
-                  <!--<b-col md="9" class="text-left">-->
-                    <!--<h2> Order Way</h2>-->
-                    <!--<p>Ứng dụng đặt món tại bàn trực tuyến</p>-->
-                  <!--</b-col>-->
-                <!--</b-row>-->
 
               </b-card-body>
             </b-card>
@@ -144,8 +113,8 @@ export default {
       storeName: "Order way",
       tables: [],
       qr_code: "hello word",
-      defaultWidthCm: 13,
-      defaultWidthPx: 491.33858268
+      defaultWidthCm: 15,
+      defaultWidthPx: 566.92913386
     }
   },
   mounted() {
@@ -303,5 +272,12 @@ export default {
     background-image: url("../../../../static/img/project/bg_qr.jpg") !important;
     -webkit-print-color-adjust: exact;
     color-adjust: exact;
+  }
+  .text-while {
+    color: white;
+  }
+
+  #qrCode {
+    margin: 65px 0 0 10px;
   }
 </style>

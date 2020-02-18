@@ -6,14 +6,14 @@
           <div class="nav-left">
             <button @click="activePushedMenu = !activePushedMenu" display="lg" type="button" class="navbar-toggler">
                 <!--<span class="navbar-toggler-icon"></span>-->
-              <img src="/static/img/icons/menu.ico" class="iconsCustom"/>
+              <img src="/static/img/icons/sticker_1.png" class="iconsCustom"/>
               </button>
 
             <b-link class="nav-link home-icon" to="/">
                 <!--<span>-->
                   <!--<i class="fa fa-home fa-2x" ></i>-->
                 <!--</span>-->
-              <img src="/static/img/icons/home.ico" class="iconsCustom"/>
+              <img src="/static/img/icons/Sticker_2.png" class="iconsCustom"/>
             </b-link>
           </div>
         </div>
@@ -27,13 +27,13 @@
                     v-if="this.$store.state.user.role == roleAdmin || this.$store.state.user.role == roleSpAdmin
                     || this.$store.state.user.role == roleCus || this.$store.state.user.role == roleStaff">
               <!--<span class="navbar-toggler-icon"></span>-->
-              <img src="/static/img/icons/menu.ico" class="iconsCustom"/>
+              <img src="/static/img/icons/sticker_1.png" class="iconsCustom"/>
             </button>
             <b-link class="nav-link home-icon" to="/">
               <!--<span>-->
                 <!--<i class="fa fa-home fa-2x" ></i>-->
               <!--</span>-->
-              <img src="/static/img/icons/home.ico" class="iconsCustom"/>
+              <img src="/static/img/icons/Sticker_2.png" class="iconsCustom"/>
             </b-link>
           </div>
 
@@ -45,7 +45,7 @@
               <span class="white" v-if="this.$store.state.user.userType == 'customer'">
                <span class="fa-stack" :data-count="notifyNumber">
                    <!--<i src="/static/img/icons/bell.png" class="iconsCustom"></i>-->
-                   <img src="/static/img/icons/bell.png" class="iconsCustom"/>
+                   <img src="/static/img/icons/Sticker_3.png" class="iconsCustom"/>
                </span>
              </span>
             </a>
@@ -153,10 +153,10 @@ export default {
       this.activePushedMenu = false
     }
   },
-  mounted (){
-
+  beforeMount() {
     let user = Cookies.get(Constant.APP_USR)
-    if(user && user.userType == "customer") {
+    user = JSON.parse(user)
+    if(user && user != undefined && user.userType == "customer") {
 
       let numberOfNotify = Cookies.get(Constant.NOTIFY_NUMBER)
       if(!numberOfNotify) {
@@ -164,7 +164,7 @@ export default {
       }
       this.notifyNumber = numberOfNotify
 
-      user = JSON.parse(user)
+      // user = JSON.parse(user)
       let phoneNumber = user.phoneNumber
       let cityId = user.cityId
 
@@ -178,26 +178,20 @@ export default {
       }
 
       socket.onmessage = event => {
-
+        console.log("onmessage")
         var json_data = JSON.parse(event.data)
-        console.log(json_data)
-        alert(JSON.stringify(json_data))
         let numberOfNotification = json_data.text.numberOfNotification
         Cookies.set(Constant.NOTIFY_NUMBER, numberOfNotification)
 
         this.notifyNumber = numberOfNotification
-
       }
 
       socket.onclose = event => {
         this.connected = false
       }
     }
+  },
 
-  },
-  activated () {
-    this.mounted()
-  },
   computed: {
     name () {
       return this.$route.name

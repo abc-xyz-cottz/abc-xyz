@@ -1,4 +1,4 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
   <div class="container">
 
       <b-card no-body>
@@ -55,6 +55,7 @@ export default {
 
     // Update number of not read
     this.updateNotificationIsRead()
+
   },
   methods: {
 
@@ -124,6 +125,7 @@ export default {
      */
     updateNotificationIsRead() {
       customerAPI.updateNotificationIsRead().then(res => {
+        console.log("updated")
       }).catch(err => {
         console.log(err)
       })
