@@ -173,6 +173,14 @@ export default {
   },
 
   /**
+   * Number format
+   */
+  numberFormat(num) {
+    let result = num.toString().replace(",", "")
+    return parseInt(result)
+  },
+
+  /**
    * Format id
    */
   formatId(idInput, lenInput) {

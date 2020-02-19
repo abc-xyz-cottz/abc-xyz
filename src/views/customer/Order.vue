@@ -16,35 +16,53 @@
               </b-col>
             </b-row>
 
-            <b-row class="mt-3">
+            <b-row class="mt-3 border-bottom border-warning">
               <b-col><h4>Menu</h4></b-col>
-
             </b-row>
 
-            <b-row>
-              <b-col>
-                <b-table 
-                hover
-                bordered
-                stacked="md"
-                :fields="fields" 
-                :items="items">
-                <template v-slot:cell(image)="data">
-                  <img :src="data.item.image" :style="{width: 100 + 'px', height: 100 + 'px'}"/>
-                </template>
-                <template v-slot:cell(action)="dataId">
-                  <b-list-group horizontal>
-                    <b-list-group-item @click="countUp(dataId.value, dataId.item.topping)">
+            <b-row v-for="item in items" :key="item.action" class="mt-3 pb-3 border-bottom border-warning">
+              <b-col cols="5" class="text-right">
+                <img :src="item.image" :style="{width: deviceWidth + 'px', height: deviceWidth + 'px'}"/>
+              </b-col>
+              <b-col cols="7" class="text-left">
+                <h5><b>{{item.name}}</b></h5>
+                <p>Giá: {{item.price}} vnđ</p>
+                <b-list-group horizontal>
+                    <b-list-group-item @click="countUp(item.action, item.topping)">
                       <i class="fa fa-plus" />
                     </b-list-group-item>
                     <b-list-group-item>
-                      <span :id="`${dataId.value}`">0</span>
+                      <span :id="item.action">0</span>
                     </b-list-group-item>
                   </b-list-group>
-                </template>
-                </b-table>
               </b-col>
+
             </b-row>
+
+            <!--<b-row>-->
+              <!--<b-col>-->
+                <!--<b-table -->
+                <!--hover-->
+                <!--bordered-->
+                <!--stacked="md"-->
+                <!--:fields="fields" -->
+                <!--:items="items">-->
+                <!--<template v-slot:cell(image)="data">-->
+                  <!--<img :src="data.item.image" :style="{width: 100 + 'px', height: 100 + 'px'}"/>-->
+                <!--</template>-->
+                <!--<template v-slot:cell(action)="dataId">-->
+                  <!--<b-list-group horizontal>-->
+                    <!--<b-list-group-item @click="countUp(dataId.value, dataId.item.topping)">-->
+                      <!--<i class="fa fa-plus" />-->
+                    <!--</b-list-group-item>-->
+                    <!--<b-list-group-item>-->
+                      <!--<span :id="`${dataId.value}`">0</span>-->
+                    <!--</b-list-group-item>-->
+                  <!--</b-list-group>-->
+                <!--</template>-->
+                <!--</b-table>-->
+              <!--</b-col>-->
+            <!--</b-row>-->
 
 
          <!--</b-form>-->
@@ -228,6 +246,7 @@ import CustomerApi from '@/api/customer'
 import MenuMapper from '@/mapper/menu'
 import ToppingMapper from '@/mapper/topping'
 import PromotionMapper from '@/mapper/promotion'
+import commonFunc from "../../common/commonFunc";
 
 export default {
   data () {
@@ -265,7 +284,7 @@ export default {
           label: 'Tên Sản Phẩm'
         },
         {
-          key: 'priceTempStr',
+          key: 'price',
           label: 'Đơn giá'
         },
         {
@@ -322,7 +341,8 @@ export default {
       customerId: null,
       customerName: null,
       promotions:[],
-      promotion: null
+      promotion: null,
+      deviceWidth: 100,
 
     }
   },
@@ -334,6 +354,8 @@ export default {
     this.getMenu()
 
     this.getTopping()
+
+    this.getImageWidth()
   },
 
   methods: {
@@ -347,6 +369,14 @@ export default {
         solid: true,
         autoHideDelay: 5000
       })
+    },
+
+    /**
+     * Get width image
+     */
+    getImageWidth() {
+      let tempWidth = window.innerWidth
+      this.deviceWidth = (parseInt(tempWidth)/ 4)
     },
 
     /**
@@ -433,7 +463,7 @@ export default {
       // Send order
       let orderInfo = {"customerId": this.customerId,"customerName": this.customerName, "storeId": this.storeId,
         "tableId": this.tableId, "orders": this.orderItems, "promotion": this.promotion}
-      console.log(JSON.stringify(orderInfo))
+
       CustomerAPI.sendOrder(orderInfo).then(res => {
         this.makeToast('success', 'Gọi món thành công!!!', 'Món ăn bạn gọi đã được gửi tới nhân viên nhà hàng, bạn chờ trong giây lát nhé.')
       }).catch(err => {
@@ -492,17 +522,17 @@ export default {
         order.name = this.items[id-1].name
         order.price = this.items[id-1].price
         order.priceTempStr = this.items[id-1].price
-        order.priceTempInt = this.items[id-1].price
+        order.priceTempInt = commonFunc.numberFormat(this.items[id-1].price)
         let amount = 0
 
         if(this.items[id-1].topping) {
           order.quantity = 1
-          amount = parseInt(this.items[id-1].price)
-          order.amount = amount
+          amount = this.items[id-1].price
+          order.amount = commonFunc.currencyFormat(amount)
         } else {
           order.quantity = count
-          amount = parseInt(this.items[id-1].price) * parseInt(count)
-          order.amount = amount
+          amount = parseInt(commonFunc.numberFormat(this.items[id-1].price)) * parseInt(count)
+          order.amount = commonFunc.currencyFormat(amount)
         }
 
         this.orderItems.push(order)
@@ -546,7 +576,7 @@ export default {
 
       } else {
         this.orderItems[index].quantity = this.orderItems[index].quantity - 1
-        this.orderItems[index].amount = this.orderItems[index].quantity * this.orderItems[index].priceTempInt
+        this.orderItems[index].amount = commonFunc.currencyFormat(this.orderItems[index].quantity * commonFunc.numberFormat(this.orderItems[index].price))
       }
       this.getTotalPrice()
 
@@ -562,7 +592,7 @@ export default {
       index = index - 1
 
       this.orderItems[index].quantity = this.orderItems[index].quantity + 1
-      this.orderItems[index].amount = this.orderItems[index].quantity * this.orderItems[index].priceTempInt
+      this.orderItems[index].amount = commonFunc.currencyFormat(this.orderItems[index].quantity * commonFunc.numberFormat(this.orderItems[index].price))
       this.getTotalPrice()
 
       // Update ordered number
@@ -575,8 +605,9 @@ export default {
     getTotalPrice() {
       this.totalPrice = 0
       for(var i = 0; i < this.orderItems.length; i++) {
-        this.totalPrice = this.totalPrice + this.orderItems[i].amount
+        this.totalPrice = this.totalPrice + commonFunc.numberFormat(this.orderItems[i].amount)
       }
+      this.totalPrice = commonFunc.currencyFormat(this.totalPrice)
     },
 
     /**
@@ -664,14 +695,13 @@ export default {
       }
       // this.orderItems[this.orderItems.length - 1].topping = detail
       let toppingPrice = this.getTotalPriceOfTopping()
-      let foodPrice = this.orderItems[this.orderItems.length - 1].price
-      alert(foodPrice)
+      let foodPrice = commonFunc.numberFormat(this.orderItems[this.orderItems.length - 1].price)
       if(toppingPrice > 0) {
         this.orderItems[this.orderItems.length - 1].priceTempStr = this.orderItems[this.orderItems.length - 1].price + " + " + toppingPrice
         let price = foodPrice + toppingPrice
-        this.orderItems[this.orderItems.length - 1].priceTempInt = price
-        this.orderItems[this.orderItems.length - 1].price = price
-        this.orderItems[this.orderItems.length - 1].amount = (price) * this.orderItems[this.orderItems.length - 1].quantity
+        this.orderItems[this.orderItems.length - 1].priceTempInt = commonFunc.numberFormat(price)
+        this.orderItems[this.orderItems.length - 1].price = commonFunc.currencyFormat(price)
+        this.orderItems[this.orderItems.length - 1].amount = commonFunc.currencyFormat((price) * this.orderItems[this.orderItems.length - 1].quantity)
       }
       this.orderItems[this.orderItems.length - 1].toppingPrice = toppingPrice
       // alert(JSON.stringify(this.orderItems))

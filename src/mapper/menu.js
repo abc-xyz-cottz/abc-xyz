@@ -1,3 +1,5 @@
+import commonFunc from "../common/commonFunc";
+
 export default {
 
   /**
@@ -61,7 +63,7 @@ export default {
       let menuTemp = {
         image: menus[index].fields.image
         , name: menus[index].fields.name
-        , price: menus[index].fields.price
+        , price: commonFunc.currencyFormat(menus[index].fields.price)
         , topping: menus[index].fields.topping
         , action: stt
       }
