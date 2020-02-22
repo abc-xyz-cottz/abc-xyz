@@ -269,7 +269,7 @@ export default {
 <style lang="css" scoped>
 
   #qrCodePlaceFull {
-    background-image: url("../../../../static/img/project/bg_qr.jpg") !important;
+    background-image: url("../../../../static/img/project/bg_qr.png") !important;
     -webkit-print-color-adjust: exact;
     color-adjust: exact;
   }

@@ -15,12 +15,13 @@
                 :items="AvailablePromo">
 
                   <template v-slot:cell(action)="dataId">
-                    <b-list-group horizontal>
+                    <b-list-group horizontal class="text-center pull-right">
                       <b-list-group-item @click="showDetail(dataId.item.id)">
                         <i class="fa fa-info" />
                       </b-list-group-item>
                     </b-list-group>
                   </template>
+
                 </b-table>
           </b-col>
               </b-row>

@@ -14,49 +14,49 @@
             </b-col>
           </b-row>
           <hr>
-          <b-form @submit.prevent="search">
-              <b-row class="form-row">
-                <b-col md="4">
-                  <label> Tên </label>
-                  <input
-                  id="name"
-                  type="text"
-                  maxlength="100"
-                  autocomplete="new-password"
-                  class="form-control"
-                  v-model="inputs.name">
-                </b-col>
-                <b-col md="4">
-                  <label> Số Điện Thoại </label>
-                  <input
-                  id="phone"
-                  type="text"
-                  maxlength="20"
-                  autocomplete="new-password"
-                  class="form-control"
-                  v-model="inputs.phone"
-                  @keypress="validateCode">
-                </b-col>
-                <b-col md="4">
-                  <label> Quyền </label>
-                  <b-form-select
-                  id="permision"
-                  :options="options"
-                  type="text"
-                  autocomplete="new-password"
-                  class="form-control"
-                  v-model="inputs.role"></b-form-select>
-                </b-col>
-              </b-row>
-              <hr>
-            <b-row class="pull-right mb-3">
-              <b-col>
-                <b-button variant="primary" class="px-4" :disabled="onSearch" @click.prevent="prepareToSearch">
-                  Tìm Kiếm
-                </b-button>
+
+            <b-row class="form-row">
+              <b-col md="4">
+                <label> Tên </label>
+                <input
+                id="name"
+                type="text"
+                maxlength="100"
+                autocomplete="new-password"
+                class="form-control"
+                v-model="inputs.name">
+              </b-col>
+              <b-col md="4">
+                <label> Số Điện Thoại </label>
+                <input
+                id="phone"
+                type="text"
+                maxlength="20"
+                autocomplete="new-password"
+                class="form-control"
+                v-model="inputs.phone"
+                @keypress="validateCode">
+              </b-col>
+              <b-col md="4">
+                <label> Quyền </label>
+                <b-form-select
+                id="permision"
+                :options="options"
+                type="text"
+                autocomplete="new-password"
+                class="form-control"
+                v-model="inputs.role"></b-form-select>
               </b-col>
             </b-row>
-          </b-form>
+
+          <b-row class="mt-2 mb-2">
+          <b-col md="6">
+            <b-button variant="primary" class="pull-right px-4" :disabled="onSearch" @click.prevent="prepareToSearch">
+              Tìm Kiếm
+            </b-button>
+          </b-col>
+        </b-row>
+
           <b-table 
           hover
           bordered

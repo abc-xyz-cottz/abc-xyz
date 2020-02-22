@@ -4,8 +4,21 @@
       <b-col>
         <b-card>
           <b-card-body class="p-4">
-            <b-form @submit="save">
-              <b-row class="form-row">
+
+              <b-row>
+              <b-col cols="6">
+                <b-button variant="secondary" class="pull-left px-4" @click="back">
+                  Quay lại
+                </b-button>
+              </b-col>
+              <b-col cols="6">
+                <b-button variant="primary" class="pull-right px-4" @click="save" :disabled="saving">
+                    Lưu
+                </b-button>
+              </b-col>
+            </b-row>
+
+              <b-row>
                 <b-col md='12'>
                   <h4 class="mt-2">Table</h4>
                 </b-col>
@@ -28,14 +41,7 @@
                   </b-form-invalid-feedback>
                 </b-col>
               </b-row>
-              <b-row class="text-center mt-3">
-                <b-col>
-                  <b-button variant="primary" class="px-4" @click="save" :disabled="saving">
-                    Lưu
-                  </b-button>
-                </b-col>
-              </b-row>
-            </b-form>
+
           </b-card-body>
         </b-card>
       </b-col>
@@ -102,6 +108,14 @@ export default {
           this.popToast('danger', errorMess)
         })
       }
+    },
+
+    /**
+     * Back to list
+     */
+    back() {
+      // Go to list
+      this.$router.push('/table/list')
     },
 
     /**

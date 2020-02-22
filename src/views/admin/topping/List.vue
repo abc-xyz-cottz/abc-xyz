@@ -41,7 +41,6 @@
 <script>
 import adminAPI from '@/api/admin'
 import Mapper from '@/mapper/topping'
-import {Constant} from '@/common/constant'
 import commonFunc from '@/common/commonFunc'
 
 export default {
@@ -179,3 +178,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.mess {
+    background-color: white
+}
+</style>

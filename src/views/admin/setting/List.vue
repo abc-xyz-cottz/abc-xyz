@@ -16,25 +16,25 @@
           <hr>
           <b-form @submit.prevent="save">
             <b-row class="form-row">
-                <b-col md="3" class="mt-2">
+                <b-col md="6" class="mt-2">
                   <label> Số điểm sẽ hết hạn sau</label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="6">
-                  <input
-                  id="pasword"
-                  type="text"
-                  autocomplete="new-password"
-                  class="form-control"
-                  v-model="data.value"
-                  @keypress="validateCode"
-                  maxlength="30">
+                  <div class="input-group">
+                    <input
+                    id="pasword"
+                    type="text"
+                    autocomplete="new-password"
+                    class="form-control"
+                    v-model="data.value"
+                    @keypress="validateCode"
+                    maxlength="30"><span class="input-group-addon">&nbsp;&nbsp;Ngày</span>
+                  </div>
                   <b-form-invalid-feedback class="invalid-feedback" :state="!errorExpireDay">
                     Vui lòng nhập số ngày
                   </b-form-invalid-feedback>
                 </b-col>
-                <b-col md="3" class="mt-2">
-                  <label> Ngày </label>
-                </b-col>
+
               </b-row>
           </b-form>
         </b-card>

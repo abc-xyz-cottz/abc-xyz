@@ -45,7 +45,7 @@
                   placeholder="Nội dung thông báo"
                   v-model="noti.content"
                   rows="3"
-                ></b-form-textarea>
+                  maxlength="1000"></b-form-textarea>
                 <b-form-invalid-feedback  class="invalid-feedback" :state="!errorContent">
                   Vui lòng nhập Nội dung
                 </b-form-invalid-feedback>

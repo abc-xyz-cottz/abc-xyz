@@ -24,6 +24,7 @@
                 </b-col>
               </b-row>
               <hr/>
+
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
                   <label> Tên </label><span class="error-sybol"></span>
@@ -41,6 +42,7 @@
                   </b-form-invalid-feedback>
                 </b-col>
               </b-row>
+
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
                   <label> Giá </label><span class="error-sybol"></span>
@@ -59,11 +61,13 @@
                   </b-form-invalid-feedback>
                 </b-col>
               </b-row>
-              <b-row class="form-row">
-                <b-col md="3" class="mt-2">
+
+              <b-row class="form-row" horizontal>
+                <b-col md="6" class="mt-2">
                   <label> Hết Hạn Sau </label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="6">
+                  <div class="input-group">
                   <input
                   id="expiredDate"
                   type="text"
@@ -71,13 +75,16 @@
                   autocomplete="new-password"
                   class="form-control"
                   v-model="promo.expired_on"
-                  @keypress="validateCode">
+                  @keypress="validateCode"><span class="input-group-addon">&nbsp;&nbsp;Ngày</span>
+                  </div>
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorExpiredOn">
                     Vui lòng nhập ngày hết hạn
                   </b-form-invalid-feedback>
                 </b-col>
-                <b-col md="3"><label class="mt-1">Ngày</label></b-col>
+
+                <!--<b-col md="3"><label class="mt-1">Ngày</label></b-col>-->
               </b-row>
+
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
                   <label> Số Lượng </label><span class="error-sybol"></span>

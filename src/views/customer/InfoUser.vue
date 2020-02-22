@@ -245,20 +245,46 @@ export default {
         this.inputs.district_id = ""
       }
     },
+
+    /**
+     * Validate code
+     */
     validateCode (event) {
       // not number
       if(!commonFunc.isNumber(event)) {
         event.preventDefault()
       }
     },
+
+    /**
+     * Event edit
+     */
     edit() {
       this.onEdit = true
     },
+
+    /**
+     * Format date
+     */
+    formatBirthday() {
+      let birthday = this.inputs.birthday
+      let temp = birthday.split("-")
+      if(temp.length == 1) {
+        temp = birthday.split("/")
+      }
+      this.inputs.birthday = temp[2] + "-" + temp[1] + "-" + temp[0]
+    },
+
+    /**
+     * Save infor
+     */
     save() {
       this.click = true
       let result = this.checkValidate()
       if(result) {
+        this.formatBirthday()
          CustomerAPI.updateInfo(this.inputs).then(res => {
+           this.formatBirthday()
           if(res != null && res.data != null) {
             if (res.data.status == 200) {
               let message = ""
@@ -274,6 +300,7 @@ export default {
             }
           }
         }).catch(err => {
+          this.formatBirthday()
           let message = ""
           if(err.response.data.status == 422) {
             message = err.response.data.mess

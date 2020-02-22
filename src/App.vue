@@ -13,7 +13,7 @@
                 <!--<span>-->
                   <!--<i class="fa fa-home fa-2x" ></i>-->
                 <!--</span>-->
-              <img src="/static/img/icons/Sticker_2.png" class="iconsCustom"/>
+              <img src="/static/img/icons/sticker_2.png" class="iconsCustom"/>
             </b-link>
           </div>
         </div>
@@ -45,7 +45,7 @@
               <span class="white" v-if="this.$store.state.user.userType == 'customer'">
                <span class="fa-stack" :data-count="notifyNumber">
                    <!--<i src="/static/img/icons/bell.png" class="iconsCustom"></i>-->
-                   <img src="/static/img/icons/Sticker_3.png" class="iconsCustom"/>
+                   <img src="/static/img/icons/sticker_3.png" class="iconsCustom"/>
                </span>
              </span>
             </a>

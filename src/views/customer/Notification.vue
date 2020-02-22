@@ -1,23 +1,23 @@
 <template>
   <div class="container">
 
-      <b-card no-body>
+      <b-card no-body  v-for="(item, index) in notifications" :key="item.title + index">
         <b-card-body>
-
-          <div  v-for="(item, index) in notifications" :key="item.fields.title + index">
-              <b-row class="border border-dark mt-4 mess">
-                <h4 class="col-12">{{item.fields.title}}</h4>
-                <p class="col-12" >{{item.fields.content}}</p>
-              </b-row>
-          </div>
-
+          <b-row class="mess">
+            <h5 class="col-12 text-warning">{{item.title}}</h5>
+            <p v-if="!item.readMoreFlag">{{item.content.slice(0, 200)}}   </p>
+            <a class="text-primary" v-if="!item.readMoreFlag" @click="readMore(item.stt)" href="#">
+            Đọc thêm...
+            </a>
+            <p v-if="item.readMoreFlag" v-html="item.content"></p>
+            <p class="col-12 text-right" >{{item.created_date}}</p>
+          </b-row>
         </b-card-body>
-
-        <!-- Loading -->
-        <span class="loading-more" v-show="loading"><icon name="loading" width="60" /></span>
-        <span class="loading-more" v-if="hasNext === false">Hết</span>
-
       </b-card>
+
+    <!-- Loading -->
+    <span class="loading-more" v-show="loading"><icon name="loading" width="60" /></span>
+    <span class="loading-more" v-if="hasNext === false">Hết</span>
 
   </div>
 </template>
@@ -25,6 +25,7 @@
 import customerAPI from '@/api/customer'
 import {Constant} from '@/common/constant'
 import commonFunc from '@/common/commonFunc'
+import Mapper from '@/mapper/customer'
 
 export default {
   components: {
@@ -103,7 +104,7 @@ export default {
           "offset": this.offset
         }
         customerAPI.getNotification(params).then(res => {
-          let notifications = res.data.data.notifications
+          let notifications = Mapper.mapNotificationModelToDto(res.data.data.notifications)
           this.notifications.push.apply(this.notifications, notifications)
 
           // Check has next
@@ -129,6 +130,13 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+
+    /**
+     * Read more
+     */
+    readMore(index) {
+      this.notifications[index].readMoreFlag = true
     }
   }
   }

@@ -1,11 +1,19 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
   <div class="container-fluid">
     <b-row>
       <b-col>
         <b-card>
           <b-row>
+            <b-col cols="12">
+              <b-button variant="secondary" class="pull-left px-4" @click="back">
+                Quay lại
+              </b-button>
+            </b-col>
+          </b-row>
+
+          <b-row>
             <b-col md='12'>
-              <h4 class="mt-2">Lịch sử order</h4>
+              <h4 class="mt-2">Lịch sử gọi món</h4>
             </b-col>
           </b-row>
           <hr>
@@ -43,13 +51,15 @@
                 </b-col>
               </b-row>
               <hr>
+
             <b-row class="pull-right mb-3">
-              <b-col>
+              <b-col >
                 <b-button variant="primary" class="px-4" :disabled="onSearch" @click.prevent="prepareToSearch">
                   Lọc
                 </b-button>
               </b-col>
             </b-row>
+
 
             <b-row>
               <b-col>
@@ -99,7 +109,7 @@ export default {
       items: [],
       typeOptions: [
         {value: null, text: ''},
-        {value: 'order', text: 'Đặt món'},
+        {value: 'order', text: 'Gọi món'},
         {value: 'request', text: 'Yêu cầu'}
       ],
       statusOptions: [
@@ -227,6 +237,14 @@ export default {
         this.loading = false
       })
     },
+
+    /**
+     * Back to list
+     */
+    back() {
+      // Go to list
+      this.$router.push('/home-admin')
+    }
 
   }
 }

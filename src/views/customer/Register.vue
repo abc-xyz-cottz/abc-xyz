@@ -27,9 +27,14 @@
                       v-model="inputs.phone_number"
                       type="text"
                       class="form-control"
-                      maxlength="15">
-                    <b-form-invalid-feedback  class="invalid-feedback" :state="!errorPhone">
+                      maxlength="15"
+                      @keyup="intergerOnly($event.target)"
+                      v-on:change="checkPhoneNumberFormat($event.target)">
+                    <b-form-invalid-feedback  class="invalid-feedback" :state="!phoneNumberCheckFlag || !errorPhone">
                       Vui lòng nhập số điện thoại
+                    </b-form-invalid-feedback>
+                    <b-form-invalid-feedback  class="invalid-feedback" :state="phoneNumberCheckFlag">
+                      Số điện thoại không đúng
                     </b-form-invalid-feedback>
                   </div>
 
@@ -187,6 +192,7 @@ export default {
         from: new Date(Date.now())
       },
       birthdayCheckFlag: true,
+      phoneNumberCheckFlag: true,
     }
   },
   mounted () {
@@ -246,7 +252,19 @@ export default {
       return !(this.errorName || this.errorPhone || this.errorGender || this.errorBirthday
         || this.errorCity || this.errorDistrict || this.errorPassword || this.errorConfirmPassword
         || this.errorMatch || this.errorLengthPassword || this.errorLengthConfirmPassword
-        || !this.birthdayCheckFlag)
+        || !this.birthdayCheckFlag || !this.phoneNumberCheckFlag)
+    },
+
+    /**
+     * Format date
+     */
+    formatBirthday() {
+      let birthday = this.inputs.birthday
+      let temp = birthday.split("-")
+      if(temp.length == 1) {
+        temp = birthday.split("/")
+      }
+      this.inputs.birthday = temp[2] + "-" + temp[1] + "-" + temp[0]
     },
 
     /**
@@ -259,14 +277,17 @@ export default {
         this.errorMatch = !this.checkConfirmPass()
         if(!this.errorMatch) {
           this.onRegister = true
+          this.formatBirthday()
           setTimeout(() => {
             AuthenticationAPI.register(this.inputs).then(res => {
+              this.formatBirthday()
               if(res && res.data && res.data.data) {
                 let id = res.data.data
                 this.$router.push({ name: 'ActiveAccount', params: 
                   { id: id, phone_number: this.inputs.phone_number, password: this.inputs.password }})
               }
             }).catch(err => {
+              this.formatBirthday()
               console.log(err)
               let message = ""
               if(err.response.data.status == 422) {
@@ -324,6 +345,39 @@ export default {
         }
       } else {
         this.birthdayCheckFlag = true
+      }
+    },
+
+    /**
+     * Check phone number
+     */
+    checkPhoneNumberFormat(item) {
+      let valueInput = item.value
+      if (valueInput != null && valueInput != "") {
+        if (commonFunc.phoneNumberCheck(valueInput)) {
+          this.phoneNumberCheckFlag = true
+        } else {
+          this.phoneNumberCheckFlag = false
+        }
+      } else {
+        this.phoneNumberCheckFlag = true
+      }
+    },
+
+    /**
+     * Only input integer
+     */
+     intergerOnly(item) {
+      let valueInput = item.value
+      let result = commonFunc.intergerOnly(valueInput)
+      item.value = result
+
+      if(valueInput.length == 10) {
+        if (commonFunc.phoneNumberCheck(valueInput)) {
+          this.phoneNumberCheckFlag = true
+        } else {
+          this.phoneNumberCheckFlag = false
+        }
       }
     },
 

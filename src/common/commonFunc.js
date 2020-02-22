@@ -19,8 +19,8 @@ export default {
    */
   dateFormatCheck(dateInput) {
     let result = false
-    var vnf_regex = /^\d{2}[./-]\d{2}[./-]\d{4}$/
-
+    // var vnf_regex = /^\d{2}[./-]\d{2}[./-]\d{4}$/
+    var vnf_regex = /^\s*(3[01]|[12][0-9]|0?[1-9])[/-](1[012]|0?[1-9])[/-]((?:19|20)\d{2})\s*$/
     let flag_check = vnf_regex.test(dateInput)
     if(flag_check) {
       var m = moment(dateInput, 'DD-MM-YYYY');

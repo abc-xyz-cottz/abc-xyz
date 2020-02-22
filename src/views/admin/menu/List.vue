@@ -3,6 +3,7 @@
     <b-row>
       <b-col>
         <b-card>
+
           <b-row>
             <b-col md='6'>
               <h4 class="mt-2">Menu</h4>
@@ -14,46 +15,46 @@
             </b-col>
           </b-row>
           <hr>
-          <b-form>
-              <b-row class="form-row">
-                <b-col md="4">
-                  <label> Tên </label>
-                  <input
-                  id="name"
-                  type="text"
-                  autocomplete="new-password"
-                  class="form-control"
-                  v-model="inputs.name">
-                </b-col>
-                <b-col md="4">
-                  <label> Giá </label>
-                  <input
-                  id="price"
-                  type="text"
-                  autocomplete="new-password"
-                  class="form-control"
-                  v-model="inputs.price">
-                </b-col>
-                <b-col md="4">
-                  <label> Trạng Thái </label>
-                  <b-form-select
-                  :options="options"
-                  id="status"
-                  type="text"
-                  autocomplete="new-password"
-                  class="form-control"
-                  v-model="inputs.status"></b-form-select>
-                </b-col>
-              </b-row>
-              <hr>
-            <b-row class="pull-right mb-3">
-              <b-col>
-                <b-button variant="primary" class="px-4" :disabled="onSearch" @click.prevent="prepareToSearch">
-                  Tìm Kiếm
-                </b-button>
-              </b-col>
-            </b-row>
-          </b-form>
+
+          <b-row>
+            <b-col md="4">
+              <label> Tên </label>
+              <input
+              id="name"
+              type="text"
+              autocomplete="new-password"
+              class="form-control"
+              v-model="inputs.name">
+            </b-col>
+            <b-col md="4">
+              <label> Giá </label>
+              <input
+              id="price"
+              type="text"
+              autocomplete="new-password"
+              class="form-control"
+              v-model="inputs.price">
+            </b-col>
+            <b-col md="4">
+              <label> Trạng Thái </label>
+              <b-form-select
+              :options="options"
+              id="status"
+              type="text"
+              autocomplete="new-password"
+              class="form-control"
+              v-model="inputs.status"></b-form-select>
+            </b-col>
+          </b-row>
+
+        <b-row class="mt-2 mb-2">
+          <b-col md="6">
+            <b-button variant="primary" class="pull-right px-4" :disabled="onSearch" @click.prevent="prepareToSearch">
+              Tìm Kiếm
+            </b-button>
+          </b-col>
+        </b-row>
+
           <b-table 
           hover
           bordered
@@ -81,6 +82,8 @@
     </b-row>
   </div>
 </template>
+
+
 <script>
 import adminAPI from '@/api/admin'
 import Mapper from '@/mapper/menu'
