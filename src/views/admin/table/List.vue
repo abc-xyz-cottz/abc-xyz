@@ -1,16 +1,16 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div class="container-fluid">
     <b-row>
       <b-col>
         <b-card>
           <b-row>
             <b-col md='6'>
-              <h4 class="mt-2">Table</h4>
-            </b-col>
-            <b-col md='6'>
               <b-button variant="primary" class="pull-right px-4" @click="goToAdd()">
                 Thêm
               </b-button>
+            </b-col>
+            <b-col md='6'>
+              <h4 class="mt-2 text-center">Bàn Ăn</h4>
             </b-col>
           </b-row>
           <hr>

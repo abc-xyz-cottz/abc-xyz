@@ -155,40 +155,43 @@ export default {
   },
   beforeMount() {
     let user = Cookies.get(Constant.APP_USR)
-    user = JSON.parse(user)
-    if(user && user != undefined && user.userType == "customer") {
 
-      let numberOfNotify = Cookies.get(Constant.NOTIFY_NUMBER)
-      if(!numberOfNotify) {
-        this.countNotificationNotRead()
+    if(user && user != undefined) {
+      user = JSON.parse(user)
+      if(user.userType == "customer") {
+        let numberOfNotify = Cookies.get(Constant.NOTIFY_NUMBER)
+        if(!numberOfNotify) {
+          this.countNotificationNotRead()
+        }
+        this.notifyNumber = numberOfNotify
+
+        // user = JSON.parse(user)
+        let phoneNumber = user.phoneNumber
+        let cityId = user.cityId
+
+        let api = RootAPI.replace("http://", "").replace("https://", "").replace("/api/", "")
+        var socket = new WebSocket("ws://" + api + "/join-group/cus-" + phoneNumber + "-" + cityId)
+
+        socket.onopen = event => {
+            console.log('connected')
+            this.connected = true
+            socket.send({})
+        }
+
+        socket.onmessage = event => {
+          console.log("onmessage")
+          var json_data = JSON.parse(event.data)
+          let numberOfNotification = json_data.text.numberOfNotification
+          Cookies.set(Constant.NOTIFY_NUMBER, numberOfNotification)
+
+          this.notifyNumber = numberOfNotification
+        }
+
+        socket.onclose = event => {
+          this.connected = false
+        }
       }
-      this.notifyNumber = numberOfNotify
 
-      // user = JSON.parse(user)
-      let phoneNumber = user.phoneNumber
-      let cityId = user.cityId
-
-      let api = RootAPI.replace("http://", "").replace("https://", "").replace("/api/", "")
-      var socket = new WebSocket("ws://" + api + "/join-group/cus-" + phoneNumber + "-" + cityId)
-
-      socket.onopen = event => {
-          console.log('connected')
-          this.connected = true
-          socket.send({})
-      }
-
-      socket.onmessage = event => {
-        console.log("onmessage")
-        var json_data = JSON.parse(event.data)
-        let numberOfNotification = json_data.text.numberOfNotification
-        Cookies.set(Constant.NOTIFY_NUMBER, numberOfNotification)
-
-        this.notifyNumber = numberOfNotification
-      }
-
-      socket.onclose = event => {
-        this.connected = false
-      }
     }
   },
 

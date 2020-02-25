@@ -20,7 +20,7 @@
 
               <b-row>
                 <b-col md='12'>
-                  <h4 class="mt-2">Table</h4>
+                  <h4 class="mt-2 text-center">Bàn Ăn</h4>
                 </b-col>
               </b-row>
               <hr/>

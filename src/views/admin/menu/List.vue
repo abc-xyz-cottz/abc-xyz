@@ -3,15 +3,15 @@
     <b-row>
       <b-col>
         <b-card>
-
           <b-row>
             <b-col md='6'>
-              <h4 class="mt-2">Menu</h4>
+                <b-button variant="primary" class="pull-right px-4" @click="goToAdd()">
+                  Thêm
+                </b-button>
             </b-col>
+
             <b-col md='6'>
-              <b-button variant="primary" class="pull-right px-4" @click="goToAdd()">
-                Thêm
-              </b-button>
+              <h4 class="mt-2 text-center">Menu</h4>
             </b-col>
           </b-row>
           <hr>

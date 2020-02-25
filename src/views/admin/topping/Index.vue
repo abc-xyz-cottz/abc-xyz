@@ -18,7 +18,7 @@
             </b-row>
               <b-row class="form-row">
                 <b-col md='12'>
-                  <h4 class="mt-2">Topping</h4>
+                  <h4 class="mt-2 text-center">Topping</h4>
                 </b-col>
               </b-row>
               <hr/>

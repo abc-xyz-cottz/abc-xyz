@@ -18,14 +18,14 @@
                       <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
                       <b-col class="col-6">
                           <div class="is-left">
-                              <b-button class="btn-danger pull-right ml-3 px-4" @click="cancel(index, item.orderId)">
+                              <b-button class="btn-danger pull-right ml-3 px-4" @click="cancel(index, item.orderId, item.customerName, item.type)">
                                   Hủy
                               </b-button>
                           </div>
                       </b-col>
                       <b-col class="col-6">
                           <div class="text-right">
-                              <b-button class="btn-primary pull-right ml-3 px-4" @click="confirm(index, item.orderId)">
+                              <b-button class="btn-primary pull-right ml-3 px-4" @click="confirm(index, item.orderId, item.customerName, item.type)">
                                   Xác nhận
                               </b-button>
                           </div>
@@ -61,6 +61,8 @@
 import Cookies from 'js-cookie'
 import {Constant} from '@/common/constant'
 import { RootAPI } from '@/api/index'
+import adminAPI from '@/api/admin'
+import commonFunc from '@/common/commonFunc'
 
 
 export default {
@@ -88,6 +90,7 @@ export default {
     }
 
     socket.onmessage = event => {
+      this.playSound()
       var json_data = JSON.parse(event.data)
       this.dataSet = json_data.text
       console.log(json_data.text)
@@ -102,33 +105,55 @@ export default {
      /**
      * Confirm
      */
-    confirm(index, orderId) {
+    confirm(index, orderId, customerInfo, type) {
       this.approved.push(this.created[index])
       this.created.splice(index, 1)
 
+       let phoneNumber = null
+       if(customerInfo) {
+         phoneNumber = customerInfo.split("-")[1]
+       }
+
        // Update order status to db
-      //  let orderInfo = {"id": orderId, "status": Constant.ORDER_APPROVED}
-      // adminAPI.updateOrderStatus(orderInfo).then(res => {
-      //   alert("ok")
-      // }).catch(err => {
-      //   console.log(err)
-      // })
+       let orderInfo = {"id": orderId, "status": Constant.ORDER_APPROVED, "phoneNumber": phoneNumber, "type": type}
+      adminAPI.updateOrderStatus(orderInfo).then(res => {
+        this.popToast('success', 'Thao tác thành công!!! ')
+      }).catch(err => {
+          // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
+      })
     },
 
     /**
      * Cancel
      */
-    cancel(index, orderId) {
+    cancel(index, orderId, customerInfo, type) {
       this.canceled.push(this.created[index])
       this.created.splice(index, 1)
 
+      let phoneNumber = null
+       if(customerInfo) {
+         phoneNumber = customerInfo.split("-")[1]
+       }
+
       // Update order status to db
-      // let orderInfo = {"id": orderId, "status": Constant.ORDER_CANCELED}
-      // adminAPI.updateOrderStatus(orderInfo).then(res => {
-      //   alert("ok")
-      // }).catch(err => {
-      //   console.log(err)
-      // })
+      let orderInfo = {"id": orderId, "status": Constant.ORDER_CANCELED, "phoneNumber": phoneNumber, "type": type}
+      adminAPI.updateOrderStatus(orderInfo).then(res => {
+        this.popToast('success', 'Thao tác thành công!!! ')
+      }).catch(err => {
+        // Handle error
+          let errorMess = commonFunc.handleStaffError(err)
+          this.popToast('danger', errorMess)
+      })
+    },
+
+    /**
+     * Play sound
+     */
+    playSound() {
+      var audio = new Audio('../../../static/sound/on_message.mp3');
+      audio.play();
     }
   }
 }

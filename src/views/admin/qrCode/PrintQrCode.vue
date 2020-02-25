@@ -4,6 +4,13 @@
       <b-col>
         <b-card>
           <b-row>
+            <b-col md='12'>
+              <h4 class="mt-2 text-center">In QR Code</h4>
+            </b-col>
+          </b-row>
+          <hr>
+
+          <b-row>
             <b-col md="4">
               <label :style="{width: 100 + '%'}">Chọn bàn:</label>
               <b-form-select
@@ -56,8 +63,8 @@
       <b-card-body>
         <b-row v-show="tableId" id="printAble" >
           <b-col>
-            <b-card  :style="{width: defaultWidthPx + 'px', height: 800 + 'px'}" id="qrCodePlaceFull">
-              <b-card-body class="p-4">
+            <div  :style="{width: defaultWidthPx + 'px', height: 800 + 'px'}" id="qrCodePlaceFull">
+              <div class="p-4">
 
                 <b-row>
                   <b-col md="12" class="text-right mr-4">
@@ -80,8 +87,8 @@
                   </b-col>
                 </b-row>
 
-              </b-card-body>
-            </b-card>
+              </div>
+            </div>
           </b-col>
         </b-row>
       </b-card-body>
@@ -278,6 +285,6 @@ export default {
   }
 
   #qrCode {
-    margin: 65px 0 0 10px;
+    margin: 84px 0 0 0px;
   }
 </style>

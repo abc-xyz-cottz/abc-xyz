@@ -208,6 +208,6 @@ export default {
 
 <style lang="scss" scoped>
   #fullScreen {
-    background-image: url("../../../static/img/project/bg_welcome.jpg");
+    background-image: url("../../../static/img/project/bg_welcome.png");
   }
 </style>

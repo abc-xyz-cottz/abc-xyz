@@ -131,11 +131,11 @@
     </b-card-group>
 
     <!-- Modal Scan QR code -->
-    <b-modal hide-header-close no-close-on-backdrop centered hide-footer
+    <b-modal hide-header no-close-on-backdrop centered hide-footer
     id="modal-scan"
     >
     <qrcode-stream @decode="onDecode" class="showQRCode"/>
-    <b-button class="mt-3" variant="primary" block @click="hidePopupQRCode">Close</b-button>
+    <b-button class="mt-3" variant="primary" block @click="hidePopupQRCode">Đóng</b-button>
     </b-modal>
 
     <!-- Modal login require -->

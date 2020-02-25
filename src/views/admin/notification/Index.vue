@@ -7,7 +7,7 @@
             <b-form>
               <b-row class="form-row">
                 <b-col md='12'>
-                  <h4 class="mt-2">Đăng thông báo</h4>
+                  <h4 class="mt-2 text-center">Đăng Thông Báo</h4>
                 </b-col>
               </b-row>
               <hr/>

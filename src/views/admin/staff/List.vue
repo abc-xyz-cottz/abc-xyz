@@ -5,12 +5,12 @@
         <b-card>
           <b-row>
             <b-col md='6'>
-              <h4 class="mt-2">Staff</h4>
-            </b-col>
-            <b-col md='6'>
               <b-button variant="primary" class="pull-right px-4" @click="gotoAdd()">
                 Thêm
               </b-button>
+            </b-col>
+            <b-col md='6'>
+              <h4 class="mt-2 text-center">Nhân Viên</h4>
             </b-col>
           </b-row>
           <hr>

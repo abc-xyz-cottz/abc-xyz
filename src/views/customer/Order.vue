@@ -22,7 +22,7 @@
 
             <b-row v-for="item in items" :key="item.action" class="mt-3 pb-3 border-bottom border-warning">
               <b-col cols="5" class="text-right">
-                <img :src="item.image" :style="{width: deviceWidth + 'px', height: deviceWidth + 'px'}"/>
+                <img :src="item.image" @click="zoomImage(item.image)" :style="{width: deviceWidth + 'px', height: deviceWidth + 'px'}"/>
               </b-col>
               <b-col cols="7" class="text-left">
                 <h5><b>{{item.name}}</b></h5>
@@ -236,6 +236,15 @@
 
     </b-modal>
 
+      <!-- Modal zoom image -->
+    <b-modal size="huge" hide-header hide-footer aria-hidden centered id="modal-zoom-image">
+      <div class="preview-box" :style="{ height: deviceWidthZoom + 'px',width:deviceWidthZoom + 'px' }">
+        <img v-bind:src="currenrtImage" :style="{ height: deviceWidthZoom + 'px',width:deviceWidthZoom + 'px' }"/>
+
+        <b-button class="mt-3" variant="primary" block @click="hideZoomImage">Đóng</b-button>
+      </div>
+    </b-modal>
+
     </div>
 </template>
 <script>
@@ -343,6 +352,8 @@ export default {
       promotions:[],
       promotion: null,
       deviceWidth: 100,
+      deviceWidthZoom: 200,
+      currenrtImage: null,
 
     }
   },
@@ -377,6 +388,15 @@ export default {
     getImageWidth() {
       let tempWidth = window.innerWidth
       this.deviceWidth = (parseInt(tempWidth)/ 4)
+      this.deviceWidthZoom = (parseInt(tempWidth)/ 2)
+    },
+
+    /**
+     * Zoom image
+     */
+    zoomImage(imageSrc) {
+      this.currenrtImage = imageSrc
+      this.$bvModal.show('modal-zoom-image')
     },
 
     /**
@@ -735,7 +755,27 @@ export default {
      */
     confirmAddPromotion() {
       this.$bvModal.hide('modal-add-promotion')
-    }
+    },
+
+    /**
+     * Hide zoom image
+     */
+    hideZoomImage () {
+      this.$bvModal.hide('modal-zoom-image')
+    },
   }
 }
 </script>
+
+<style lang="scss">
+
+.modal .modal-huge .modal-body{
+/*max-width: 535px;*/
+/*width: 535px;*/
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+</style>

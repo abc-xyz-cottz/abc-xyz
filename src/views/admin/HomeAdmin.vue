@@ -6,7 +6,7 @@
           <b-card-body class="p-4">
         <b-row class="form-row">
           <b-col md='6'>
-            <h4 class="mt-2">Quản lý gọi món</h4>
+            <h4 class="mt-2 text-center">Quản Lý Gọi Món</h4>
           </b-col>
           <b-col md='6' class="text-right">
             <b-button variant="primary" class="px-4" @click="goToOrderHis">
@@ -133,6 +133,7 @@ export default {
     }
 
     socket.onmessage = event => {
+      this.playSound()
       var json_data = JSON.parse(event.data)
       // this.dataSet = json_data.text
       // console.log(json_data.text)
@@ -230,6 +231,14 @@ export default {
     */
     goToOrderHis() {
       this.$router.push('/order-history')
+    },
+
+    /**
+     * Play sound
+     */
+    playSound() {
+      var audio = new Audio('../../../static/sound/on_message.mp3');
+      audio.play();
     }
   }
 }

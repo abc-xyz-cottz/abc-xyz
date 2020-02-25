@@ -13,7 +13,7 @@
 
           <b-row>
             <b-col md='12'>
-              <h4 class="mt-2">Lịch sử gọi món</h4>
+              <h4 class="mt-2 text-center">Lịch Sử Gọi Món</h4>
             </b-col>
           </b-row>
           <hr>
@@ -71,14 +71,15 @@
         <b-card v-for="(item, index) in items" :key="item.table + index">
           <div>
               <b-row class="mess">
-                <h4 class="col-12">Bàn: <b>{{item.table}}</b></h4>
-                <p class="col-12" v-if="item.type == 'order'">Loại: Đặt món</p>
-                <p class="col-12" v-if="item.type == 'request'">Loại: Yêu cầu</p>
-                <p class="col-12">Trạng thái: {{item.status}}</p>
-                <p class="col-12">Khách hàng: {{item.customerName}}</p>
-                <p class="col-12">Thời gian : {{item.time}}</p>
-                <p class="col-12" v-if="item.type == 'order'">Tổng thành tiền: {{item.totalPrice}}</p>
-                <p class="col-12" >Chi tiết:</p>
+                <h4 class="col-12"><b>Bàn: {{item.table}}</b></h4>
+                <p class="col-12" v-if="item.type == 'order'"><b>Loại:</b> Đặt món</p>
+                <p class="col-12" v-if="item.type == 'request'"><b>Loại:</b> Yêu cầu</p>
+                <p class="col-12" v-if="item.type == 'confirm'"><b>Loại:</b> Xác nhận</p>
+                <p class="col-12"><b>Trạng thái:</b> {{item.status}}</p>
+                <p class="col-12"><b>Khách hàng:</b> {{item.customerName}}</p>
+                <p class="col-12"><b>Thời gian:</b> {{item.time}}</p>
+                <p class="col-12" v-if="item.type == 'order'"><b>Tổng thành tiền:</b> {{item.totalPrice}}</p>
+                <p class="col-12" ><b>Chi tiết:</b></p>
                 <p class="col-12" v-for="it in item.orders" :key="it">{{it}}</p>
               </b-row>
           </div>
