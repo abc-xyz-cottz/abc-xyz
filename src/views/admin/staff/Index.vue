@@ -217,14 +217,7 @@ export default {
               let message = ""
               if (res.data.status == 200) {
                 // show popup success
-                this.$bvModal.msgBoxOk("Cập nhật thành công", {
-                  title: "Cập Nhật Nhân Viên",
-                  centered: true, 
-                  size: 'sm',
-                  headerClass: 'bg-success',
-                }).then(res => {
-                  this.$router.push("/staff/list")
-                })
+                this.popToast('success', 'Cập nhật nhân viên thành công!!! ')
               }
             }
           }).catch(err => {
@@ -251,15 +244,7 @@ export default {
 
               let message = ""
               if (res.data.status == 200) {
-                // show popup success
-                this.$bvModal.msgBoxOk("Thêm thành công", {
-                  title: "Thêm Nhân Viên",
-                  centered: true, 
-                  size: 'sm',
-                  headerClass: 'bg-success',
-                }).then(res => {
-                  this.$router.push("/staff/list")
-                })
+                this.$router.push("/staff/list")
               }
             }
           }).catch(err => {

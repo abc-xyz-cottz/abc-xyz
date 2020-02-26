@@ -63,10 +63,10 @@
               </b-row>
 
               <b-row class="form-row" horizontal>
-                <b-col md="6" class="mt-2">
+                <b-col md="3" class="mt-2">
                   <label> Hết Hạn Sau </label><span class="error-sybol"></span>
                 </b-col>
-                <b-col md="6">
+                <b-col md="9">
                   <div class="input-group">
                   <input
                   id="expiredDate"
@@ -204,14 +204,7 @@ export default {
               let message = ""
               if (res.data.status == 200) {
                 // show popup success
-                this.$bvModal.msgBoxOk("Cập nhật thành công", {
-                  title: "Cập Nhật Promotion",
-                  centered: true, 
-                  size: 'sm',
-                  headerClass: 'bg-success',
-                }).then(res => {
-                  this.$router.push("/promo/list")
-                })
+                this.popToast('success', 'Cập nhật khuyến mãi thành công!!! ')
               }
             }
           }).catch(err => {
@@ -238,15 +231,7 @@ export default {
             if(res != null && res.data != null){
               let message = ""
               if (res.data.status == 200) {
-                // show popup success
-                this.$bvModal.msgBoxOk("Thêm thành công", {
-                  title: "Thêm Promotion",
-                  centered: true, 
-                  size: 'sm',
-                  headerClass: 'bg-success',
-                }).then(res => {
-                  this.$router.push("/promo/list")
-                })
+                this.$router.push("/promo/list")
               }
             }
           }).catch(err => {

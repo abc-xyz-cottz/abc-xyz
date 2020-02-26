@@ -4,12 +4,14 @@
       <b-col>
         <b-card>
           <b-row>
-            <b-col md='6'>
+            <b-col md='12'>
               <b-button variant="primary" class="pull-right px-4" @click="goToAdd()">
                 Thêm
               </b-button>
             </b-col>
-            <b-col md='6'>
+          </b-row>
+          <b-row>
+            <b-col md='12'>
               <h4 class="mt-2 text-center">Topping</h4>
             </b-col>
           </b-row>

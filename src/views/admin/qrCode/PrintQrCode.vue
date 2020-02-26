@@ -11,7 +11,7 @@
           <hr>
 
           <b-row>
-            <b-col md="4">
+            <b-col md="6">
               <label :style="{width: 100 + '%'}">Chọn bàn:</label>
               <b-form-select
                   :options="tables"
@@ -24,25 +24,26 @@
                   >
               </b-form-select>
             </b-col>
-            <b-col md="4">
-              <label :style="{width: 100 + '%'}">Chọn kích thước(cm)</label>
-              <div class="inline-center">
-                <input
-                  v-model="defaultWidthCm"
-                  type="text"
-                  autocomplete="new-password"
-                  :style="{width: 50 + '%'}"
-                  class="form-control inLine"
-                >
-                <b-button
-                  :style="{width: 30 + '%'}"
-                  class="inLine"
-                  @click="changeWidth">
-                  Đổi
-                </b-button>
-              </div>
-            </b-col>
-            <b-col md="4" class="mt-4 inline-center">
+            <!--<b-col md="4">-->
+              <!--<label :style="{width: 100 + '%'}">Chọn kích thước(cm)</label>-->
+              <!--<div class="inline-center">-->
+                <!--<input-->
+                  <!--v-model="defaultWidthCm"-->
+                  <!--type="text"-->
+                  <!--autocomplete="new-password"-->
+                  <!--:style="{width: 50 + '%'}"-->
+                  <!--class="form-control inLine"-->
+                <!--&gt;-->
+                <!--<b-button-->
+                  <!--:style="{width: 30 + '%'}"-->
+                  <!--class="inLine"-->
+                  <!--@click="changeWidth">-->
+                  <!--Đổi-->
+                <!--</b-button>-->
+              <!--</div>-->
+            <!--</b-col>-->
+
+            <b-col md="6" class="mt-4 inline-center">
               <div :style="{width: 20 + '%'}">
                 <b-button :disabled="!tableId" v-print="'#printAble'" >
                   In
@@ -266,9 +267,9 @@ export default {
     /**
      * Change width of print place
      */
-    changeWidth() {
-      this.defaultWidthPx = this.convertCmToPx(this.defaultWidthCm)
-    }
+    // changeWidth() {
+    //   this.defaultWidthPx = this.convertCmToPx(this.defaultWidthCm)
+    // }
   }
 }
 </script>

@@ -4,12 +4,15 @@
       <b-col>
         <b-card>
           <b-row>
-            <b-col md='6'>
+            <b-col md='12'>
               <b-button variant="primary" class="pull-right px-4" @click="gotoAdd()">
                 Thêm
               </b-button>
             </b-col>
-            <b-col md='6'>
+          </b-row>
+
+          <b-row>
+            <b-col md='12'>
               <h4 class="mt-2 text-center">Nhân Viên</h4>
             </b-col>
           </b-row>
@@ -50,7 +53,7 @@
             </b-row>
 
           <b-row class="mt-2 mb-2">
-          <b-col md="6">
+          <b-col md="12">
             <b-button variant="primary" class="pull-right px-4" :disabled="onSearch" @click.prevent="prepareToSearch">
               Tìm Kiếm
             </b-button>

@@ -287,16 +287,9 @@ export default {
            this.formatBirthday()
           if(res != null && res.data != null) {
             if (res.data.status == 200) {
-              let message = ""
               // show popup success
-              this.$bvModal.msgBoxOk("Cập nhật thành công", {
-                title: "Cập Nhật Thông Tin",
-                centered: true, 
-                size: 'sm',
-                headerClass: 'bg-success',
-              }).then(res => {
-                this.onEdit = false
-              })
+              this.popToast('success', 'Cập nhật thông tin thành công!!! ')
+              this.onEdit = false
             }
           }
         }).catch(err => {
