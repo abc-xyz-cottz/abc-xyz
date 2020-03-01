@@ -203,25 +203,27 @@ export default {
      * @param rowIndex
      */
     deleted (id, name, rowIndex) {
-      this.$bvModal.msgBoxConfirm('Xóa ' + name + ". Bạn có chắc không?", {
-        title: false,
-        buttonSize: 'sm',
-        centered: true, size: 'sm',
-        footerClass: 'p-2'
-      }).then(res => {
-        if(res){
-          adminAPI.deleteStaff(id).then(res => {
-            // Remove item in list
-            let indexTemp = commonFunc.updateIndex(rowIndex - 1, this.listIdDeleted)
-            this.items.splice(indexTemp, 1)
-            this.listIdDeleted.push(rowIndex - 1)
-          }).catch(err => {
-            // Handle error
-            let errorMess = commonFunc.handleStaffError(err)
-            this.popToast('danger', errorMess)
-          })
+      if(id && name) {
+        this.$bvModal.msgBoxConfirm('Xóa ' + name + ". Bạn có chắc không?", {
+          title: false,
+          buttonSize: 'sm',
+          centered: true, size: 'sm',
+          footerClass: 'p-2'
+        }).then(res => {
+          if(res){
+            adminAPI.deleteStaff(id).then(res => {
+              // Remove item in list
+              let indexTemp = commonFunc.updateIndex(rowIndex - 1, this.listIdDeleted)
+              this.items.splice(indexTemp, 1)
+              this.listIdDeleted.push(rowIndex - 1)
+            }).catch(err => {
+              // Handle error
+              let errorMess = commonFunc.handleStaffError(err)
+              this.popToast('danger', errorMess)
+            })
+          }
+        })
         }
-      })
     },
 
     /**

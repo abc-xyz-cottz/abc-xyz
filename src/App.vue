@@ -7,12 +7,10 @@
             <button @click="activePushedMenu = !activePushedMenu" display="lg" type="button" class="navbar-toggler">
                 <!--<span class="navbar-toggler-icon"></span>-->
               <img src="/static/img/icons/sticker_1.png" class="iconsCustom"/>
-              </button>
+            </button>
 
             <b-link class="nav-link home-icon" to="/">
-                <!--<span>-->
-                  <!--<i class="fa fa-home fa-2x" ></i>-->
-                <!--</span>-->
+                <span class="mr-2"></span>
               <img src="/static/img/icons/sticker_2.png" class="iconsCustom"/>
             </b-link>
           </div>
@@ -30,9 +28,7 @@
               <img src="/static/img/icons/sticker_1.png" class="iconsCustom"/>
             </button>
             <b-link class="nav-link home-icon" to="/">
-              <!--<span>-->
-                <!--<i class="fa fa-home fa-2x" ></i>-->
-              <!--</span>-->
+              <span class="mr-2"></span>
               <img src="/static/img/icons/Sticker_2.png" class="iconsCustom"/>
             </b-link>
           </div>
@@ -40,13 +36,11 @@
         <b-navbar-nav>
           <!-- hiện cho template customer -->
            <HeaderDropdownGift v-if="this.$store.state.user.userType == 'customer'"/>
-          <li>
-            <a href="/notification">
-              <span class="white" v-if="this.$store.state.user.userType == 'customer'">
-               <span class="fa-stack" :data-count="notifyNumber">
-                   <!--<i src="/static/img/icons/bell.png" class="iconsCustom"></i>-->
-                   <img src="/static/img/icons/sticker_3.png" class="iconsCustom"/>
-               </span>
+          <li class="nav-item b-nav-dropdown dropdown">
+            <a href="/notification" class="nav-link dropdown-toggle dropdown-toggle-no-caret">
+              <span class="white mr-3" v-if="this.$store.state.user.userType == 'customer'">
+                <img src="/static/img/icons/sticker_3.png" class="iconsCustom"/>
+               <span class="badge">{{ notifyNumber }}</span>
              </span>
             </a>
           </li>
@@ -69,7 +63,8 @@
       </AppHeader>
 
       <div class="app-body" >
-        <template >
+        <template>
+          <div class="bg-pushed-menu" v-if="activePushedMenu" @click="activePushedMenu = false"></div>
           <AppSidebar fixed :class="{ 'active': activePushedMenu }">
             <SidebarHeader />
             <SidebarForm />
@@ -243,7 +238,7 @@ export default {
     border-radius:999px;
     line-height:.75em;
     color: white;
-    background:rgba(255,0,0,.85);
+    background:rgba(255,88,88,.85);
     text-align:center;
     min-width:2em;
     font-weight:bold;
@@ -260,6 +255,31 @@ export default {
   }
   .header-custom {
     background-color: #444444 !important;
+    ul.navbar-nav {
+      li.nav-item {
+        min-width: unset;
+        a {
+          display: block;
+          span {
+            display: block;
+          }
+        }
+      }
+    }
+    .badge {
+      top: 10px!important;
+      left: unset!important;
+      right: 5px;
+      border-radius: 50%;
+      background: white;
+      width: 25px;
+      height: 25px;
+      color: red;
+      display: flex!important;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8em;
+    }
   }
   .iconsCustom {
     width: 40px;
@@ -271,5 +291,31 @@ export default {
   }
   .default-btn-bg {
     background-color: #444444 !important;
+  }
+  .bg-pushed-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+  }
+  .sidebar-minimizer {
+    display: none!important;
+  }
+  .card {
+    border: none!important;
+    box-shadow: 0 2px 10px #DEDEDE;
+    border-radius: 10px!important;
+  }
+  .is-fixed-page {
+    position: fixed;
+    top: 55px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  button {
+    &:focus {outline:0;}
   }
 </style>

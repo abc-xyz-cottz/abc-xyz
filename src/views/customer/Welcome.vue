@@ -1,5 +1,5 @@
 <template>
-  <div class="app flex-row align-items-center" id="fullScreen">
+  <div class="app flex-row align-items-center is-fixed-page" id="fullScreen">
     <div class="container">
       <b-row class="row justify-content-center">
         <b-col md="6">

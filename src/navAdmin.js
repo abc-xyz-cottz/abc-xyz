@@ -47,6 +47,11 @@ export default {
         icon: 'fa fa-home'
       },
       {
+        name: 'Xác nhận khuyến mãi',
+        url: '/confirm-promotion',
+        icon: 'fa fa-home'
+      },
+      {
         name: 'Giới thiệu',
         url: '/about-us',
         icon: 'fa fa-home'

@@ -88,6 +88,7 @@ export default {
       "phone_number": staff.fields.phone_number,
       "password": '',
       "role_id": staff.fields.role_id,
+      "role_name": staff.fields.role_name,
       "store_id": staff.fields.store_id
     }
   },

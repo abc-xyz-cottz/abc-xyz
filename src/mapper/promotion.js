@@ -9,8 +9,12 @@ export default {
   
         let promoTemp = {
           stt: stt
+          , code: commonFunc.formatId(promotions[index].pk, 8)
           , name: promotions[index].fields.name
           , price: commonFunc.currencyFormat(promotions[index].fields.cost)
+          , type: promotions[index].fields.type
+          , quantity: promotions[index].fields.quantity
+          , remaining: promotions[index].fields.remaining
           , expired: promotions[index].fields.expired_at
           , createDate: promotions[index].fields.created_at
           , id: promotions[index].pk
@@ -21,7 +25,9 @@ export default {
     },
     mapPromoDetailModelToDto (promotion) {
       return {
+          "code": commonFunc.formatId(promotion.pk, 8),
           "name": promotion.fields.name,
+          "type": promotion.fields.type,
           "cost": promotion.fields.cost,
           "expired_on": promotion.fields.expired_at,
           "quantity": promotion.fields.quantity,

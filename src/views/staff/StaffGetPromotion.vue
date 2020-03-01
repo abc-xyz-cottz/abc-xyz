@@ -26,15 +26,18 @@
                   <label> Mã khuyến mãi </label><span class="error-sybol"></span>
                 </b-col>
                 <b-col md="9">
-                  <input
-                  id="id"
-                  type="text"
-                  autocomplete="new-password"
-                  class="form-control  pull-left"
-                  v-model="inputs.code">
-                  <button class="btn btn-primary pull-right  px-4" @click="showPopupQRCode">
-                    Quét QR
-                  </button>
+                  <div class="input-group">
+                    <input
+                    id="id"
+                    type="text"
+                    autocomplete="new-password"
+                    class="form-control  pull-left"
+                    v-model="inputs.code">&nbsp;&nbsp;
+                    <b-button @click="showPopupQRCode()" class="show-qr-code-button">
+                      <icon width="20" name="qr-code" />
+                    </b-button>
+                </div>
+
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorId">
                     Đây là mục bắt buộc nhập
                   </b-form-invalid-feedback>

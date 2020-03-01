@@ -14,7 +14,7 @@
             </b-col>
           </b-row>
           <hr>
-          <b-form method="GET" @submit.prevent="search">
+          <b-form method="GET">
             <div class="form-row">
               <div class="form-group col-md-3 col-sm-12">
                 <label>Tên</label>

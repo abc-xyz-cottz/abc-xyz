@@ -14,20 +14,20 @@
                 img-height="480"
               >
                 <b-carousel-slide
-                  img-src="../../static/img/quang-cao/1.png"
+                  img-src="../../static/img/quang-cao/1.jpg"
                 ></b-carousel-slide>
                 <b-carousel-slide
-                  img-src="../../static/img/quang-cao/2.png"
+                  img-src="../../static/img/quang-cao/2.jpg"
                 ></b-carousel-slide>
                 <b-carousel-slide
-                  img-src="../../static/img/quang-cao/3.png"
+                  img-src="../../static/img/quang-cao/3.jpg"
                 ></b-carousel-slide>
-                <b-carousel-slide
-                  img-src="../../static/img/quang-cao/4.png"
-                ></b-carousel-slide>
-                <b-carousel-slide
-                  img-src="../../static/img/quang-cao/5.png"
-                ></b-carousel-slide>
+                <!--<b-carousel-slide-->
+                  <!--img-src="../../static/img/quang-cao/4.png"-->
+                <!--&gt;</b-carousel-slide>-->
+                <!--<b-carousel-slide-->
+                  <!--img-src="../../static/img/quang-cao/5.png"-->
+                <!--&gt;</b-carousel-slide>-->
               </b-carousel>
             </b-col>
           </b-row>
@@ -42,11 +42,11 @@
           <b-row>
             <b-col md="12" class="text-center">
               <b-button
-                class="mt-2"
+                class="mt-2 scan-qr-button"
                 @click="showPopupQRCode()">
                 Quét QR code
               </b-button>
-              <p class="">(Bạn có thể gọi món hoặc gửi yêu cầu tới nhân viên nhà hàng thông qua quét QR code)
+              <p class="is-meta">(Bạn có thể gọi món hoặc gửi yêu cầu tới nhân viên nhà hàng thông qua quét QR code)
               </p>
             </b-col>
           </b-row>
@@ -544,8 +544,26 @@ export default {
 </script>
 <style lang="scss">
   .homepage {
+    .card-group {
+      margin-top: 1em;
+      margin-bottom: 0;
+    }
     .carousel img {
       /*height: unset;*/
+    }
+    .scan-qr-button {
+      font-size: 1.5em;
+      font-weight: 500;
+      padding: .5em 2em;
+      margin-bottom: 1.5em;
+      background: #ed592a;
+      border: none;
+      color: #FFF;
+      border-radius: 15px;
+      text-transform: uppercase;
+    }
+    .is-meta {
+      color: #aeaeae;
     }
   }
 

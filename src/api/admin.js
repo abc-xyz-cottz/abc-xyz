@@ -228,4 +228,11 @@ export default {
   searchOrderHistory(order) {
     return session.post(RootAPI + 'staff/search-order-his', order)
   },
+
+  /**
+   * Get list promotion type
+   */
+  getListPromotionType() {
+    return session.get(RootAPI + 'promotion/get-promo-type')
+  },
 }

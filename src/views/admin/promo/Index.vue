@@ -25,6 +25,20 @@
               </b-row>
               <hr/>
 
+            <b-row class="form-row" v-if="this.$route.params.id">
+                <b-col md="3" class="mt-2">
+                  <label> Mã </label><span class="error-sybol"></span>
+                </b-col>
+                <b-col md="9">
+                  <input
+                  id="code"
+                  type="text"
+                  class="form-control"
+                  v-model="promo.code"
+                  readonly>
+                </b-col>
+              </b-row>
+
               <b-row class="form-row">
                 <b-col md="3" class="mt-2">
                   <label> Tên </label><span class="error-sybol"></span>
@@ -39,6 +53,24 @@
                   maxlength="100">
                   <b-form-invalid-feedback  class="invalid-feedback" :state="!errorName">
                     Vui lòng nhập tên
+                  </b-form-invalid-feedback>
+                </b-col>
+              </b-row>
+
+            <b-row class="form-row">
+                <b-col md="3" class="mt-2">
+                  <label> Loại </label><span class="error-sybol"></span>
+                </b-col>
+                <b-col md="9">
+                  <b-form-select
+                  :options="typeOptions"
+                  id="status"
+                  type="text"
+                  autocomplete="new-password"
+                  class="form-control"
+                  v-model="promo.type"></b-form-select>
+                  <b-form-invalid-feedback  class="invalid-feedback" :state="!errorType">
+                    Vui lòng nhập loại
                   </b-form-invalid-feedback>
                 </b-col>
               </b-row>
@@ -120,21 +152,29 @@ export default {
   data () {
     return {
       promo: {
+        "code": null,
         "name": null,
+        "type": null,
         "cost": null,
         "expired_on": null,
         "quantity": null
       },
+      typeOptions: [{value: null, text: ''}],
       click: false,
       saving: false
     }
   },
   mounted() {
+    this.getPromotionTypeList()
+
     this.getPromoDetail()
   },
   computed: {
     errorName: function () {
       return this.checkInfo(this.promo.name)
+    },
+    errorType: function () {
+      return this.checkInfo(this.promo.type)
     },
     errorCost: function () {
       return this.checkInfo(this.promo.cost)
@@ -151,7 +191,7 @@ export default {
       return (this.click && (info == null || info.length <= 0))
     },
     checkValidate () {
-      return !(this.errorName || this.errorCost || this.errorExpiredOn || this.errorQuantity)
+      return !(this.errorName || this.errorType || this.errorCost || this.errorExpiredOn || this.errorQuantity)
     },
 
    /**
@@ -163,6 +203,33 @@ export default {
         noCloseButton: true,
         variant: variant,
         autoHideDelay: 5000
+      })
+    },
+
+    /**
+     * Make toast with title
+     */
+    makeToast(variant = null, title="Success!!!", content="Thao tác thành công!!!") {
+      this.$bvToast.toast(content, {
+        title: title,
+        variant: variant,
+        solid: true,
+        autoHideDelay: 5000
+      })
+    },
+
+    /**
+     * Load list option promotion type
+     */
+    getPromotionTypeList () {
+      adminAPI.getListPromotionType().then(res => {
+        if(res != null && res.data != null && res.data.data != null) {
+          this.typeOptions = this.typeOptions.concat(res.data.data)
+        }
+      }).catch(err => {
+        // Handle error
+        let errorMess = commonFunc.handleStaffError(err)
+        this.popToast('danger', errorMess)
       })
     },
 
@@ -217,12 +284,13 @@ export default {
             } else {
               message = "Lỗi hệ thống"
             }
-            this.$bvModal.msgBoxOk(message, {
-              title: "Cập Nhật Promotion",
-              centered: true, 
-              size: 'sm',
-              headerClass: 'bg-danger',
-            })
+            this.makeToast('danger', "Cập nhật thất bại!!!", message)
+            // this.$bvModal.msgBoxOk(message, {
+            //   title: "Cập Nhật Promotion",
+            //   centered: true,
+            //   size: 'sm',
+            //   headerClass: 'bg-danger',
+            // })
           })
         } else {
           // Add
@@ -242,12 +310,13 @@ export default {
               } else {
                 message = "Lỗi hệ thống"
               }
-              this.$bvModal.msgBoxOk(message, {
-                title: "Thêm Promotion",
-                centered: true, 
-                size: 'sm',
-                headerClass: 'bg-danger',
-              })
+              this.makeToast('danger', "Tạo mới thất bại!!!", message)
+              // this.$bvModal.msgBoxOk(message, {
+              //   title: "Thêm Promotion",
+              //   centered: true,
+              //   size: 'sm',
+              //   headerClass: 'bg-danger',
+              // })
           })
         }
       } else {

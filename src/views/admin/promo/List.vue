@@ -17,6 +17,61 @@
             </b-col>
           </b-row>
           <hr>
+
+          <b-row>
+            <b-col md="3">
+              <label> Tên </label>
+              <input
+              id="name"
+              type="text"
+              autocomplete="new-password"
+              class="form-control"
+              v-model="inputs.name">
+            </b-col>
+
+            <b-col md="3">
+              <label> Giá </label>
+              <input
+              id="price"
+              type="text"
+              autocomplete="new-password"
+              class="form-control"
+              v-model="inputs.price">
+            </b-col>
+
+            <b-col md="3">
+              <label> Loại </label>
+              <b-form-select
+              :options="typeOptions"
+              id="status"
+              type="text"
+              autocomplete="new-password"
+              class="form-control"
+              v-model="inputs.type"></b-form-select>
+            </b-col>
+
+            <b-col md="3">
+              <label> Hiệu lực </label>
+              <b-form-select
+              :options="expireOptions"
+              id="status"
+              type="text"
+              autocomplete="new-password"
+              class="form-control"
+              v-model="inputs.expire"></b-form-select>
+            </b-col>
+
+
+          </b-row>
+
+        <b-row class="mt-2 mb-2">
+          <b-col md="12">
+            <b-button variant="primary" class="pull-right px-4" :disabled="onSearch" @click.prevent="prepareToSearch">
+              Tìm Kiếm
+            </b-button>
+          </b-col>
+        </b-row>
+
           <b-table 
           hover
           bordered
@@ -53,11 +108,21 @@ import {Constant} from '@/common/constant'
 export default {
   data () {
     return {
+      inputs: {
+        name: null,
+        price: null,
+        type: null,
+        expire: null
+      },
       pageLimit: Constant.PAGE_LIMIT,
       fields: [
         {
           key: 'stt',
           label: 'STT'
+        },
+        {
+          key: 'code',
+          label: 'Mã'
         },
         {
           key: 'name',
@@ -68,12 +133,24 @@ export default {
           label: 'Giá(điểm)'
         },
         {
-          key: 'expired',
-          label: 'Hết Hạn'
+          key: 'type',
+          label: 'Loại'
+        },
+        {
+          key: 'quantity',
+          label: 'Số lượng'
+        },
+        {
+          key: 'remaining',
+          label: 'Còn lại'
         },
         {
           key: 'createDate',
           label: 'Ngày Tạo'
+        },
+        {
+          key: 'expired',
+          label: 'Ngày Hết Hạn'
         },
         {
           key: 'actions',
@@ -87,7 +164,13 @@ export default {
       hasNext: true,
       onSearch: false,
       loadByScroll: false,
-      loading: false
+      loading: false,
+      expireOptions: [
+        {value: null, text: ''},
+        {value: 'true', text: 'Còn'},
+        {value: 'false', text: 'Hết'}
+      ],
+      typeOptions: [{value: null, text: ''}]
     }
   },
   computed: {
@@ -100,7 +183,12 @@ export default {
 
     window.addEventListener('resize', this.delete)
 
+    // Load list option promotion type
+    this.getPromotionTypeList()
+
+    // Get list promotion
     this.getPromoList()
+
   },
   methods: {
     /**
@@ -111,6 +199,18 @@ export default {
         toastClass: 'my-toast',
         noCloseButton: true,
         variant: variant,
+        autoHideDelay: 5000
+      })
+    },
+
+    /**
+     * Make toast with title
+     */
+    makeToast(variant = null, title="Success!!!", content="Thao tác thành công!!!") {
+      this.$bvToast.toast(content, {
+        title: title,
+        variant: variant,
+        solid: true,
         autoHideDelay: 5000
       })
     },
@@ -138,24 +238,41 @@ export default {
      * Delete
      */
     deleted (id, name, rowIndex) {
-      this.$bvModal.msgBoxConfirm('Xóa ' + name + ". Bạn có chắc không?", {
-        title: false,
-        buttonSize: 'sm',
-        centered: true, size: 'sm',
-        footerClass: 'p-2'
-      }).then(res => {
-        if(res){
-          adminAPI.deletePromo(id).then(res => {
-            // Remove item in list
-            let indexTemp = commonFunc.updateIndex(rowIndex - 1, this.listIdDeleted)
-            this.items.splice(indexTemp, 1)
-            this.listIdDeleted.push(rowIndex - 1)
-          }).catch(err => {
-            // Handle error
-            let errorMess = commonFunc.handleStaffError(err)
-            this.popToast('danger', errorMess)
-          })
+      if(id && name) {
+        this.$bvModal.msgBoxConfirm('Xóa ' + name + ". Bạn có chắc không?", {
+          title: false,
+          buttonSize: 'sm',
+          centered: true, size: 'sm',
+          footerClass: 'p-2'
+        }).then(res => {
+          if (res) {
+            adminAPI.deletePromo(id).then(res => {
+              // Remove item in list
+              let indexTemp = commonFunc.updateIndex(rowIndex - 1, this.listIdDeleted)
+              this.items.splice(indexTemp, 1)
+              this.listIdDeleted.push(rowIndex - 1)
+            }).catch(err => {
+              // Handle error
+              let errorMess = commonFunc.handleStaffError(err)
+              this.makeToast('danger', "Xóa thất bại!!!", errorMess)
+            })
+          }
+        })
+      }
+    },
+
+    /**
+     * Load list option promotion type
+     */
+    getPromotionTypeList () {
+      adminAPI.getListPromotionType().then(res => {
+        if(res != null && res.data != null && res.data.data != null) {
+          this.typeOptions = this.typeOptions.concat(res.data.data)
         }
+      }).catch(err => {
+        // Handle error
+        let errorMess = commonFunc.handleStaffError(err)
+        this.popToast('danger', errorMess)
       })
     },
 
@@ -175,6 +292,17 @@ export default {
     },
 
     /**
+     * Prepare to search
+     */
+    prepareToSearch() {
+      this.offset = 0
+      this.items = []
+      this.hasNext = true
+
+      this.getPromoList()
+    },
+
+    /**
      * Get list
      */
     getPromoList () {
@@ -184,6 +312,10 @@ export default {
       this.loading = true
       // Define params
       let param = {
+        "name": this.inputs.name,
+        "price": this.inputs.price,
+        "type": this.inputs.type,
+        "expire": this.inputs.expire,
         "limit": this.pageLimit,
         "offset": this.offset
       }

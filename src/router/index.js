@@ -21,6 +21,7 @@ import CustomerActivePass from '@/views/customer/CustomerActivePass'
 
 // Staff group
 import HomeStaff from '@/views/staff/Home'
+// import StaffInfo from '@/views/staff/StaffInfor'
 import StaffLogin from '@/views/staff/StaffLogin'
 import StaffChangePass from '@/views/staff/StaffChangePass'
 import StaffActivePass from '@/views/staff/StaffActivePass'
@@ -169,6 +170,11 @@ export default new Router({
       name: 'HomeStaff',
       component: HomeStaff
     },
+    // {
+    //   path: '/staff-info',
+    //   name: 'StaffInfo',
+    //   component: StaffInfo
+    // },
     {
       path: '/confirm-promotion',
       name: 'ConfirmPromotion',
