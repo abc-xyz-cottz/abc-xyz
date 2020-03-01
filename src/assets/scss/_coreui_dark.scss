@@ -84,7 +84,7 @@ section {
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, segoe ui, Roboto, helvetica neue, Arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol, noto color emoji;
-    font-size: 1rem;
+    font-size: .875rem;
     font-weight: 400;
     line-height: 1.5;
     color: #e4e7ea;
@@ -11531,14 +11531,14 @@ canvas {
 .dropdown-menu-lg {
     width: 250px
 }
-//
-//.app-header .navbar-nav .dropdown-menu {
-//    position: absolute
-//}
 
-//.app-header .navbar-nav .dropdown-menu-right {
-//    right: 0;
-//    left: auto
+.app-header .navbar-nav .dropdown-menu {
+    position: absolute
+}
+
+.app-header .navbar-nav .dropdown-menu-right {
+    right: 0;
+    left: auto
 }
 
 .app-header .navbar-nav .dropdown-menu-left {
@@ -13859,6 +13859,12 @@ html[dir=rtl] .aside-menu-show .aside-menu {
     }
     .app-header .navbar-toggler {
         color: #fff
+    }
+    .app-header .navbar-brand {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        margin-left: -77.5px
     }
     .app-body {
         margin-top: 55px

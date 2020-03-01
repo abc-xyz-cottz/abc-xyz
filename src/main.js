@@ -15,13 +15,9 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(BootstrapVue)
 
-// Import print component
-import Print from 'vue-print-nb'
-Vue.use(Print);
-
 // Global components
-// import LazyImage from '@/components/common/LazyImage'
-// Vue.component('lazy-img', LazyImage)
+import LazyImage from '@/components/common/LazyImage'
+Vue.component('lazy-img', LazyImage)
 
 // Import Global Filters
 import '@/filters'
@@ -43,16 +39,16 @@ Vue.use(svgicon, {
 
 // Some middleware to help us ensure the user is authenticated.
 router.beforeEach((to, from, next) => {
-  // if (!store.state.token && to.path !== '/login') {
-  //   // this route requires auth, check if logged in
-  //   // if not, redirect to login page.
-  //   next({
-  //     path: '/login',
-  //     query: { redirect: to.fullPath }
-  //   })
-  // } else {
+  if (!store.state.token && to.path !== '/login') {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath }
+    })
+  } else {
     next()
-  // }
+  }
 });
 
 const messages = {

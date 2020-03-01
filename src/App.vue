@@ -1,93 +1,57 @@
 <template>
   <div class="app">
-    <template v-if="this.$route.name != 'Login'">
-      <AppHeader fixed v-if="this.$store.state.user == null" class="header-custom">
-        <div class="container">
-          <div class="nav-left">
-            <button @click="activePushedMenu = !activePushedMenu" display="lg" type="button" class="navbar-toggler">
-                <!--<span class="navbar-toggler-icon"></span>-->
-              <img src="/static/img/icons/sticker_1.png" class="iconsCustom"/>
-            </button>
-
-            <b-link class="nav-link home-icon" to="/">
-                <span class="mr-2"></span>
-              <img src="/static/img/icons/sticker_2.png" class="iconsCustom"/>
-            </b-link>
-          </div>
-        </div>
-      </AppHeader>
-
-       <!-- đăng nhập xong sẽ dùng đoạn code bên dưới -->
-      <AppHeader fixed v-if="this.$store.state.user"  class="header-custom">
-        <div class="container">
-          <div class="nav-left">
-            <button @click="activePushedMenu = !activePushedMenu" display="lg" type="button" class="navbar-toggler"
-                    v-if="this.$store.state.user.role == roleAdmin || this.$store.state.user.role == roleSpAdmin
-                    || this.$store.state.user.role == roleCus || this.$store.state.user.role == roleStaff">
-              <!--<span class="navbar-toggler-icon"></span>-->
-              <img src="/static/img/icons/sticker_1.png" class="iconsCustom"/>
-            </button>
-            <b-link class="nav-link home-icon" to="/">
-              <span class="mr-2"></span>
-              <img src="/static/img/icons/Sticker_2.png" class="iconsCustom"/>
-            </b-link>
-          </div>
-
-        <b-navbar-nav>
-          <!-- hiện cho template customer -->
-           <HeaderDropdownGift v-if="this.$store.state.user.userType == 'customer'"/>
-          <li class="nav-item b-nav-dropdown dropdown">
-            <a href="/notification" class="nav-link dropdown-toggle dropdown-toggle-no-caret">
-              <span class="white mr-3" v-if="this.$store.state.user.userType == 'customer'">
-                <img src="/static/img/icons/sticker_3.png" class="iconsCustom"/>
-               <span class="badge">{{ notifyNumber }}</span>
-             </span>
-            </a>
-          </li>
-
-           <HeaderDropdownCusAcc v-if="this.$store.state.user.userType == 'customer'"/>
-
-          <!-- end -->
-
-          <!-- hiện cho template staff -->
-          <template>
-            <span class="white"  v-if="this.$store.state.user.userType == 'staff'">
-              {{ this.$store.state.user.userName }}
-            </span>
-            <HeaderDropdownStaffAcc  v-if="this.$store.state.user.userType == 'staff'"/>
-          </template>
-          <!-- end -->
-
+    <template v-if="!!this.$store.state.token">
+      <AppHeader fixed>
+        <SidebarToggler
+          class="d-lg-none"
+          display="md"
+          mobile
+        />
+        <SidebarToggler
+          class="d-md-down-none"
+          display="lg"
+          :default-open="true"
+        />
+        <b-link class="navbar-brand">
+          FnB
+        </b-link>
+        <b-navbar-nav class="ml-auto">
+          <p> {{ this.$store.state.user.fullName }} <br> {{ this.$store.state.user.roleName }} </p>
+          <HeaderDropdownAccnt />
         </b-navbar-nav>
-        </div>
       </AppHeader>
-
-      <div class="app-body" >
-        <template>
-          <div class="bg-pushed-menu" v-if="activePushedMenu" @click="activePushedMenu = false"></div>
-          <AppSidebar fixed :class="{ 'active': activePushedMenu }">
-            <SidebarHeader />
-            <SidebarForm />
-              <template>
-                <SidebarNav v-if="!this.$store.state.user" :nav-items="navCusNotLogin" />
-                <SidebarNav v-if="this.$store.state.user && this.$store.state.user.role == roleCus" :nav-items="navCus" />
-                <SidebarNav v-if="this.$store.state.user && this.$store.state.user.role == roleAdmin" :nav-items="navAdmin" />
-                <SidebarNav v-if="this.$store.state.user && this.$store.state.user.role == roleStaff" :nav-items="navStaff" />
-                <SidebarNav  v-if="this.$store.state.user && this.$store.state.user.role == roleSpAdmin"  :nav-items="navSpAdmin"/>
-              </template>
-            <SidebarFooter />
-            <SidebarMinimizer />
-          </AppSidebar>
-        </template>
-
+      <div class="app-body">
+        <AppSidebar fixed>
+          <SidebarHeader />
+          <SidebarForm />
+          <template v-if="this.$store.state.user.roleCode == 'STAFF'">
+            <SidebarNav :nav-items="nav" />
+          </template>
+          <template v-if="this.$store.state.user.roleCode == 'ADMIN'">
+            <SidebarNav :nav-items="navAdmin" />
+          </template>
+          <SidebarFooter />
+          <SidebarMinimizer />
+        </AppSidebar>
         <main class="main">
           <router-view />
         </main>
-
+        <AppAside fixed>
+          <!--aside-->
+          <DefaultAside />
+        </AppAside>
       </div>
+      <TheFooter>
+        <!--footer-->
+        <div>
+          <span class="ml-1"> Omotenashi </span>
+        </div>
+        <div class="ml-auto">
+          <qrcode-vue :value="value" :size="size" level="H" class="pull-right mt-1"></qrcode-vue>
+        </div>
+      </TheFooter>
     </template>
-
-    <template v-if="this.$route.name == 'Login'">
+    <template v-else-if="!this.$store.state.token">
       <main class="main">
         <router-view />
       </main>
@@ -96,101 +60,46 @@
 </template>
 
 <script>
-import navSpAdmin from '@/navSpAdmin'
-import navAdmin from '@/navAdmin'
-import navCusNotLogin from '@/navCusNotLogin'
-import navCus from '@/navCus'
-import navStaff from '@/navStaff'
-import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFooter, SidebarForm, SidebarHeader, SidebarMinimizer, SidebarNav } from '@coreui/vue'
-import HeaderDropdownCusAcc from '@/components/common/HeaderDropdownCusAcc'
-import HeaderDropdownStaffAcc from '@/components/common/HeaderDropdownStaffAcc'
-import HeaderDropdownGift from '@/components/common/HeaderDropdownGift'
-import {Constant} from '@/common/constant'
 import Cookies from 'js-cookie'
-import { RootAPI } from '@/api/index'
-import customerAPI from '@/api/customer'
-
-
+import nav from '@/navigations'
+import navAdmin from '@/navAdmin'
+import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFooter, SidebarForm, SidebarHeader, SidebarMinimizer, SidebarNav, Aside as AppAside, AsideToggler, Footer as TheFooter, Breadcrumb } from '@coreui/vue'
+import HeaderDropdownAccnt from '@/components/common/HeaderDropdownAccnt'
+import DefaultAside from '@/components/common/DefaultAside'
+import QrcodeVue from 'qrcode.vue'
 export default {
   name: 'App',
   components: {
+    AsideToggler,
     AppHeader,
     AppSidebar,
+    AppAside,
+    TheFooter,
+    Breadcrumb,
     SidebarForm,
     SidebarFooter,
+    SidebarToggler,
     SidebarHeader,
     SidebarNav,
     SidebarMinimizer,
-    HeaderDropdownCusAcc,
-    HeaderDropdownStaffAcc,
-    HeaderDropdownGift
+    HeaderDropdownAccnt,
+    DefaultAside,
+    QrcodeVue
   },
   data () {
     return {
       language: 'en',
-      navCus: navCus.items,
-      navCusNotLogin: navCusNotLogin.items,
-      navSpAdmin: navSpAdmin.items,
+      nav: nav.items,
       navAdmin: navAdmin.items,
-      navStaff: navStaff.items,
       fullName: '',
-      size: 40,
-      roleCus: Constant.ROLE_CUS,
-      roleAdmin: Constant.ROLE_ADMIN,
-      roleStaff: Constant.ROLE_STAFF,
-      roleSpAdmin: Constant.ROLE_SP_ADMIN,
-      notifyNumber: 0,
-      activePushedMenu: false
+      value: 'https://www.facebook.com/tanarmy77',
+      size: 40
     }
   },
-  watch: {
-    '$route' (newVal, oldVal) {
-      this.activePushedMenu = false
-    }
-  },
-  beforeMount() {
-    let user = Cookies.get(Constant.APP_USR)
-
-    if(user && user != undefined) {
-      user = JSON.parse(user)
-      if(user.userType == "customer") {
-        let numberOfNotify = Cookies.get(Constant.NOTIFY_NUMBER)
-        if(!numberOfNotify) {
-          this.countNotificationNotRead()
-        }
-        this.notifyNumber = numberOfNotify
-
-        // user = JSON.parse(user)
-        let phoneNumber = user.phoneNumber
-        let cityId = user.cityId
-
-        let api = RootAPI.replace("http://", "").replace("https://", "").replace("/api/", "")
-        var socket = new WebSocket("ws://" + api + "/join-group/cus-" + phoneNumber + "-" + cityId)
-
-        socket.onopen = event => {
-            console.log('connected')
-            this.connected = true
-            socket.send({})
-        }
-
-        socket.onmessage = event => {
-          console.log("onmessage")
-          var json_data = JSON.parse(event.data)
-          let numberOfNotification = json_data.text.numberOfNotification
-          Cookies.set(Constant.NOTIFY_NUMBER, numberOfNotification)
-
-          this.notifyNumber = numberOfNotification
-        }
-
-        socket.onclose = event => {
-          this.connected = false
-        }
-      }
-
-    }
-  },
-
   computed: {
+    missingName: function () {
+      return this.currentPassword === '';
+    },
     name () {
       return this.$route.name
     },
@@ -199,22 +108,16 @@ export default {
     }
   },
   created () {
+    this.fetchLanguageFromCookie()
   },
   methods: {
-    /**
-     * Load notification
-     */
-      countNotificationNotRead() {
-
-        customerAPI.countNotificationNotRead().then(res => {
-          let numberOfNotification = res.data.data
-          this.notifyNumber = numberOfNotification
-          Cookies.set(Constant.NOTIFY_NUMBER, numberOfNotification)
-
-        }).catch(err => {
-          console.log(err)
-        })
+    fetchLanguageFromCookie () {
+      var language = Cookies.get('language')
+      if (language) {
+        this.language = language
+        this.$i18n.locale = language
       }
+    }
   }
 }
 </script>
@@ -226,96 +129,6 @@ export default {
   @import '~font-awesome/scss/font-awesome';
   @import '~bootstrap-vue/dist/bootstrap-vue';
   @import 'assets/scss/style';
-  @import 'assets/scss/rsw';
-
-  .fa-stack[data-count]:after{
-    position:absolute;
-    right:0%;
-    top:1%;
-    content: attr(data-count);
-    font-size:50%;
-    padding:.6em;
-    border-radius:999px;
-    line-height:.75em;
-    color: white;
-    background:rgba(255,88,88,.85);
-    text-align:center;
-    min-width:2em;
-    font-weight:bold;
-  }
-  .nav-left {
-    display: flex;
-    align-content: center;
-    .home-icon {
-      padding: .5rem .5rem .5rem .2rem;
-    }
-  }
-  .app-body .sidebar.active {
-    margin-left: 0;
-  }
-  .header-custom {
-    background-color: #444444 !important;
-    ul.navbar-nav {
-      li.nav-item {
-        min-width: unset;
-        a {
-          display: block;
-          span {
-            display: block;
-          }
-        }
-      }
-    }
-    .badge {
-      top: 10px!important;
-      left: unset!important;
-      right: 5px;
-      border-radius: 50%;
-      background: white;
-      width: 25px;
-      height: 25px;
-      color: red;
-      display: flex!important;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8em;
-    }
-  }
-  .iconsCustom {
-    width: 40px;
-    height: 40px;
-  }
-  .inline-center {
-    display: flex;
-    align-items: center;
-  }
-  .default-btn-bg {
-    background-color: #444444 !important;
-  }
-  .bg-pushed-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 10;
-  }
-  .sidebar-minimizer {
-    display: none!important;
-  }
-  .card {
-    border: none!important;
-    box-shadow: 0 2px 10px #DEDEDE;
-    border-radius: 10px!important;
-  }
-  .is-fixed-page {
-    position: fixed;
-    top: 55px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-  button {
-    &:focus {outline:0;}
-  }
+  @import 'assets/scss/crm';
+  @import 'assets/scss/multiselect';
 </style>

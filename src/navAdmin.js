@@ -2,64 +2,71 @@ export default {
     items: [
       // admin
       {
-        name: 'Quản lý order',
-        url: '/home-admin',
+        name: 'Dashboard',
+        url: '/',
         icon: 'fa fa-home'
       },
       {
-        name: 'Topping',
-        url: '/topping/list',
-        icon: 'fa fa-home'
+        name: 'Account',
+        url: '/',
+        icon: 'fa fa-user',
+        children: [
+          {
+            name: 'Account',
+            url: '/account-index',
+            icon: 'icon-account'
+          },
+          {
+            name: 'Account Management',
+            url: '/account-management',
+            icon: 'icon-puzzle'
+          }
+        ]
       },
       {
-        name: 'Menu',
-        url: '/menu/list',
-        icon: 'fa fa-home'
+        name: 'Role',
+        url: '/',
+        icon: 'fa fa-pie-chart',
+        children: [
+          {
+            name: 'Role',
+            url: '/role-index',
+            icon: 'icon-account'
+          },
+          {
+            name: 'Role Management',
+            url: '/role-management',
+            icon: 'icon-puzzle'
+          }
+        ]
       },
       {
-        name: 'Nhân viên',
-        url: '/staff/list',
-        icon: 'fa fa-home'
-      },
-      {
-        name: 'Bàn ăn',
-        url: '/table/list',
-        icon: 'fa fa-home'
-      },
-      {
-        name: 'Khuyến mãi',
-        url: '/promo/list',
-        icon: 'fa fa-home'
-      },
-      {
-        name: 'Đăng thông báo',
-        url: '/man-notification',
-        icon: 'fa fa-home'
-      },
-      {
-        name: 'Cài đặt',
-        url: '/setting',
-        icon: 'fa fa-home'
-      },
-      {
-        name: 'In QR code',
-        url: '/print-qr-code',
-        icon: 'fa fa-home'
-      },
-      {
-        name: 'Xác nhận khuyến mãi',
-        url: '/confirm-promotion',
-        icon: 'fa fa-home'
-      },
-      {
-        name: 'Giới thiệu',
-        url: '/about-us',
-        icon: 'fa fa-home'
-      },
-      {
-        name: 'Liên hệ',
-        url: '/contact',
-        icon: 'fa fa-home'
+        name: 'Store',
+        url: '/',
+        icon: 'fa fa-archive',
+        children: [
+          {
+            name: 'Brand',
+            url: '/brand',
+            icon: 'icon-account'
+          },
+          {
+            name: 'Store',
+            url: '/store-index',
+            icon: 'icon-puzzle'
+          },
+          {
+            name: 'Store Management',
+            url: '/store-management',
+            icon: 'icon-puzzle'
+          },
+          {
+            name: 'Location',
+            url: '/location',
+            icon: 'icon-puzzle'
+          }
+        ]
       },
     ]
   }
+  

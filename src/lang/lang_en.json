@@ -9,9 +9,7 @@
             "currentPassword": "Current Password",
             "newPassword": "New Password",
             "confirmPassword": "Confirm Password"
-        },
-        "passNotMatch" : "Confirm password is not match",
-        "passUpdated" : "Your password has been updated"
+        }
     },
     "guestManagrment": {
         "titlePage": "Guest Management",
@@ -75,20 +73,5 @@
             "tradeBy": "Trade By",
             "POSMapping": "POS Mapping"
         }
-    },
-    "commons": {
-        "requiredField" : "This is a required field",
-        "systemError" : "System error",
-        "updateFailed" : "Update failed!",
-        "updateSuccess" : "Update success!",
-        "minLengthAccount" : "Password is at least 6 characters"
-    },
-    "register": {
-        "registerFailed" : "Register Fail",
-        "registerSuccess" : "Register Success",
-        "activeAccountSuccess" : "Your account has been actived"
-    },
-    "login": {
-        "loginFailed" : "Login Fail"
     }
 }

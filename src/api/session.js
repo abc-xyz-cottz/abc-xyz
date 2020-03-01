@@ -9,13 +9,13 @@ const CSRF_HEADER_NAME = 'X-CSRFToken';
 const session = axios.create({
   xsrfCookieName: CSRF_COOKIE_NAME,
   xsrfHeaderName: CSRF_HEADER_NAME,
-  timeout: 50000
+  timeout: 5000
 });
 
-let token = Cookies.get(TOKEN_NAME)
+let token = Cookies.get(TOKEN_NAME);
 if (token) {
-
-  session.defaults.headers['token'] = `${token}`
+  token = JSON.parse(token);
+  session.defaults.headers['token'] = `${token.access_token}`
 }
 
 export default session;
